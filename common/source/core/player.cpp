@@ -32,6 +32,15 @@
 Player::Player() : hand(std::make_unique<Cards>()) { }
 
 /*
+	Setze Karten in die Spielerhand von einem Kartenstrukt.
+
+	std::vector<CardStruct> cards: Die Karten.
+*/
+void Player::ImportCards(std::vector<CardStruct> cards) {
+	this->hand->ImportCards(cards);
+}
+
+/*
 	Füge eine Karte hinzu.
 
 	std::unique_ptr<Deck> &cardDeck: Das Karten-Deck.

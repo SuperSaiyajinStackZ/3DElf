@@ -37,6 +37,7 @@ protected:
 	std::unique_ptr<Cards> hand; // Die Spielerhand.
 public:
 	Player();
+	void ImportCards(std::vector<CardStruct> cards);
 
 	void AddCard(std::unique_ptr<Deck> &cardDeck);
 	void RemoveCard(uint8_t index);

@@ -124,6 +124,16 @@ const std::vector<CardStruct> DefaultDeck = {
 Deck::Deck() { this->shuffle(); }
 
 /*
+	Setze Karten in das Deck von einem Kartenstrukt.
+
+	std::vector<CardStruct> cards: Die Karten.
+*/
+void Deck::GetCardsFromStruct(std::vector<CardStruct> cards) {
+	this->deck = cards;
+}
+
+
+/*
 	Initialisiere das Kartendeck mit dem Standard-Deck.
 */
 void Deck::Initialize() { this->deck = DefaultDeck; }

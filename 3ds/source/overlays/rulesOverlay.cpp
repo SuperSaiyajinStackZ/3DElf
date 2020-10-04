@@ -24,27 +24,40 @@
 		  reasonable ways as different from the original version.
 */
 
-#ifndef _3DELF_DECK_HPP
-#define _3DELF_DECK_HPP
+#include "common.hpp"
 
-#include "coreHelper.hpp"
-#include <vector>
+/*
+	Zeichne den Regeln-Screen.
+*/
+static void Draw() {
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
-class Deck {
-protected:
-	std::vector<CardStruct> deck; // Das Karten-Deck.
-public:
-	Deck();
+	GFX::DrawBaseTop();
+	Gui::Draw_Rect(0, 0, 400, 25, C2D_Color32(0, 130, 130, 255));
+	Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 130, 130, 255));
 
-	void GetCardsFromStruct(std::vector<CardStruct> cards);
+	Gui::DrawStringCentered(0, 2, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("RULES"), 390);
+	Gui::DrawStringCentered(0, 30, 0.5f, C2D_Color32(255, 255, 255, 255), Lang::get("RULES_INSTR"), 390, 170);
+	Gui::DrawStringCentered(0, 215, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("A_CONTINUE"), 390);
 
-	void Initialize();
-	void shuffle();
+	GFX::DrawBaseBottom();
+	C3D_FrameEnd(0);
+}
 
-	CardStruct GetCard();
-	CardStruct GetCardFromDeck(uint8_t index) const;
+/*
+	Zeige den Regeln-Screen.
+*/
+void Overlays::RulesOverlay() {
+	bool doOut = false;
 
-	uint8_t GetDeckSize() const;
-};
+	while(!doOut) {
+		Draw();
 
-#endif
+		hidScanInput();
+
+		if (hidKeysDown()) doOut = true;
+	}
+}

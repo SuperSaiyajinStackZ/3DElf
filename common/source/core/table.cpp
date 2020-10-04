@@ -122,3 +122,13 @@ void Table::SetCard(CardColor CLR, bool upper, CardType CT) {
 	CardColor CLR: Die Kartenfarbe, welche wiedergeben werden soll.
 */
 std::pair<CardType, CardType> Table::GetCurrent(CardColor CLR) const { return this->TableCards[(uint8_t)CLR - 1]; }
+
+/*
+	Importiere Die Kartentypen vom Buffer.
+
+	CardColor CLR: Kartenfarbe.
+	std::pair<CardType, CardType> CT = Kartentypen.
+*/
+void Table::ImportCardTypes(CardColor CLR, std::pair<CardType, CardType> CT) {
+	this->TableCards[(uint8_t)CLR - 1] = CT;
+}

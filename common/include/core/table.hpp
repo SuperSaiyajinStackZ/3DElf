@@ -42,6 +42,8 @@ public:
 	bool CanPlay(CardColor CLR, bool upper, CardType CT);
 	void SetCard(CardColor CLR, bool upper, CardType CT);
 	std::pair<CardType, CardType> GetCurrent(CardColor CLR) const;
+
+	void ImportCardTypes(CardColor CLR, std::pair<CardType, CardType> CT);
 };
 
 #endif

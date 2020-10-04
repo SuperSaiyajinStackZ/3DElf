@@ -36,6 +36,7 @@ protected:
 	std::vector<CardStruct> hand; // Die Karten-Hand.
 public:
 	Cards();
+	void ImportCards(std::vector<CardStruct> cards);
 
 	void AddCard(std::unique_ptr<Deck> &cardDeck);
 	void RemoveCard(uint8_t index);

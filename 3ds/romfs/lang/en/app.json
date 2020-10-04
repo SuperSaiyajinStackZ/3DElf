@@ -11,5 +11,7 @@
 	"ONLY_3_CARDS": "You can only draw up to 3 cards!",
 	"PLAY_AGAINST_COMPUTER": "Would you like to play against an computer?",
 	"PLAYER_WON": "Player %i won!",
+	"RULES": "Rules",
+	"RULES_INSTR": "The rules of this game are the following:\n\nFirst of all, you need to play an 11, if one exist.\nAfter it, you can play any other card.\n\nYou can play as many cards as possible.\nBut you can also only play one card\nto block other players, which may have a higher or lower number.\n\nYou need to play at least one card.. if you can't\nyou need to draw up to 3 cards.",
 	"YES": "Yes"
 }

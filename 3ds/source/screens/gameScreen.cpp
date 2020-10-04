@@ -463,6 +463,12 @@ bool GameScreen::checkPlay() {
 	return false;
 }
 
+/*
+	Überprüfe, ob eine bestimmte Karte gespielt werden kann von der Spielerhand.
+
+	CardType CT: Der Kartentyp, welcher überprüft werden soll.
+	CardColor CC: Die Kartenfarbe, welche überprüft werden soll.
+*/
 bool GameScreen::checkSpecificCard(CardType CT, CardColor CC) const {
 	for (uint8_t i = 0; i < this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer()); i++) {
 		const CardStruct CS = this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(), i);

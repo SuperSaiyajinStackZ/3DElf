@@ -51,9 +51,9 @@ class Table;
 #define _GAME_CARDDECK_CARDS 0x3
 
 #define _GAME_TABLECARD_RED 0xA3
-#define _GAME_TABLECARD_YELLOW 0xA7
-#define _GAME_TABLECARD_GREEN 0xAB
-#define _GAME_TABLECARD_BLUE 0xAF
+#define _GAME_TABLECARD_YELLOW 0xA5
+#define _GAME_TABLECARD_GREEN 0xA7
+#define _GAME_TABLECARD_BLUE 0xA9
 
 #define _GAME_PLAYER_1 0xAB
 #define _GAME_PLAYER_2 0x14C
@@ -101,50 +101,60 @@ class Game {
 public:
 	Game(uint8_t plAmount);
 	~Game();
+	bool LoadGameFromFile();
+	void convertDataToGame();
 	void SaveConversion(); // Konvertiere das aktuelle Spiel zu einem Buffer.
 	void SaveToFile(bool update = true); // Konvertiere wenn true und schreibe zu datei.
 
-	/* Spieler funktionen. */
+	/* Spielerkarten wiedergebung funktionen. */
 	CardType GetPlayerCardType(uint8_t player, uint8_t index) const;
 	CardColor GetPlayerCardColor(uint8_t player, uint8_t index) const;
 	CardStruct GetPlayerCard(uint8_t player, uint8_t index) const;
 
+	/* Karten mit Spielerhand funktionen. */
 	void AddPlayerCard(uint8_t player);
 	void RemovePlayerCard(uint8_t player, uint8_t index);
 	uint8_t GetPlayerHandSize(uint8_t player) const;
 
+	/* Aktueller Spieler & Anzahl funktionen. */
 	uint8_t GetCurrentPlayer() const { return this->currentPlayer; }
 	void SetCurrentPlayer(uint8_t p) { this->currentPlayer = p; }
 	uint8_t GetPlayerAmount() const { return this->PlayerAmount; }
 
-	/* Utilities. */
+	/* Zieh-Anzahl funktionen. */
 	uint8_t GetDrawAmount() const { return this->drawAmount; }
 	void ResetDrawAmount() { this->drawAmount = 0; }
 
+	/* Karten-Index funktionen. */
 	uint8_t GetCardIndex(uint8_t player) const { return this->cardIndexes[player]; }
 	void SetCardIndex(uint8_t player, uint8_t indx) { this->cardIndexes[player] = indx; }
 
+	/* Karten-Seiten funktionen. */
 	uint8_t GetPageIndex(uint8_t player) const { return this->cardPages[player]; }
 	void SetPageIndex(uint8_t player, uint8_t indx) { this->cardPages[player] = indx; }
 
-	/* Spiel-Logics und so. */
+	/* Haupt-Spiel Logik und so. */
 	std::pair<CardType, CardType> getTableCard(CardColor CR) const { return this->TableCard->GetCurrent(CR); }
 	bool CanPlay(CardColor CLR, bool upper, CardType CT) { return this->TableCard->CanPlay(CLR, upper, CT); }
 	void SetCard(CardColor CLR, bool upper, CardType CT) { this->TableCard->SetCard(CLR, upper, CT); }
 
+	/* Karten-Deck funktionen. */
 	uint8_t GetDeckSize() const { return this->CardDeck->GetDeckSize(); }
 private:
 	/* Setze die Karten in den Save Buffer. */
 	void SetCard(uint32_t offset, CardStruct CS);
 	void SetEmptyCard(uint32_t offset);
 
+	/* Zeiger-Klassen für das Spiel. */
 	std::unique_ptr<Deck> CardDeck = nullptr;
 	std::unique_ptr<Table> TableCard = nullptr;
 	std::vector<std::unique_ptr<Player>> Players;
+
+	/* Variablen für das Spiel. */
 	std::vector<uint8_t> cardIndexes, cardPages;
 	uint8_t PlayerAmount = 2, currentPlayer = 0, drawAmount = 0;
 
-	std::unique_ptr<uint8_t[]> GameData = nullptr;
+	std::unique_ptr<uint8_t[]> GameData = nullptr; // Spieledaten Buffer.
 };
 
 #endif

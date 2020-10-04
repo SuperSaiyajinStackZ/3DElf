@@ -25,6 +25,7 @@
 */
 
 #include "game.hpp"
+#include <unistd.h>
 
 /*
 	Füge eine Karte zum buffer hinzu.
@@ -76,6 +77,102 @@ Game::Game(uint8_t plAmount) {
 }
 
 /*
+	Lade ein Spiel von Spiel-Daten.
+*/
+bool Game::LoadGameFromFile() {
+	if (access(_GAME_SAVEPATH, F_OK) != 0) return false;
+
+	this->GameData = nullptr;
+	this->GameData = std::unique_ptr<uint8_t[]>(new uint8_t[_GAME_SIZE]);
+
+	FILE *file = fopen(_GAME_SAVEPATH, "r");
+
+	fread(this->GameData.get(), 1, _GAME_SIZE, file);
+	fclose(file);
+
+	return true;
+}
+
+/*
+	Konvertiere die Daten zu einem Spiel.
+*/
+void Game::convertDataToGame() {
+	if (this->GameData) {
+
+		/* Bereinige alles. */
+		this->CardDeck = nullptr;
+		this->TableCard = nullptr;
+		this->Players.clear();
+
+		this->CardDeck = std::make_unique<Deck>();
+		this->TableCard = std::make_unique<Table>();
+
+		this->currentPlayer = this->GameData.get()[_GAME_CURRENT_PLAYER]; // Der aktuelle Spieler.
+		this->PlayerAmount = this->GameData.get()[_GAME_PLAYER_AMOUNT]; // Die Spieler-Anzahl.
+
+		/* Die Karten vom Deck. */
+		std::vector<CardStruct> deckCards;
+		if (this->GameData.get()[_GAME_CARDDECK_CARD_AMOUNT] > 0) {
+			for (uint8_t deckKarten = 0; deckKarten < this->GameData.get()[_GAME_CARDDECK_CARD_AMOUNT]; deckKarten++) {
+				deckCards.push_back( { CoreHelper::GetCardStruct(this->GameData.get(), _GAME_CARDDECK_CARDS + (deckKarten * _GAME_CARDSIZE)) });
+			}
+		}
+
+		this->CardDeck->GetCardsFromStruct(deckCards); // Importiere die Karten vom vektor.
+
+		/*
+			Die Tischkarten.
+		*/
+		std::pair<CardType, CardType> CTypes;
+
+		/* Rote Karten. */
+		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_RED]);
+		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_RED + 1]);
+		this->TableCard->ImportCardTypes(CardColor::COLOR_RED, CTypes);
+
+
+		/* Gelbe Karten. */
+		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_YELLOW]);
+		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_YELLOW + 1]);
+		this->TableCard->ImportCardTypes(CardColor::COLOR_YELLOW, CTypes);
+
+
+		/* Grüne Karten. */
+		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_GREEN]);
+		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_GREEN + 1]);
+		this->TableCard->ImportCardTypes(CardColor::COLOR_GREEN, CTypes);
+
+		/* Blaue Karten. */
+		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_BLUE]);
+		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_BLUE + 1]);
+		this->TableCard->ImportCardTypes(CardColor::COLOR_BLUE, CTypes);
+
+
+		/* Initialisiere alle Spieler inklusive KartenIndex & Karten-Seite welche für den Spiel-Screen relevant sind. */
+		for (uint8_t i = 0; i < this->PlayerAmount; i++) {
+			this->Players.push_back({ std::make_unique<Player>() });
+			this->cardIndexes.push_back({ 0 });
+			this->cardPages.push_back({ 0 });
+		}
+
+		/* Und hier die Spielerkarten. */
+		std::vector<CardStruct> playerCards;
+		for (uint8_t spieler = 0; spieler < this->PlayerAmount; spieler++) {
+			for (uint8_t karten = 0; karten < _GAME_HANDSIZE; karten++) {
+
+				/* Falls die Karten in der Datei nicht NULL sind, füge sie dem Vektor hinzu. */
+				if (this->GameData.get()[_GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE)] != 0) {
+					playerCards.push_back({ CoreHelper::GetCardStruct(this->GameData.get(), _GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE)) });
+				}
+			}
+
+			this->Players[spieler]->ImportCards(playerCards); // Importiere die Karten vom vektor.
+			playerCards.clear();
+		}
+	}
+}
+
+/*
 	Konvertiere das aktuelle spiel zu einer Speicherdatei / Buffer.
 */
 void Game::SaveConversion() {
@@ -94,19 +191,19 @@ void Game::SaveConversion() {
 
 	/* Roten Karten. */
 	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_RED) =
-		(uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_RED).first + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_RED).second;
+		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_RED).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_RED).first;
 
 	/* Gelben Karten. */
 	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_YELLOW) =
-		(uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_YELLOW).first + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_YELLOW).second;
+		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_YELLOW).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_YELLOW).first;
 
 	/* Grünen Karten. */
 	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_GREEN) =
-		(uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_GREEN).first + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_GREEN).second;
+		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_GREEN).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_GREEN).first;
 
 	/* Blauen Karten. */
 	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_BLUE) =
-		(uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_BLUE).first + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_BLUE).second;
+		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_BLUE).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_BLUE).first;
 
 
 	/* Und hier die Spielerkarten. */

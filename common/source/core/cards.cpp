@@ -34,6 +34,15 @@
 Cards::Cards() { }
 
 /*
+	Setze Karten von einem Kartenstrukt.
+
+	std::vector<CardStruct> cards: Die Karten.
+*/
+void Cards::ImportCards(std::vector<CardStruct> cards) {
+	this->hand = cards;
+}
+
+/*
 	Füge eine Karte der Hand hinzu vom Kartendeck.
 
 	std::unique_ptr<Deck> &cardDeck: Das Karten-Deck.

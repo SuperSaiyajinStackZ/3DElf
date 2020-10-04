@@ -31,6 +31,7 @@
 
 namespace Overlays {
 	void SplashOverlay();
+	void RulesOverlay();
 };
 
 #endif

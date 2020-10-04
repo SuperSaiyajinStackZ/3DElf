@@ -59,6 +59,7 @@ static void init() {
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);
 
 	Overlays::SplashOverlay();
+	Overlays::RulesOverlay();
 	Gui::setScreen(std::make_unique<GameScreen>(), false, true);
 }
 
