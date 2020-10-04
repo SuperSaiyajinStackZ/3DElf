@@ -1,0 +1,5 @@
+--atlas -f rgba8888 -z auto
+
+sprites/dev_by.png
+sprites/stackZ.png
+sprites/universal-core.png

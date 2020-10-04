@@ -1,0 +1,14 @@
+{
+	"A_CONTINUE": "Drücke \uE000 zum fortfahren.",
+	"DECK_ALREADY_EMPTY": "Das Kartendeck ist bereits leer...",
+	"GAME_INSTR": "Drücke \uE000 zum spielen.\nDrücke \uE002 um eine Karte zu ziehen.\nDrücke \uE003 um deine Runde zu beenden.\nDrücke \uE052 | \uE053 um die Kartenseiten zu wechseln.\nBenutze das Steuerkreuz um durch die Karten zu navigieren.",
+	"GAME_PRMPT_1": "Du musst mindestens eine Karte spielen\noder bis zu 3 Karten ziehen, wenn du nicht kannst!",
+	"GAME_PRMPT_2": "Du musst eine Karte spielen!",
+	"NEXT_PLAYER": "Spieler %i hat seine / ihre Runde beendet.\nSpieler %i ist an der Reihe!",
+	"NO": "Nein",
+	"NOT_IMPLEMENTED_YET": "Dies ist noch nicht implementiert.",
+	"ONLY_3_CARDS": "Du kannst nur bis zu 3 Karten ziehen!",
+	"PLAY_AGAINST_COMPUTER": "Möchtest du gegen einen Computer spielen?",
+	"PLAYER_WON": "Spieler %i hat gewonnen!",
+	"YES": "Ja"
+}

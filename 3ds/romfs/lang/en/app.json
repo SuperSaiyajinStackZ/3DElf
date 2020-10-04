@@ -1,0 +1,14 @@
+{
+	"A_CONTINUE": "Press \uE000 to continue.",
+	"DECK_ALREADY_EMPTY": "The Card Deck is already empty...",
+	"GAME_INSTR": "Press \uE000 to play.\nPress \uE002 to draw a card.\nPress \uE003 to end your round.\nPress \uE052 | \uE053 to switch the card pages.\nUse the D-Pad to navigate through the cards.",
+	"GAME_PRMPT_1": "You must at least play a card\nor draw up to 3 cards, if you can't play!",
+	"GAME_PRMPT_2": "You must play a card!",
+	"NEXT_PLAYER": "Player %i has finished their round.\nPlayer %i is on the row!",
+	"NO": "No",
+	"NOT_IMPLEMENTED_YET": "This is not implemented yet.",
+	"ONLY_3_CARDS": "You can only draw up to 3 cards!",
+	"PLAY_AGAINST_COMPUTER": "Would you like to play against an computer?",
+	"PLAYER_WON": "Player %i won!",
+	"YES": "Yes"
+}
