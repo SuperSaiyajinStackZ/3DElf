@@ -39,6 +39,8 @@ GameScreen::GameScreen(uint8_t pAmount) {
 	CoreHelper::GenerateSeed();
 	this->currentGame = std::make_unique<Game>(pAmount);
 	this->useAI = Msg::promptMsg(Lang::get("PLAY_AGAINST_COMPUTER"));
+
+	this->forceElevenCheck();
 }
 
 /*
@@ -295,7 +297,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	/* Spiel-Logik. */
 	if (hDown & KEY_A) {
-		if (!this->DoPlayMove()) {
+		if (!this->DoPlayMove().second) {
 			if (!exiting) this->NextPHandle();
 		}
 	}
@@ -310,7 +312,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 						this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
 							i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15));
 
-						if (!this->DoPlayMove()) {
+						if (!this->DoPlayMove().second) {
 							if (!exiting) this->NextPHandle();
 						}
 				}
@@ -320,11 +322,23 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	/* Karten-Zieh Logik. */
 	if (hDown & KEY_X) {
+		if (this->forceEleven) {
+			Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
+			return;
+		}
+
 		if (this->currentGame->GetDeckSize() > 0) {
 			if (this->currentGame->GetDrawAmount() < 3) {
 				this->currentGame->AddPlayerCard(this->currentGame->GetCurrentPlayer());
+				this->forceElevenCheck();
 
-				if (this->currentGame->GetDrawAmount() == 3) this->forcePlay = false; // Weil wir bereits 3 mal gezogen haben.
+				if (this->currentGame->GetDrawAmount() == 3) {
+					this->forcePlay = false; // Weil wir bereits 3 mal gezogen haben.
+
+					if (!this->checkPlay()) {
+						this->NextPHandle();
+					}
+				}
 
 			} else {
 				Msg::DisplayWaitMsg(Lang::get("ONLY_3_CARDS"));
@@ -337,6 +351,11 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	/* Spieler-Wechsel Logik. */
 	if (hDown & KEY_Y) {
+		if (this->forceEleven) {
+			Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
+			return;
+		}
+
 		if (this->currentGame->GetDeckSize() > 0) {
 			if (this->forcePlay) {
 				Msg::DisplayWaitMsg(Lang::get("GAME_PRMPT_1"));
@@ -369,6 +388,7 @@ void GameScreen::NextPHandle() {
 
 		this->currentGame->SetCurrentPlayer(this->currentGame->GetCurrentPlayer() + 1);
 		this->currentGame->ResetDrawAmount();
+		this->forceElevenCheck();
 		this->forcePlay = true;
 
 	} else {
@@ -378,18 +398,26 @@ void GameScreen::NextPHandle() {
 
 		this->currentGame->SetCurrentPlayer(0);
 		this->currentGame->ResetDrawAmount();
+		this->forceElevenCheck();
 		this->forcePlay = true;
 	}
 }
 
 /*
 	Die Haupt-Spiel Logik.
+
+	wiedergibt einen std::pair aus booleans mit:
+	first: Ob die Karte gültig war.
+	second: Ob der Spieler noch spielen kann.
 */
-bool GameScreen::DoPlayMove() {
+std::pair<bool, bool> GameScreen::DoPlayMove() {
+	std::pair<bool, bool> results = { false, true };
+
 	const CardStruct CS = this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(), this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()));
 	const bool isUpper = (uint8_t)CS.CT >= 12 ? true : false; // 12 + wäre die obere Karte.
 
 	if (this->currentGame->CanPlay(CS.CC, isUpper, CS.CT)) {
+		results.first = true;
 		this->currentGame->RemovePlayerCard(this->currentGame->GetCurrentPlayer(), this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()));
 		this->currentGame->SetCard(CS.CC, isUpper, CS.CT);
 
@@ -408,13 +436,15 @@ bool GameScreen::DoPlayMove() {
 			Msg::DisplayWaitMsg(msg);
 
 			exiting = true;
-			return false;
+			return { false, false };
 		}
 
-		return this->checkPlay();
+		this->forceElevenCheck();
+
+		results.second = this->checkPlay();
 	}
 
-	return false;
+	return results;
 }
 
 /*
@@ -428,6 +458,16 @@ bool GameScreen::checkPlay() {
 		if (this->currentGame->CanPlay(CS.CC, isUpper, CS.CT)) {
 			return true; // Weil wir fortfahren können --> Beende die runde nicht!
 		}
+	}
+
+	return false;
+}
+
+bool GameScreen::checkSpecificCard(CardType CT, CardColor CC) const {
+	for (uint8_t i = 0; i < this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer()); i++) {
+		const CardStruct CS = this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(), i);
+
+		if ((CS.CT == CT) && (CS.CC == CC)) return true;
 	}
 
 	return false;
@@ -453,7 +493,7 @@ void GameScreen::AILogic() {
 		}
 
 		if (canPlay) {
-			if (!this->DoPlayMove()) {
+			if (!this->DoPlayMove().second) {
 				doOut = true;
 			}
 		}
@@ -473,4 +513,47 @@ void GameScreen::AILogic() {
 	}
 
 	if (!exiting) this->NextPHandle();
+}
+
+/*
+	Falls eine 11 auf der Spielerhand existiert, zwinge diese karte.
+*/
+void GameScreen::forceElevenCheck() {
+	this->forceEleven = false;
+
+	/* Überprüfe Rote Karte zuerst. */
+	if (this->currentGame->getTableCard(CardColor::COLOR_RED).first == CardType::NUMBER_EMPTY) {
+		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_RED)) {
+			//Msg::DisplayWaitMsg("Rote Elf wurde gezwungen.");
+			this->forceEleven = true;
+			return;
+		}
+	}
+
+	/* Dann überprüfe Gelb. */
+	if (this->currentGame->getTableCard(CardColor::COLOR_YELLOW).first == CardType::NUMBER_EMPTY) {
+		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_YELLOW)) {
+			//Msg::DisplayWaitMsg("Gelbe Elf wurde gezwungen.");
+			this->forceEleven = true;
+			return;
+		}
+	}
+
+	/* Dann überprüfe Grün. */
+	if (this->currentGame->getTableCard(CardColor::COLOR_GREEN).first == CardType::NUMBER_EMPTY) {
+		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_GREEN)) {
+			//Msg::DisplayWaitMsg("Grüne Elf wurde gezwungen.");
+			this->forceEleven = true;
+			return;
+		}
+	}
+
+	/* Und als letztes... überprüfe Blau. */
+	if (this->currentGame->getTableCard(CardColor::COLOR_BLUE).first == CardType::NUMBER_EMPTY) {
+		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_BLUE)) {
+			//Msg::DisplayWaitMsg("Blaue Elf wurde gezwungen.");
+			this->forceEleven = true;
+			return;
+		}
+	}
 }

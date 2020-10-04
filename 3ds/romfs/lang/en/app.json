@@ -1,6 +1,7 @@
 {
 	"A_CONTINUE": "Press \uE000 to continue.",
 	"DECK_ALREADY_EMPTY": "The Card Deck is already empty...",
+	"FORCE_ELEVEN": "You need to play your 11!",
 	"GAME_INSTR": "Press \uE000 to play.\nPress \uE002 to draw a card.\nPress \uE003 to end your round.\nPress \uE052 | \uE053 to switch the card pages.\nUse the D-Pad to navigate through the cards.",
 	"GAME_PRMPT_1": "You must at least play a card\nor draw up to 3 cards, if you can't play!",
 	"GAME_PRMPT_2": "You must play a card!",

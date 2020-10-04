@@ -45,13 +45,15 @@ private:
 
 	/* Logik-Utilities. */
 	void pageHandle(bool fw);
-	bool DoPlayMove();
+	std::pair<bool, bool> DoPlayMove();
 	bool checkPlay();
 	void AILogic();
 	void NextPHandle();
+	bool checkSpecificCard(CardType CT, CardColor CC) const;
+	void forceElevenCheck();
 
 	std::unique_ptr<Game> currentGame = nullptr; // Der Spiel-Zeiger.
-	bool forcePlay = true, useAI = false;
+	bool forcePlay = true, useAI = false, forceEleven = false;
 
 	const std::vector<Structs::ButtonPos> CardPos = {
 		{ 20 + (0 * 60), 25, 40, 60 },
