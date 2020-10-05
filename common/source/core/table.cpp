@@ -31,12 +31,13 @@
 */
 Table::Table() {
 	for (uint8_t i = 0; i < 4; i++) {
-		this->TableCards[(uint8_t)i] = std::make_pair(CardType::NUMBER_EMPTY, CardType::NUMBER_EMPTY);
+		this->TableCards[i] = std::make_pair(CardType::NUMBER_EMPTY, CardType::NUMBER_EMPTY);
 	}
 }
 
 /*
-	Wiedergebe die benötigten Karten als einen std::pair aus 2 Kartentypen. Dies wiedergibt die untere (first) und obere (second) Karte.
+	Wiedergebe die benötigten Karten als einen std::pair aus 2 Kartentypen.
+	Dies wiedergibt die untere (first) und obere (second) Karte.
 
 	CardColor CLR: Die Kartenfarbe.
 */
@@ -44,8 +45,9 @@ std::pair<CardType, CardType> Table::GetPlayCard(CardColor CLR) {
 	std::pair<CardType, CardType> temp = { CardType::NUMBER_EMPTY, CardType::NUMBER_EMPTY };
 
 
-	if (this->TableCards[(uint8_t)CLR - 1].first == CardType::NUMBER_EMPTY && this->TableCards[(uint8_t)CLR - 1].second == CardType::NUMBER_EMPTY) {
-		return { CardType::NUMBER_11, CardType::NUMBER_11 };
+	if (this->TableCards[(uint8_t)CLR - 1].first == CardType::NUMBER_EMPTY &&
+		this->TableCards[(uint8_t)CLR - 1].second == CardType::NUMBER_EMPTY) {
+			return { CardType::NUMBER_11, CardType::NUMBER_11 };
 	}
 
 	/* 1 wäre die erste Karte, somit verhindere den folgenden Code. */
@@ -106,18 +108,15 @@ void Table::SetCard(CardColor CLR, bool upper, CardType CT) {
 			this->TableCards[(uint8_t)CLR - 1].second = CT;
 
 		} else {
-			if (upper) {
-				this->TableCards[(uint8_t)CLR - 1].second = CT;
-
-			} else {
-				this->TableCards[(uint8_t)CLR - 1].first = CT;
-			}
+			upper ? this->TableCards[(uint8_t)CLR - 1].second :
+					this->TableCards[(uint8_t)CLR - 1].first = CT;
 		}
 	}
 }
 
 /*
-	Wiedergebe die aktuelle obere und untere Karte als einen std::pair. Die untere ist (first) und die obere ist (second).
+	Wiedergebe die aktuelle obere und untere Karte als einen std::pair.
+	Die untere ist (first) und die obere ist (second).
 
 	CardColor CLR: Die Kartenfarbe, welche wiedergeben werden soll.
 */

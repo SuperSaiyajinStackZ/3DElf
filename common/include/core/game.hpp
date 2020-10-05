@@ -77,7 +77,9 @@ class Table;
 #define _GAME_PLAYER_5_PAGEINDEX 0x47C
 #define _GAME_PLAYER_6_PAGEINDEX 0x47D
 
-#define _GAME_SIZE 0x47E
+#define _GAME_USES_AI 0x47E
+
+#define _GAME_SIZE 0x47F
 
 #define _GAME_SAVEPATH "sdmc:/3ds/3DElf/GameData.dat"
 
@@ -125,13 +127,16 @@ class Table;
 	0x47C: Spieler 1 Seiten Index.
 	0x47D: Spieler 2 Seiten Index.
 
-	Datengröße: 0x47E, dies entspricht etwa 1,12 KB.
+	0x47E: Ob der Computer benutzt wurde.
+
+	Datengröße: 0x47F, dies entspricht etwa 1,12 KB.
 */
 
 class Game {
 public:
 	Game(uint8_t plAmount);
 	~Game();
+	void InitNewGame(uint8_t plAmount);
 	void LoadGameFromFile();
 	void convertDataToGame();
 	void SaveConversion(); // Konvertiere das aktuelle Spiel zu einem Buffer.
@@ -173,6 +178,10 @@ public:
 	uint8_t GetDeckSize() const { return this->CardDeck->GetDeckSize(); }
 
 	bool validLoaded() const;
+
+	/* Computer part. */
+	bool GetAI() const { return this->useAI; }
+	void SetAI(bool AI) { this->useAI = AI; }
 private:
 	/* Setze die Karten in den Save Buffer. */
 	void SetCard(uint32_t offset, CardStruct CS);
@@ -186,7 +195,7 @@ private:
 	/* Variablen für das Spiel. */
 	uint8_t cardIndexes[6] = { 0 }, cardPages[6] = { 0 };
 	uint8_t PlayerAmount = 2, currentPlayer = 0, drawAmount = 0;
-	bool validGame = false;
+	bool validGame = false, useAI = false;
 
 	std::unique_ptr<uint8_t[]> GameData = nullptr; // Spieledaten Buffer.
 };

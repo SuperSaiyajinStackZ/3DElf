@@ -1,7 +1,12 @@
 {
 	"A_CONTINUE": "Press \uE000 to continue.",
 	"B_BACK": "Press \uE001 to go back to the game.",
+	"CREDITS": "Credits",
+	"CURRENT_VERSION": "Current Version: ",
 	"DECK_ALREADY_EMPTY": "The Card Deck is already empty...",
+	"DEV_BY": "3DElf got developed by: SuperSaiyajinStackZ",
+	"DEVELOPING_APP": "- For developing this application.",
+	"DEVKITPRO": "- For devkitARM, Libctru, Citro2D and Citro3D.",
 	"EXIT_GAME": "Exit Game",
 	"EXIT_GAME_PRMPT": "Would you like to exit the game?",
 	"FORCE_ELEVEN": "You need to play your 11!",
@@ -25,5 +30,6 @@
 	"SAVE_TO_FILE_PROMPT": "Would you like to save your current game?",
 	"SAVED_TO_FILE": "Game saved.",
 	"SHOW_RULES": "Show Rules",
+	"UNIVERSAL_CORE": "- For Universal-Core.",
 	"YES": "Yes"
 }

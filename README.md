@@ -11,7 +11,10 @@ Für eine Beschreibung zu `Elfer raus!` siehe [diesen Eintrag von Wikipedia](htt
 
 Hier findest du ein paar Screenshots zum aktuellen Fortschritt.
 
-### Regeln
+### Credits Overlay
+![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/credits.png)
+
+### Regeln Overlay
 ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/regeln.png)
 
 ### Spiel Screen

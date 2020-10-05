@@ -51,21 +51,40 @@ void Game::SetEmptyCard(uint32_t offset) {
 
 	uint8_t plAmount: Die Spieleranzahl.
 */
-Game::Game(uint8_t plAmount) {
-	if (plAmount > _GAME_MAXPLAYERS) this->PlayerAmount = _GAME_MAXPLAYERS; // 6 ist die maximale anzahl. Mehr sind nicht erlaubt.
+Game::Game(uint8_t plAmount) { this->InitNewGame(plAmount); }
+
+/*
+	Initialisiere ein neues Spiel.
+
+	uint8_t plAmount: Die Spieleranzahl.
+*/
+void Game::InitNewGame(uint8_t plAmount) {
+	/* Bereinige alles. */
+	this->CardDeck = nullptr;
+	this->TableCard = nullptr;
+	this->Players.clear();
+	for (uint8_t i = 0; i < 6; i++) {
+		this->cardIndexes[i] = 0;
+		this->cardPages[i] = 0;
+	}
+
+	if (plAmount > _GAME_MAXPLAYERS) this->PlayerAmount = _GAME_MAXPLAYERS; // 6 ist die maximale Spieleranzahl. Mehr sind nicht erlaubt.
 	else this->PlayerAmount = plAmount;
 
 	this->CardDeck = std::make_unique<Deck>(); // Initialisiere Kartendeck.
 	this->TableCard = std::make_unique<Table>(); // Initialisiere Tischkarte.
 
-	/* Initialisiere alle Spieler inklusive KartenIndex & Karten-Seite welche für den Spiel-Screen relevant sind. */
+	/*
+		Initialisiere alle Spieler inklusive KartenIndex & Karten-Seite
+		welche für den Spiel-Screen relevant sind.
+	*/
 	for (uint8_t i = 0; i < this->PlayerAmount; i++) {
 		this->Players.push_back({ std::make_unique<Player>() });
 		this->cardIndexes[i] = 0;
 		this->cardPages[i] = 0;
 	}
 
-	/* Ziehe die Initiale Karten vom Kartendeck für die Spieler. */
+	/* Ziehe die Initiale Karten vom Karten-Deck für die Spieler. */
 	for (uint8_t i2 = 0; i2 < this->PlayerAmount; i2++) {
 		for (uint8_t i = 0; i < CoreHelper::GetStartupCards(this->PlayerAmount); i++) {
 			this->Players[i2]->AddCard(this->CardDeck);
@@ -75,19 +94,18 @@ Game::Game(uint8_t plAmount) {
 	this->GameData = std::unique_ptr<uint8_t[]>(new uint8_t[_GAME_SIZE]); // Initialisiere den Spieldaten buffer für das aktuelle Spiel.
 	this->SaveConversion(); // Konvertiere das aktuelle spiel zu dem Spiel-Buffer.
 }
-
 /*
 	Lade ein Spiel von Spiel-Daten.
 */
 void Game::LoadGameFromFile() {
-	this->validGame = false;
+	this->validGame = false; // Setze das immer zu falsch, wenn die Funktion startet.
 	if (access(_GAME_SAVEPATH, F_OK) != 0) return;
 
 	FILE *file = fopen(_GAME_SAVEPATH, "r");
 
 	if (file) {
 		fseek(file, 0, SEEK_END);
-		uint32_t size = ftell(file);
+		uint32_t size = ftell(file); // Teile uns die größe der Datei mit.
 		fseek(file, 0, SEEK_SET);
 
 		if (size == _GAME_SIZE) {
@@ -102,7 +120,7 @@ void Game::LoadGameFromFile() {
 }
 
 /*
-	Gibt an, ob das geladene spiel auch ordnungsgemäß geladen ist.
+	Gibt an, ob das geladene spiel auch ordnungsgemäß geladen worden ist.
 */
 bool Game::validLoaded() const { return this->validGame; }
 
@@ -111,11 +129,15 @@ bool Game::validLoaded() const { return this->validGame; }
 */
 void Game::convertDataToGame() {
 	if (this->GameData && this->validGame) {
-
 		/* Bereinige alles. */
 		this->CardDeck = nullptr;
 		this->TableCard = nullptr;
 		this->Players.clear();
+
+		for (uint8_t i = 0; i < 6; i++) {
+			this->cardIndexes[i] = 0;
+			this->cardPages[i] = 0;
+		}
 
 		this->CardDeck = std::make_unique<Deck>();
 		this->TableCard = std::make_unique<Table>();
@@ -123,6 +145,7 @@ void Game::convertDataToGame() {
 		this->currentPlayer = this->GameData.get()[_GAME_CURRENT_PLAYER]; // Der aktuelle Spieler.
 		this->PlayerAmount = this->GameData.get()[_GAME_PLAYER_AMOUNT]; // Die Spieler-Anzahl.
 		this->drawAmount = this->GameData.get()[_GAME_DRAW_AMOUNT]; // Die Zieh-Anzahl.
+		this->useAI = this->GameData.get()[_GAME_USES_AI]; // Computer.
 
 		/* Die Karten vom Deck. */
 		std::vector<CardStruct> deckCards;
@@ -162,7 +185,10 @@ void Game::convertDataToGame() {
 		this->TableCard->ImportCardTypes(CardColor::COLOR_BLUE, CTypes);
 
 
-		/* Initialisiere alle Spieler inklusive KartenIndex & Karten-Seite welche für den Spiel-Screen relevant sind. */
+		/*
+			Initialisiere alle Spieler inklusive KartenIndex & Karten-Seite
+			welche für den Spiel-Screen relevant sind.
+		*/
 		for (uint8_t i = 0; i < this->PlayerAmount; i++) {
 			this->Players.push_back({ std::make_unique<Player>() });
 			this->cardIndexes[i] = this->GameData.get()[_GAME_PLAYER_1_CARDINDEX + i];
@@ -194,8 +220,9 @@ void Game::SaveConversion() {
 	this->GameData.get()[_GAME_CARDDECK_CARD_AMOUNT] = this->CardDeck->GetDeckSize(); // Die Deck-Größe.
 	this->GameData.get()[_GAME_PLAYER_AMOUNT] = this->PlayerAmount; // Die Spieler-Anzahl.
 	this->GameData.get()[_GAME_DRAW_AMOUNT] = this->drawAmount; // Die Zieh-Anzahl.
+	this->GameData.get()[_GAME_USES_AI] = this->useAI; // Computer.
 
-	/* Die Karten vom Deck. */
+	/* Die Karten vom Karten-Deck. */
 	for (uint8_t deckKarten = 0; deckKarten < _GAME_DECKSIZE; deckKarten++) {
 		this->SetCard((_GAME_CARDDECK_CARDS + (deckKarten * _GAME_CARDSIZE)), this->CardDeck->GetCardFromDeck(deckKarten));
 	}
@@ -204,19 +231,19 @@ void Game::SaveConversion() {
 		Die Tischkarten.
 	*/
 
-	/* Roten Karten. */
+	/* Rote Karten. */
 	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_RED) =
 		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_RED).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_RED).first;
 
-	/* Gelben Karten. */
+	/* Gelbe Karten. */
 	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_YELLOW) =
 		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_YELLOW).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_YELLOW).first;
 
-	/* Grünen Karten. */
+	/* Grüne Karten. */
 	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_GREEN) =
 		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_GREEN).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_GREEN).first;
 
-	/* Blauen Karten. */
+	/* Blaue Karten. */
 	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_BLUE) =
 		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_BLUE).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_BLUE).first;
 
@@ -227,13 +254,16 @@ void Game::SaveConversion() {
 		/* Für den Spieler, 80 Karten. (0x50) */
 		for (uint8_t karten = 0; karten < _GAME_HANDSIZE; karten++) {
 
-			/* Falls der Spieler am spiel teilnimmt, schreibe seine Karten in den Buffer. */
+			/*
+				Falls der Spieler am spiel teilnimmt, schreibe seine Karten und den Karten-Index
+				und der Seiten-Index in den Buffer.
+			*/
 			if ((uint8_t)this->Players.size() > spieler) {
 				this->GameData.get()[_GAME_PLAYER_1_CARDINDEX + spieler] = this->cardIndexes[spieler];
 				this->GameData.get()[_GAME_PLAYER_1_PAGEINDEX + spieler] = this->cardPages[spieler];
 				this->SetCard(_GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE), this->Players[spieler]->GetCard(karten));
 
-			/* Ansonsten.. setze leere Karten in den Buffer. */
+			/* Ansonsten.. setze leere Karten in den Buffer mit leeren Indexen. */
 			} else {
 				this->SetEmptyCard(_GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE));
 				this->GameData.get()[_GAME_PLAYER_1_CARDINDEX + spieler] = 0;
@@ -256,7 +286,8 @@ void Game::SaveToFile(bool update) {
 
 /*
 	Der Destruktor.
-	Aktuell keinen plan was dort alles kommt. Eventuell einen boolean parameter um auf die Speicherdatei zu schreiben?
+	Aktuell keinen plan was dort alles kommt.
+	Eventuell einen boolean parameter um auf die Speicherdatei zu schreiben?
 */
 Game::~Game() { this->GameData = nullptr; }
 

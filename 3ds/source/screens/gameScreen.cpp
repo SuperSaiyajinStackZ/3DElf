@@ -38,7 +38,7 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 GameScreen::GameScreen(uint8_t pAmount) {
 	CoreHelper::GenerateSeed();
 	this->currentGame = std::make_unique<Game>(pAmount);
-	this->useAI = Msg::promptMsg(Lang::get("PLAY_AGAINST_COMPUTER"));
+	this->currentGame->SetAI(Msg::promptMsg(Lang::get("PLAY_AGAINST_COMPUTER")));
 
 	this->forceElevenCheck();
 }
@@ -168,7 +168,7 @@ void GameScreen::Draw(void) const {
 		Gui::DrawStringCentered(0, 215, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("B_BACK"), 390);
 		GFX::DrawBaseBottom();
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			if (this->subSel == i) Gui::drawAnimatedSelector(this->subBtn[i].x, this->subBtn[i].y, 140, 40, .030f, C2D_Color32(0, 222, 222, 255), C2D_Color32(0, 130, 130, 255));
 			else Gui::Draw_Rect(this->subBtn[i].x, this->subBtn[i].y, this->subBtn[i].w, this->subBtn[i].h, C2D_Color32(0, 130, 130, 255));
 		}
@@ -177,6 +177,7 @@ void GameScreen::Draw(void) const {
 		Gui::DrawStringCentered(0, this->subBtn[1].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SAVE_GAME"));
 		Gui::DrawStringCentered(0, this->subBtn[2].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("EXIT_GAME"));
 		Gui::DrawStringCentered(0, this->subBtn[3].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SHOW_RULES"));
+		Gui::DrawStringCentered(0, this->subBtn[4].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("CREDITS"));
 	}
 }
 
@@ -220,7 +221,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (hDown & KEY_B) this->isSub = false;
 
 		if (hDown & KEY_DOWN) {
-			if (this->subSel < 3) this->subSel++;
+			if (this->subSel < 4) this->subSel++;
 		}
 
 		if (hDown & KEY_UP) {
@@ -267,6 +268,10 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				case 3:
 					Overlays::RulesOverlay();
 					break;
+
+				case 4:
+					Overlays::CreditsOverlay();
+					break;
 			}
 		}
 
@@ -305,13 +310,16 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 			} else if (touching(touch, this->subBtn[3])) {
 				Overlays::RulesOverlay();
+
+			} else if (touching(touch, this->subBtn[3])) {
+				Overlays::CreditsOverlay();
 			}
 		}
 
 	/* Falls im Spiel. */
 	} else {
 		if (this->currentGame->GetCurrentPlayer() != 0) {
-			if (this->useAI) {
+			if (this->currentGame->GetAI()) {
 				this->AILogic();
 			}
 		}
