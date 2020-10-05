@@ -33,6 +33,7 @@ namespace Overlays {
 	void SplashOverlay();
 	void RulesOverlay();
 	void CreditsOverlay();
+	void LanguageOverlay();
 };
 
 #endif

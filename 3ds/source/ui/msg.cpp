@@ -164,7 +164,7 @@ void Msg::HelperBox(std::string Msg) {
 	Gui::ScreenDraw(Top);
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
 
-	Gui::Draw_Rect(0, 70, 400, 110, C2D_Color32(0, 130, 130, 255));
+	Gui::Draw_Rect(0, 60, 400, 120, C2D_Color32(0, 130, 130, 255));
 	Gui::DrawStringCentered(0, (240 - Gui::GetStringHeight(0.6f, Msg)) / 2, 0.6f, C2D_Color32(255, 255, 255, 255), Msg, 390, 70);
 
 	Gui::ScreenDraw(Bottom);

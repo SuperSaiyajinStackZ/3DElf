@@ -52,7 +52,7 @@ static void init() {
 	gfxInitDefault();
 	Gui::init();
 
-	Lang::load(0); // Lade die Übersetzungen.
+	Lang::load(1); // Lade die Übersetzungen.
 
 	mkdir("sdmc:/3ds", 0x777);
 	mkdir("sdmc:/3ds/3DElf", 0x777);

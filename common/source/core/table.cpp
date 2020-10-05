@@ -108,8 +108,8 @@ void Table::SetCard(CardColor CLR, bool upper, CardType CT) {
 			this->TableCards[(uint8_t)CLR - 1].second = CT;
 
 		} else {
-			upper ? this->TableCards[(uint8_t)CLR - 1].second :
-					this->TableCards[(uint8_t)CLR - 1].first = CT;
+			if (upper) this->TableCards[(uint8_t)CLR - 1].second = CT;
+			else this->TableCards[(uint8_t)CLR - 1].first = CT;
 		}
 	}
 }

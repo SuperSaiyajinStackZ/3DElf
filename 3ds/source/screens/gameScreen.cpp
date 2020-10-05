@@ -156,6 +156,7 @@ void GameScreen::Draw(void) const {
 		GFX::DrawBaseTop();
 		Gui::Draw_Rect(0, 0, 400, 25, C2D_Color32(0, 130, 130, 255));
 		Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 130, 130, 255));
+		Gui::DrawStringCentered(0, 215, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("SELECT_INSTRUCTIONS"), 390);
 		this->DrawTable();
 		GFX::DrawBaseBottom();
 		this->DrawPlayerCards();
@@ -168,16 +169,18 @@ void GameScreen::Draw(void) const {
 		Gui::DrawStringCentered(0, 215, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("B_BACK"), 390);
 		GFX::DrawBaseBottom();
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 10; i++) {
 			if (this->subSel == i) Gui::drawAnimatedSelector(this->subBtn[i].x, this->subBtn[i].y, 140, 40, .030f, C2D_Color32(0, 222, 222, 255), C2D_Color32(0, 130, 130, 255));
 			else Gui::Draw_Rect(this->subBtn[i].x, this->subBtn[i].y, this->subBtn[i].w, this->subBtn[i].h, C2D_Color32(0, 130, 130, 255));
 		}
 
-		Gui::DrawStringCentered(0, this->subBtn[0].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("LOAD_GAME"));
-		Gui::DrawStringCentered(0, this->subBtn[1].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SAVE_GAME"));
-		Gui::DrawStringCentered(0, this->subBtn[2].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("EXIT_GAME"));
-		Gui::DrawStringCentered(0, this->subBtn[3].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SHOW_RULES"));
-		Gui::DrawStringCentered(0, this->subBtn[4].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("CREDITS"));
+		Gui::DrawStringCentered(-80, this->subBtn[0].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("LOAD_GAME"));
+		Gui::DrawStringCentered(-80, this->subBtn[1].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SAVE_GAME"));
+		Gui::DrawStringCentered(-80, this->subBtn[2].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("EXIT_GAME"));
+		Gui::DrawStringCentered(-80, this->subBtn[3].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SHOW_RULES"));
+		Gui::DrawStringCentered(-80, this->subBtn[4].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SHOW_CREDITS"));
+
+		Gui::DrawStringCentered(80, this->subBtn[5].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("CHANGE_LANGUAGE"));
 	}
 }
 
@@ -222,10 +225,20 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 		if (hDown & KEY_DOWN) {
 			if (this->subSel < 4) this->subSel++;
+			else if (this->subSel > 4 && this->subSel < 9) this->subSel++;
 		}
 
 		if (hDown & KEY_UP) {
-			if (this->subSel > 0) this->subSel--;
+			if (this->subSel > 5) this->subSel--;
+			else if (this->subSel < 5 && this->subSel > 0) this->subSel--;
+		}
+
+		if (hDown & KEY_RIGHT) {
+			if (this->subSel < 5) this->subSel += 5;
+		}
+
+		if (hDown & KEY_LEFT) {
+			if (this->subSel > 4) this->subSel -= 5;
 		}
 
 		if (hDown & KEY_A) {
@@ -272,6 +285,10 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				case 4:
 					Overlays::CreditsOverlay();
 					break;
+
+				case 5:
+					Overlays::LanguageOverlay();
+					break;
 			}
 		}
 
@@ -311,8 +328,11 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			} else if (touching(touch, this->subBtn[3])) {
 				Overlays::RulesOverlay();
 
-			} else if (touching(touch, this->subBtn[3])) {
+			} else if (touching(touch, this->subBtn[4])) {
 				Overlays::CreditsOverlay();
+
+			} else if (touching(touch, this->subBtn[5])) {
+				Overlays::LanguageOverlay();
 			}
 		}
 
