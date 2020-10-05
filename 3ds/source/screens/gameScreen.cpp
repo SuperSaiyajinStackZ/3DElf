@@ -232,9 +232,21 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				case 0:
 					if (Msg::promptMsg(Lang::get("LOAD_FROM_FILE_PROMPT"))) {
 						this->currentGame->LoadGameFromFile();
-						Msg::DisplayWaitMsg(Lang::get("PREPARE_GAME"));
-						this->currentGame->convertDataToGame();
-						this->isSub = false;
+						if (this->currentGame->validLoaded()) {
+							Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
+							this->currentGame->convertDataToGame();
+							this->forceElevenCheck(); // Setze den Check hier.
+
+							if (this->currentGame->GetDrawAmount() == 3) {
+								this->forcePlay = false; // Weil wir bereits 3 mal gezogen haben.
+							}
+
+							this->isSub = false;
+
+						} else {
+							Msg::DisplayWaitMsg(Lang::get("NOT_VALID_GAME"));
+							return;
+						}
 					}
 					break;
 
@@ -262,9 +274,21 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			if (touching(touch, this->subBtn[0])) {
 				if (Msg::promptMsg(Lang::get("LOAD_FROM_FILE_PROMPT"))) {
 					this->currentGame->LoadGameFromFile();
-					Msg::DisplayWaitMsg(Lang::get("PREPARE_GAME"));
-					this->currentGame->convertDataToGame();
-					this->isSub = false;
+					if (this->currentGame->validLoaded()) {
+						Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
+						this->currentGame->convertDataToGame();
+						this->forceElevenCheck(); // Setze den Check hier.
+
+						if (this->currentGame->GetDrawAmount() == 3) {
+							this->forcePlay = false; // Weil wir bereits 3 mal gezogen haben.
+						}
+
+						this->isSub = false;
+
+					} else {
+						Msg::DisplayWaitMsg(Lang::get("NOT_VALID_GAME"));
+						return;
+					}
 				}
 
 			} else if (touching(touch, this->subBtn[1])) {
@@ -518,7 +542,7 @@ std::pair<bool, bool> GameScreen::DoPlayMove() {
 		this->forcePlay = false; // Wir sind nicht mehr gezwungen hier in dem fall.
 
 		/* Falls der Index größer als die anzahl der Karten der Hand ist.. gehe zur ersten position der ersten seite. */
-		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer() > this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer()))) {
+		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer() > this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer() - 1))) {
 			this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(), 0);
 			this->currentGame->SetPageIndex(this->currentGame->GetCurrentPlayer(), 0);
 		}

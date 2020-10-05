@@ -40,6 +40,7 @@ class Table;
 #define _GAME_CURRENT_PLAYER 0x0
 #define _GAME_CARDDECK_CARD_AMOUNT 0x1
 #define _GAME_PLAYER_AMOUNT 0x2
+#define _GAME_DRAW_AMOUNT 0x3
 
 #define _GAME_DECKSIZE 0xA0
 #define _GAME_TABLECARD_SIZE 0x2
@@ -48,21 +49,35 @@ class Table;
 #define _GAME_CARDSIZE 0x2
 #define _GAME_MAXPLAYERS 6
 
-#define _GAME_CARDDECK_CARDS 0x3
+#define _GAME_CARDDECK_CARDS 0x4
 
-#define _GAME_TABLECARD_RED 0xA3
-#define _GAME_TABLECARD_YELLOW 0xA5
-#define _GAME_TABLECARD_GREEN 0xA7
-#define _GAME_TABLECARD_BLUE 0xA9
+#define _GAME_TABLECARD_RED 0xA4
+#define _GAME_TABLECARD_YELLOW 0xA6
+#define _GAME_TABLECARD_GREEN 0xA8
+#define _GAME_TABLECARD_BLUE 0xAA
 
-#define _GAME_PLAYER_1 0xAB
-#define _GAME_PLAYER_2 0x14C
-#define _GAME_PLAYER_3 0x1ED
-#define _GAME_PLAYER_4 0x28E
-#define _GAME_PLAYER_5 0x32F
-#define _GAME_PLAYER_6 0x3D0
+#define _GAME_PLAYER_1 0xAC
+#define _GAME_PLAYER_2 0x14D
+#define _GAME_PLAYER_3 0x1EE
+#define _GAME_PLAYER_4 0x28F
+#define _GAME_PLAYER_5 0x330
+#define _GAME_PLAYER_6 0x3D1
 
-#define _GAME_SIZE 0x471
+#define _GAME_PLAYER_1_CARDINDEX 0x472
+#define _GAME_PLAYER_2_CARDINDEX 0x473
+#define _GAME_PLAYER_3_CARDINDEX 0x474
+#define _GAME_PLAYER_4_CARDINDEX 0x475
+#define _GAME_PLAYER_5_CARDINDEX 0x476
+#define _GAME_PLAYER_6_CARDINDEX 0x477
+
+#define _GAME_PLAYER_1_PAGEINDEX 0x478
+#define _GAME_PLAYER_2_PAGEINDEX 0x479
+#define _GAME_PLAYER_3_PAGEINDEX 0x47A
+#define _GAME_PLAYER_4_PAGEINDEX 0x47B
+#define _GAME_PLAYER_5_PAGEINDEX 0x47C
+#define _GAME_PLAYER_6_PAGEINDEX 0x47D
+
+#define _GAME_SIZE 0x47E
 
 #define _GAME_SAVEPATH "sdmc:/3ds/3DElf/GameData.dat"
 
@@ -78,30 +93,46 @@ class Table;
 	0x0: Aktueller Spieler.
 	0x1: Anzahl der Karten vom Kartendeck.
 	0x2: Spieleranzahl.
-	0x3 - 0xA2: KartenDeck Karten. Größe: 0xA0. (80 Karten)
+	0x3: Die Anzahl der gezogenen Karten.
+	0x4 - 0xA3: KartenDeck Karten. Größe: 0xA0. (80 Karten)
 
 		/ Tischkarten. \
-	0xA3 - 0xA4: Tischkarte Rot. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
-	0xA5 - 0xA6: Tischkarte Gelb. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
-	0xA7 - 0xA8: Tischkarte Grün. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
-	0xA9 - 0xAA: Tischkarte Blau. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
+	0xA4 - 0xA5: Tischkarte Rot. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
+	0xA6 - 0xA7: Tischkarte Gelb. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
+	0xA8 - 0xA9: Tischkarte Grün. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
+	0xAA - 0xAB: Tischkarte Blau. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
 
 		/ Spielerkarten. \
-	 0xAB - 0x14B: Spieler 1 Karten. Größe: 0xA0. (80 Karten)
-	0x14C - 0x1EC: Spieler 2 Karten. Größe: 0xA0. (80 Karten)
-	0x1ED - 0x28D: Spieler 3 Karten. Größe: 0xA0. (80 Karten)
-	0x28E - 0x32E: Spieler 4 Karten. Größe: 0xA0. (80 Karten)
-	0x32F - 0x3CF: Spieler 5 Karten. Größe: 0xA0. (80 Karten)
-	0x3D0 - 0x470: Spieler 6 Karten. Größe: 0xA0. (80 Karten)
+	 0xAC - 0x14C: Spieler 1 Karten. Größe: 0xA0. (80 Karten)
+	0x14D - 0x1ED: Spieler 2 Karten. Größe: 0xA0. (80 Karten)
+	0x1EE - 0x28E: Spieler 3 Karten. Größe: 0xA0. (80 Karten)
+	0x28F - 0x32F: Spieler 4 Karten. Größe: 0xA0. (80 Karten)
+	0x330 - 0x3D0: Spieler 5 Karten. Größe: 0xA0. (80 Karten)
+	0x3D1 - 0x471: Spieler 6 Karten. Größe: 0xA0. (80 Karten)
 
-	Datengröße: 0x471, dies entspricht etwa 1,10 KB.
+		/ Zuletzt noch die Karten und Seiten Indexe. \
+	0x472: Spieler 1 Karten Index.
+	0x473: Spieler 2 Karten Index.
+	0x474: Spieler 3 Karten Index.
+	0x475: Spieler 4 Karten Index.
+	0x476: Spieler 5 Karten Index.
+	0x477: Spieler 6 Karten Index.
+
+	0x478: Spieler 1 Seiten Index.
+	0x479: Spieler 2 Seiten Index.
+	0x47A: Spieler 1 Seiten Index.
+	0x47B: Spieler 2 Seiten Index.
+	0x47C: Spieler 1 Seiten Index.
+	0x47D: Spieler 2 Seiten Index.
+
+	Datengröße: 0x47E, dies entspricht etwa 1,12 KB.
 */
 
 class Game {
 public:
 	Game(uint8_t plAmount);
 	~Game();
-	bool LoadGameFromFile();
+	void LoadGameFromFile();
 	void convertDataToGame();
 	void SaveConversion(); // Konvertiere das aktuelle Spiel zu einem Buffer.
 	void SaveToFile(bool update = true); // Konvertiere wenn true und schreibe zu datei.
@@ -140,6 +171,8 @@ public:
 
 	/* Karten-Deck funktionen. */
 	uint8_t GetDeckSize() const { return this->CardDeck->GetDeckSize(); }
+
+	bool validLoaded() const;
 private:
 	/* Setze die Karten in den Save Buffer. */
 	void SetCard(uint32_t offset, CardStruct CS);
@@ -151,8 +184,9 @@ private:
 	std::vector<std::unique_ptr<Player>> Players;
 
 	/* Variablen für das Spiel. */
-	std::vector<uint8_t> cardIndexes, cardPages;
+	uint8_t cardIndexes[6] = { 0 }, cardPages[6] = { 0 };
 	uint8_t PlayerAmount = 2, currentPlayer = 0, drawAmount = 0;
+	bool validGame = false;
 
 	std::unique_ptr<uint8_t[]> GameData = nullptr; // Spieledaten Buffer.
 };

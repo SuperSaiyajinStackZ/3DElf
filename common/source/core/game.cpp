@@ -61,8 +61,8 @@ Game::Game(uint8_t plAmount) {
 	/* Initialisiere alle Spieler inklusive KartenIndex & Karten-Seite welche für den Spiel-Screen relevant sind. */
 	for (uint8_t i = 0; i < this->PlayerAmount; i++) {
 		this->Players.push_back({ std::make_unique<Player>() });
-		this->cardIndexes.push_back({ 0 });
-		this->cardPages.push_back({ 0 });
+		this->cardIndexes[i] = 0;
+		this->cardPages[i] = 0;
 	}
 
 	/* Ziehe die Initiale Karten vom Kartendeck für die Spieler. */
@@ -79,25 +79,38 @@ Game::Game(uint8_t plAmount) {
 /*
 	Lade ein Spiel von Spiel-Daten.
 */
-bool Game::LoadGameFromFile() {
-	if (access(_GAME_SAVEPATH, F_OK) != 0) return false;
-
-	this->GameData = nullptr;
-	this->GameData = std::unique_ptr<uint8_t[]>(new uint8_t[_GAME_SIZE]);
+void Game::LoadGameFromFile() {
+	this->validGame = false;
+	if (access(_GAME_SAVEPATH, F_OK) != 0) return;
 
 	FILE *file = fopen(_GAME_SAVEPATH, "r");
 
-	fread(this->GameData.get(), 1, _GAME_SIZE, file);
-	fclose(file);
+	if (file) {
+		fseek(file, 0, SEEK_END);
+		uint32_t size = ftell(file);
+		fseek(file, 0, SEEK_SET);
 
-	return true;
+		if (size == _GAME_SIZE) {
+			this->GameData = nullptr;
+			this->GameData = std::unique_ptr<uint8_t[]>(new uint8_t[_GAME_SIZE]);
+			fread(this->GameData.get(), 1, _GAME_SIZE, file);
+			this->validGame = true;
+		}
+
+		fclose(file);
+	}
 }
+
+/*
+	Gibt an, ob das geladene spiel auch ordnungsgemäß geladen ist.
+*/
+bool Game::validLoaded() const { return this->validGame; }
 
 /*
 	Konvertiere die Daten zu einem Spiel.
 */
 void Game::convertDataToGame() {
-	if (this->GameData) {
+	if (this->GameData && this->validGame) {
 
 		/* Bereinige alles. */
 		this->CardDeck = nullptr;
@@ -109,6 +122,7 @@ void Game::convertDataToGame() {
 
 		this->currentPlayer = this->GameData.get()[_GAME_CURRENT_PLAYER]; // Der aktuelle Spieler.
 		this->PlayerAmount = this->GameData.get()[_GAME_PLAYER_AMOUNT]; // Die Spieler-Anzahl.
+		this->drawAmount = this->GameData.get()[_GAME_DRAW_AMOUNT]; // Die Zieh-Anzahl.
 
 		/* Die Karten vom Deck. */
 		std::vector<CardStruct> deckCards;
@@ -151,8 +165,8 @@ void Game::convertDataToGame() {
 		/* Initialisiere alle Spieler inklusive KartenIndex & Karten-Seite welche für den Spiel-Screen relevant sind. */
 		for (uint8_t i = 0; i < this->PlayerAmount; i++) {
 			this->Players.push_back({ std::make_unique<Player>() });
-			this->cardIndexes.push_back({ 0 });
-			this->cardPages.push_back({ 0 });
+			this->cardIndexes[i] = this->GameData.get()[_GAME_PLAYER_1_CARDINDEX + i];
+			this->cardPages[i] = this->GameData.get()[_GAME_PLAYER_1_PAGEINDEX + i];
 		}
 
 		/* Und hier die Spielerkarten. */
@@ -179,6 +193,7 @@ void Game::SaveConversion() {
 	this->GameData.get()[_GAME_CURRENT_PLAYER] = this->currentPlayer; // Der aktuelle Spieler.
 	this->GameData.get()[_GAME_CARDDECK_CARD_AMOUNT] = this->CardDeck->GetDeckSize(); // Die Deck-Größe.
 	this->GameData.get()[_GAME_PLAYER_AMOUNT] = this->PlayerAmount; // Die Spieler-Anzahl.
+	this->GameData.get()[_GAME_DRAW_AMOUNT] = this->drawAmount; // Die Zieh-Anzahl.
 
 	/* Die Karten vom Deck. */
 	for (uint8_t deckKarten = 0; deckKarten < _GAME_DECKSIZE; deckKarten++) {
@@ -214,12 +229,15 @@ void Game::SaveConversion() {
 
 			/* Falls der Spieler am spiel teilnimmt, schreibe seine Karten in den Buffer. */
 			if ((uint8_t)this->Players.size() > spieler) {
-
+				this->GameData.get()[_GAME_PLAYER_1_CARDINDEX + spieler] = this->cardIndexes[spieler];
+				this->GameData.get()[_GAME_PLAYER_1_PAGEINDEX + spieler] = this->cardPages[spieler];
 				this->SetCard(_GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE), this->Players[spieler]->GetCard(karten));
 
 			/* Ansonsten.. setze leere Karten in den Buffer. */
 			} else {
 				this->SetEmptyCard(_GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE));
+				this->GameData.get()[_GAME_PLAYER_1_CARDINDEX + spieler] = 0;
+				this->GameData.get()[_GAME_PLAYER_1_PAGEINDEX + spieler] = 0;
 			}
 		}
 	}

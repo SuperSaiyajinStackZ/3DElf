@@ -14,6 +14,7 @@
 	"NEXT_PLAYER": "Spieler %i hat seine / ihre Runde beendet.\nSpieler %i ist an der Reihe!",
 	"NO": "Nein",
 	"NOT_IMPLEMENTED_YET": "Dies ist noch nicht implementiert.",
+	"NOT_VALID_GAME": "Dies ist kein gültiges Spiel.",
 	"ONLY_3_CARDS": "Du kannst nur bis zu 3 Karten ziehen!",
 	"PLAY_AGAINST_COMPUTER": "Möchtest du gegen einen Computer spielen?",
 	"PLAYER_WON": "Spieler %i hat gewonnen!",
