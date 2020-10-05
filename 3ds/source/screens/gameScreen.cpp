@@ -91,14 +91,14 @@ void GameScreen::DrawTable(void) const {
 	tempCards = this->currentGame->getTableCard(CardColor::COLOR_RED);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_RED, 175, 5, 40, 50, true);
+		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_RED, 175, 30, 40, 40, true);
 
 		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.first, CardColor::COLOR_RED, 125, 5, 40, 50, true);
+			GFX::DrawCard2(tempCards.first, CardColor::COLOR_RED, 125, 30, 40, 40, true);
 		}
 
 		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.second, CardColor::COLOR_RED, 225, 5, 40, 50, true);
+			GFX::DrawCard2(tempCards.second, CardColor::COLOR_RED, 225, 30, 40, 40, true);
 		}
 	}
 
@@ -106,14 +106,14 @@ void GameScreen::DrawTable(void) const {
 	tempCards = this->currentGame->getTableCard(CardColor::COLOR_YELLOW);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_YELLOW, 175, 65, 40, 50, true);
+		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_YELLOW, 175, 75, 40, 40, true);
 
 		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.first, CardColor::COLOR_YELLOW, 125, 65, 40, 50, true);
+			GFX::DrawCard2(tempCards.first, CardColor::COLOR_YELLOW, 125, 75, 40, 40, true);
 		}
 
 		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.second, CardColor::COLOR_YELLOW, 225, 65, 40, 50, true);
+			GFX::DrawCard2(tempCards.second, CardColor::COLOR_YELLOW, 225, 75, 40, 40, true);
 		}
 	}
 
@@ -121,14 +121,14 @@ void GameScreen::DrawTable(void) const {
 	tempCards = this->currentGame->getTableCard(CardColor::COLOR_GREEN);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_GREEN, 175, 125, 40, 50, true);
+		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_GREEN, 175, 120, 40, 40, true);
 
 		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.first, CardColor::COLOR_GREEN, 125, 125, 40, 50, true);
+			GFX::DrawCard2(tempCards.first, CardColor::COLOR_GREEN, 125, 120, 40, 40, true);
 		}
 
 		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.second, CardColor::COLOR_GREEN, 225, 125, 40, 50, true);
+			GFX::DrawCard2(tempCards.second, CardColor::COLOR_GREEN, 225, 120, 40, 40, true);
 		}
 	}
 
@@ -136,14 +136,14 @@ void GameScreen::DrawTable(void) const {
 	tempCards = this->currentGame->getTableCard(CardColor::COLOR_BLUE);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_BLUE, 175, 185, 40, 50, true);
+		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_BLUE, 175, 165, 40, 40, true);
 
 		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.first, CardColor::COLOR_BLUE, 125, 185, 40, 50, true);
+			GFX::DrawCard2(tempCards.first, CardColor::COLOR_BLUE, 125, 165, 40, 40, true);
 		}
 
 		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.second, CardColor::COLOR_BLUE, 225, 185, 40, 50, true);
+			GFX::DrawCard2(tempCards.second, CardColor::COLOR_BLUE, 225, 165, 40, 40, true);
 		}
 	}
 }
@@ -152,10 +152,32 @@ void GameScreen::DrawTable(void) const {
 	Der Haupt-Zeichnung's teil.
 */
 void GameScreen::Draw(void) const {
-	GFX::DrawBaseTop();
-	this->DrawTable();
-	GFX::DrawBaseBottom();
-	this->DrawPlayerCards();
+	if (!this->isSub) {
+		GFX::DrawBaseTop();
+		Gui::Draw_Rect(0, 0, 400, 25, C2D_Color32(0, 130, 130, 255));
+		Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 130, 130, 255));
+		this->DrawTable();
+		GFX::DrawBaseBottom();
+		this->DrawPlayerCards();
+
+	} else {
+		GFX::DrawBaseTop();
+		Gui::Draw_Rect(0, 0, 400, 25, C2D_Color32(0, 130, 130, 255));
+		Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 130, 130, 255));
+		Gui::DrawStringCentered(0, 1, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("GAME_PAUSED"));
+		Gui::DrawStringCentered(0, 215, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("B_BACK"), 390);
+		GFX::DrawBaseBottom();
+
+		for (int i = 0; i < 4; i++) {
+			if (this->subSel == i) Gui::drawAnimatedSelector(this->subBtn[i].x, this->subBtn[i].y, 140, 40, .030f, C2D_Color32(0, 222, 222, 255), C2D_Color32(0, 130, 130, 255));
+			else Gui::Draw_Rect(this->subBtn[i].x, this->subBtn[i].y, this->subBtn[i].w, this->subBtn[i].h, C2D_Color32(0, 130, 130, 255));
+		}
+
+		Gui::DrawStringCentered(0, this->subBtn[0].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("LOAD_GAME"));
+		Gui::DrawStringCentered(0, this->subBtn[1].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SAVE_GAME"));
+		Gui::DrawStringCentered(0, this->subBtn[2].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("EXIT_GAME"));
+		Gui::DrawStringCentered(0, this->subBtn[3].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SHOW_RULES"));
+	}
 }
 
 /*
@@ -193,189 +215,261 @@ void GameScreen::pageHandle(bool fw) {
 	Die HauptLogik des Spiel-Screen's.
 */
 void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	if (hDown & KEY_START) exiting = true;
+	/* Falls im Unter-Menü. */
+	if (this->isSub) {
+		if (hDown & KEY_B) this->isSub = false;
 
-	if (this->currentGame->GetCurrentPlayer() != 0) {
-		if (this->useAI) {
-			this->AILogic();
+		if (hDown & KEY_DOWN) {
+			if (this->subSel < 3) this->subSel++;
 		}
-	}
 
-	/* Navigation nach Rechts. */
-	if (hDown & KEY_RIGHT) {
-		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 1 <
-			this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
-
-			switch(this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())) {
-				case 4:
-				case 9:
-				case 14:
-				case 29:
-				case 34:
-				case 39:
-				case 44:
-				case 49:
-				case 54:
-				case 59:
-				case 64:
-				case 69:
-				case 74:
-					return;
-			}
-
-			this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
-				this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 1);
+		if (hDown & KEY_UP) {
+			if (this->subSel > 0) this->subSel--;
 		}
-	}
 
-	/* Navigation nach Links. */
-	if (hDown & KEY_LEFT) {
-		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 1 >= 0) {
-
-			switch(this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())) {
+		if (hDown & KEY_A) {
+			switch(this->subSel) {
 				case 0:
-				case 5:
-				case 10:
-				case 15:
-				case 20:
-				case 25:
-				case 30:
-				case 35:
-				case 40:
-				case 45:
-				case 50:
-				case 55:
-				case 60:
-				case 65:
-				case 70:
-				case 75:
-				case 80:
-					return;
+					if (Msg::promptMsg(Lang::get("LOAD_FROM_FILE_PROMPT"))) {
+						this->currentGame->LoadGameFromFile();
+						Msg::DisplayWaitMsg(Lang::get("PREPARE_GAME"));
+						this->currentGame->convertDataToGame();
+						this->isSub = false;
+					}
+					break;
+
+				case 1:
+					if (Msg::promptMsg(Lang::get("SAVE_TO_FILE_PROMPT"))) {
+						this->currentGame->SaveToFile(true);
+						Msg::DisplayWaitMsg(Lang::get("SAVED_TO_FILE"));
+						this->isSub = false;
+					}
+					break;
+
+				case 2:
+					if (Msg::promptMsg(Lang::get("EXIT_GAME_PRMPT"))) {
+						exiting = true;
+					}
+					break;
+
+				case 3:
+					Overlays::RulesOverlay();
+					break;
 			}
-
-			this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
-				this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 1);
 		}
-	}
 
-	/* Navigation zur nächsten Seite. */
-	if (hDown & KEY_R) {
-		this->pageHandle(true);
-	}
+		if (hDown & KEY_TOUCH) {
+			if (touching(touch, this->subBtn[0])) {
+				if (Msg::promptMsg(Lang::get("LOAD_FROM_FILE_PROMPT"))) {
+					this->currentGame->LoadGameFromFile();
+					Msg::DisplayWaitMsg(Lang::get("PREPARE_GAME"));
+					this->currentGame->convertDataToGame();
+					this->isSub = false;
+				}
 
-	/* Navigation zur vorherigen Seite. */
-	if (hDown & KEY_L) {
-		this->pageHandle(false);
-	}
+			} else if (touching(touch, this->subBtn[1])) {
+				if (Msg::promptMsg(Lang::get("SAVE_TO_FILE_PROMPT"))) {
+					this->currentGame->SaveToFile(true);
+					Msg::DisplayWaitMsg(Lang::get("SAVED_TO_FILE"));
+					this->isSub = false;
+				}
 
-	/* Navigation nach Unten. */
-	if (hDown & KEY_DOWN) {
-		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5 <
-			this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
+			} else if (touching(touch, this->subBtn[2])) {
+				if (Msg::promptMsg(Lang::get("EXIT_GAME_PRMPT"))) {
+					exiting = true;
+				}
 
+			} else if (touching(touch, this->subBtn[3])) {
+				Overlays::RulesOverlay();
+			}
+		}
+
+	/* Falls im Spiel. */
+	} else {
+		if (this->currentGame->GetCurrentPlayer() != 0) {
+			if (this->useAI) {
+				this->AILogic();
+			}
+		}
+
+		/* Navigation nach Rechts. */
+		if (hDown & KEY_RIGHT) {
+			if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 1 <
+				this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
+
+				switch(this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())) {
+					case 4:
+					case 9:
+					case 14:
+					case 29:
+					case 34:
+					case 39:
+					case 44:
+					case 49:
+					case 54:
+					case 59:
+					case 64:
+					case 69:
+					case 74:
+						return;
+				}
+
+				this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
+					this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 1);
+			}
+		}
+
+		/* Navigation nach Links. */
+		if (hDown & KEY_LEFT) {
+			if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 1 >= 0) {
+
+				switch(this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())) {
+					case 0:
+					case 5:
+					case 10:
+					case 15:
+					case 20:
+					case 25:
+					case 30:
+					case 35:
+					case 40:
+					case 45:
+					case 50:
+					case 55:
+					case 60:
+					case 65:
+					case 70:
+					case 75:
+					case 80:
+						return;
+				}
+
+				this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
+					this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 1);
+			}
+		}
+
+		/* Navigation zur nächsten Seite. */
+		if (hDown & KEY_R) {
+			this->pageHandle(true);
+		}
+
+		/* Navigation zur vorherigen Seite. */
+		if (hDown & KEY_L) {
+			this->pageHandle(false);
+		}
+
+		/* Navigation nach Unten. */
+		if (hDown & KEY_DOWN) {
 			if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5 <
-				15 + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15)) {
+				this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
 
-				this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
-					this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5);
-			}
-		}
-	}
+				if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5 <
+					15 + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15)) {
 
-	/* Navigation nach Oben. */
-	if (hDown & KEY_UP) {
-		if ((this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5) >= 0) {
-
-			if ((this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5) >=
-			(0 + this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15)) {
-
-				this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
-					this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5);
-			}
-		}
-	}
-
-	/* Spiel-Logik. */
-	if (hDown & KEY_A) {
-		if (!this->DoPlayMove().second) {
-			if (!exiting) this->NextPHandle();
-		}
-	}
-
-	/* Touch Berührung's Logik und spiel. */
-	if (hDown & KEY_TOUCH) {
-		for (int i = 0; i < 15; i++) {
-			if (touching(touch, this->CardPos[i])) {
-				if (i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15) <
-					this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
-
-						this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
-							i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15));
-
-						if (!this->DoPlayMove().second) {
-							if (!exiting) this->NextPHandle();
-						}
+					this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
+						this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5);
 				}
 			}
 		}
-	}
 
-	/* Karten-Zieh Logik. */
-	if (hDown & KEY_X) {
-		if (this->forceEleven) {
-			Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
-			return;
+		/* Navigation nach Oben. */
+		if (hDown & KEY_UP) {
+			if ((this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5) >= 0) {
+
+				if ((this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5) >=
+				(0 + this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15)) {
+
+					this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
+						this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5);
+				}
+			}
 		}
 
-		if (this->currentGame->GetDeckSize() > 0) {
-			if (this->currentGame->GetDrawAmount() < 3) {
-				this->currentGame->AddPlayerCard(this->currentGame->GetCurrentPlayer());
-				this->forceElevenCheck();
+		/* Spiel-Logik. */
+		if (hDown & KEY_A) {
+			if (!this->DoPlayMove().second) {
+				if (!exiting) this->NextPHandle();
+			}
+		}
 
-				if (this->currentGame->GetDrawAmount() == 3) {
-					this->forcePlay = false; // Weil wir bereits 3 mal gezogen haben.
+		/* Touch Berührung's Logik und spiel. */
+		if (hDown & KEY_TOUCH) {
+			for (int i = 0; i < 15; i++) {
+				if (touching(touch, this->CardPos[i])) {
+					if (i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15) <
+						this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
 
-					if (!this->checkPlay()) {
-						this->NextPHandle();
+							this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
+								i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15));
+
+							if (!this->DoPlayMove().second) {
+								if (!exiting) this->NextPHandle();
+							}
 					}
 				}
-
-			} else {
-				Msg::DisplayWaitMsg(Lang::get("ONLY_3_CARDS"));
 			}
-
-		} else {
-			Msg::DisplayWaitMsg(Lang::get("DECK_ALREADY_EMPTY"));
-		}
-	}
-
-	/* Spieler-Wechsel Logik. */
-	if (hDown & KEY_Y) {
-		if (this->forceEleven) {
-			Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
-			return;
 		}
 
-		if (this->currentGame->GetDeckSize() > 0) {
-			if (this->forcePlay) {
-				Msg::DisplayWaitMsg(Lang::get("GAME_PRMPT_1"));
+		/* Karten-Zieh Logik. */
+		if (hDown & KEY_X) {
+			if (this->forceEleven) {
+				Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
 				return;
 			}
 
-		} else {
-			if (this->forcePlay) {
-				if (this->checkPlay()) {
-					Msg::DisplayWaitMsg(Lang::get("GAME_PRMPT_2"));
-					return;
+			if (this->currentGame->GetDeckSize() > 0) {
+				if (this->currentGame->GetDrawAmount() < 3) {
+					this->currentGame->AddPlayerCard(this->currentGame->GetCurrentPlayer());
+					this->forceElevenCheck();
+
+					if (this->currentGame->GetDrawAmount() == 3) {
+						this->forcePlay = false; // Weil wir bereits 3 mal gezogen haben.
+
+						if (!this->checkPlay()) {
+							this->NextPHandle();
+						}
+					}
+
+				} else {
+					Msg::DisplayWaitMsg(Lang::get("ONLY_3_CARDS"));
 				}
+
+			} else {
+				Msg::DisplayWaitMsg(Lang::get("DECK_ALREADY_EMPTY"));
 			}
 		}
 
-		this->NextPHandle();
-	}
+		/* Spieler-Wechsel Logik. */
+		if (hDown & KEY_Y) {
+			if (this->forceEleven) {
+				Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
+				return;
+			}
 
-	if (hHeld & KEY_SELECT) {
-		Msg::HelperBox(Lang::get("GAME_INSTR"));
+			if (this->currentGame->GetDeckSize() > 0) {
+				if (this->forcePlay) {
+					Msg::DisplayWaitMsg(Lang::get("GAME_PRMPT_1"));
+					return;
+				}
+
+			} else {
+				if (this->forcePlay) {
+					if (this->checkPlay()) {
+						Msg::DisplayWaitMsg(Lang::get("GAME_PRMPT_2"));
+						return;
+					}
+				}
+			}
+
+			this->NextPHandle();
+		}
+
+		if (hHeld & KEY_SELECT) {
+			Msg::HelperBox(Lang::get("GAME_INSTR"));
+		}
+
+		if (hDown & KEY_START) this->isSub = true;
 	}
 }
 

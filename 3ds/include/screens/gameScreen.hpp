@@ -53,7 +53,8 @@ private:
 	void forceElevenCheck();
 
 	std::unique_ptr<Game> currentGame = nullptr; // Der Spiel-Zeiger.
-	bool forcePlay = true, useAI = false, forceEleven = false;
+	bool forcePlay = true, useAI = false, forceEleven = false, isSub = false;
+	int subSel = 0;
 
 	const std::vector<Structs::ButtonPos> CardPos = {
 		{ 20 + (0 * 60), 25, 40, 60 },
@@ -74,6 +75,14 @@ private:
 		{ 20 + (3 * 60), 165, 40, 60 },
 		{ 20 + (4 * 60), 165, 40, 60 }
 	};
+
+	const std::vector<Structs::ButtonPos> subBtn = {
+		{ 90, 25, 140, 40 },
+		{ 90, 75, 140, 40 },
+		{ 90, 125, 140, 40 },
+		{ 90, 175, 140, 40 }
+	};
+
 };
 
 #endif
