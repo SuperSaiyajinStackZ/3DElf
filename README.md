@@ -27,13 +27,33 @@ Hier findest du ein paar Screenshots zum aktuellen Fortschritt.
 ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/sprachauswahl.png)
 
 
-## Dinge, welche noch geplant sind bis zum ersten offiziellen Release:
+## Dinge, welche noch geplant sind bis v0.1.0:
 - [ ] Füge eine Konfiguration hinzu für die Sprache etc, damit sie gespeichert werden können.
-- [ ] Füge eine option hinzu, um den Computer zu de/aktivieren für das Unter-Menü.
-- [ ] Füge eine option hinzu, um die Spieleranzahl zu verändern im Unter-Menü.
-- [ ] Zeige die Anzahl der Karten von allen Spielern irgendwo im Spiel-Screen an.
-- [ ] Füge eine option hinzu, um ein Spiel von vorne zu beginnen im Unter-Menü.
+- [x] Füge eine Option hinzu, um den Computer im Unter-Menü zu de/aktivieren.
+- [x] Füge eine Option hinzu, um die Spieleranzahl im Unter-Menü zu verändern.
+- [x] Zeige die Anzahl der Karten von allen Spielern irgendwo im Spiel-Screen an. (Wird nun im Unter-Menü angezeigt).
+- [x] Füge eine Option hinzu, um ein Spiel im Unter-Menü von vorne zu beginnen.
 - [ ] Eventuelle Verbesserungen des Spiel-Cores und der Anwendung.
+
+## Kompilieren
+### Die Umgebung aufsetzen
+
+Um 3DElf vom quellcode zu kompilieren, musst du deine Umgebung mit devkitARM, Libctru, Citro2D und Citro3D aufsetzen. Folge devkitPro's [Getting Started](https://devkitpro.org/wiki/Getting_Started) Seite um pacman zu installieren, dann führe `(sudo dkp-)pacman -S devkitARM libctru citro2d citro3d` aus. Du wirst ebenfalls [bannertool](https://github.com/Steveice10/bannertool/releases/latest) und [makerom](https://github.com/profi200/Project_CTR/releases/latest) im `3ds` Ordner benötigen.
+
+### Klonen der Repository
+
+Um den quellcode herunterzuladen, musst du dies mit submodulen klonen, das kann gemacht werden in dem du folgendes ausführst:
+```
+git clone --recursive https://github.com/SuperSaiyajinStackZ/3DElf.git
+```
+Oder falls du es bereits geklont hast:
+```
+git submodule update --init --recursive
+```
+um alle submodule zu aktualisieren.
+
+
+Danach führe einfach `make` im `3ds` Ordner aus.
 
 ## Credits
 ### Haupt-Entwicklers

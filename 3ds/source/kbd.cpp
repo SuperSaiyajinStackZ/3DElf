@@ -25,39 +25,31 @@
 */
 
 #include "common.hpp"
+#include "kbd.hpp"
 
 /*
-	Zeichne den Regeln-Screen.
+	Lasse eine Eingabe vom System-Keyboard wiedergeben.
+
+	int maxValue: Die Maximale anzahl, welche erlaubt ist.
+	std::string Text: Der Text, welcher angezeigt werden soll.
+	int oldVal: Alter Wert.
 */
-static void Draw() {
+int KBD::SetAmount(int maxValue, std::string Text, int oldVal) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
-	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-
 	GFX::DrawBaseTop();
-	Gui::Draw_Rect(0, 0, 400, 25, C2D_Color32(0, 130, 130, 255));
-	Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 130, 130, 255));
-
-	Gui::DrawStringCentered(0, 1, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("RULES"), 390);
-	Gui::DrawStringCentered(0, 30, 0.5f, C2D_Color32(255, 255, 255, 255), Lang::get("RULES_INSTR"), 390, 170);
-	Gui::DrawStringCentered(0, 217, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("A_CONTINUE"), 390);
-
-	GFX::DrawBaseBottom();
+	Gui::Draw_Rect(0, 70, 400, 110, C2D_Color32(0, 130, 130, 255));
+	Gui::DrawStringCentered(0, (240 - Gui::GetStringHeight(0.7f, Text)) / 2 - 10, 0.7f, C2D_Color32(255, 255, 255, 255), Text, 390, 90);
 	C3D_FrameEnd(0);
-}
 
-/*
-	Zeige den Regeln-Screen.
-*/
-void Overlays::RulesOverlay() {
-	bool doOut = false;
+	SwkbdState state;
+	swkbdInit(&state, SWKBD_TYPE_NUMPAD, 2, 3);
+	swkbdSetFeatures(&state, SWKBD_FIXED_WIDTH);
+	swkbdSetValidation(&state, SWKBD_NOTBLANK_NOTEMPTY, 0, 0);
+	char input[4]   = {0};
+	SwkbdButton ret = swkbdInputText(&state, input, sizeof(input));
+	input[3] = '\0';
 
-	while(!doOut) {
-		Draw();
-
-		hidScanInput();
-
-		if (hidKeysDown()) doOut = true;
-	}
+	return (ret == SWKBD_BUTTON_CONFIRM ? (int)std::min(std::stoi(input), maxValue) : oldVal);
 }

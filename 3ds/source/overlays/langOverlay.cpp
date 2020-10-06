@@ -90,6 +90,16 @@ void Overlays::LanguageOverlay() {
 			if (selectedLang > 0) selectedLang--;
 		}
 
+		if (hidKeysDown() & KEY_TOUCH) {
+			for (uint8_t i = 0; i < 2; i++) {
+				if (touching(touch, langBlocks[i])) {
+					selectedLang = i;
+					Lang::load(selectedLang);
+					doOut = true;
+				}
+			}
+		}
+
 		if (hidKeysDown() & KEY_A) {
 			Lang::load(selectedLang);
 			doOut = true;

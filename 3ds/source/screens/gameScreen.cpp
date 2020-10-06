@@ -32,14 +32,13 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 /*
 	Initialisiere den Spiel-Screen.
-
-	uint8_t pAmount: Die Spieleranzahl.
 */
-GameScreen::GameScreen(uint8_t pAmount) {
+GameScreen::GameScreen() {
 	CoreHelper::GenerateSeed();
+
+	const uint8_t pAmount = KBD::SetAmount(6, Lang::get("ENTER_PLAYERAMOUNT"), 2);
 	this->currentGame = std::make_unique<Game>(pAmount);
 	this->currentGame->SetAI(Msg::promptMsg(Lang::get("PLAY_AGAINST_COMPUTER")));
-
 	this->forceElevenCheck();
 }
 
@@ -50,13 +49,12 @@ void GameScreen::DrawPlayerCards(void) const {
 	uint8_t index2 = 0;
 	for (uint8_t i = 0 + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS);
 		i < this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer()); i++) {
-		index2++;
+			index2++;
 
 		/* Falls der Kartenindex 15 oder kleiner ist. */
 		if (index2 < MAX_CARDS + 1) {
-			GFX::DrawCard(this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(), i),
-				CardPos[index2 - 1].x, CardPos[index2 - 1].y,
-				CardPos[index2 - 1].w, CardPos[index2 - 1].h, false);
+			GFX::DrawCardStruct(this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(), i),
+				CardPos[index2 - 1].x, CardPos[index2 - 1].y);
 		}
 	}
 
@@ -91,14 +89,14 @@ void GameScreen::DrawTable(void) const {
 	tempCards = this->currentGame->getTableCard(CardColor::COLOR_RED);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_RED, 175, 30, 40, 40, true);
+		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_RED, 175, 30);
 
 		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.first, CardColor::COLOR_RED, 125, 30, 40, 40, true);
+			GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_RED, 125, 30);
 		}
 
 		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.second, CardColor::COLOR_RED, 225, 30, 40, 40, true);
+			GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_RED, 225, 30);
 		}
 	}
 
@@ -106,14 +104,14 @@ void GameScreen::DrawTable(void) const {
 	tempCards = this->currentGame->getTableCard(CardColor::COLOR_YELLOW);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_YELLOW, 175, 75, 40, 40, true);
+		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_YELLOW, 175, 75);
 
 		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.first, CardColor::COLOR_YELLOW, 125, 75, 40, 40, true);
+			GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_YELLOW, 125, 75);
 		}
 
 		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.second, CardColor::COLOR_YELLOW, 225, 75, 40, 40, true);
+			GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_YELLOW, 225, 75);
 		}
 	}
 
@@ -121,14 +119,14 @@ void GameScreen::DrawTable(void) const {
 	tempCards = this->currentGame->getTableCard(CardColor::COLOR_GREEN);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_GREEN, 175, 120, 40, 40, true);
+		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_GREEN, 175, 120);
 
 		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.first, CardColor::COLOR_GREEN, 125, 120, 40, 40, true);
+			GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_GREEN, 125, 120);
 		}
 
 		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.second, CardColor::COLOR_GREEN, 225, 120, 40, 40, true);
+			GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_GREEN, 225, 120);
 		}
 	}
 
@@ -136,14 +134,14 @@ void GameScreen::DrawTable(void) const {
 	tempCards = this->currentGame->getTableCard(CardColor::COLOR_BLUE);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCard2(CardType::NUMBER_11, CardColor::COLOR_BLUE, 175, 165, 40, 40, true);
+		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_BLUE, 175, 165);
 
 		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.first, CardColor::COLOR_BLUE, 125, 165, 40, 40, true);
+			GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_BLUE, 125, 165);
 		}
 
 		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCard2(tempCards.second, CardColor::COLOR_BLUE, 225, 165, 40, 40, true);
+			GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_BLUE, 225, 165);
 		}
 	}
 }
@@ -156,7 +154,7 @@ void GameScreen::Draw(void) const {
 		GFX::DrawBaseTop();
 		Gui::Draw_Rect(0, 0, 400, 25, C2D_Color32(0, 130, 130, 255));
 		Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 130, 130, 255));
-		Gui::DrawStringCentered(0, 215, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("SELECT_INSTRUCTIONS"), 390);
+		Gui::DrawStringCentered(0, 218, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SELECT_INSTRUCTIONS"), 390);
 		this->DrawTable();
 		GFX::DrawBaseBottom();
 		this->DrawPlayerCards();
@@ -166,7 +164,23 @@ void GameScreen::Draw(void) const {
 		Gui::Draw_Rect(0, 0, 400, 25, C2D_Color32(0, 130, 130, 255));
 		Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 130, 130, 255));
 		Gui::DrawStringCentered(0, 1, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("GAME_PAUSED"));
-		Gui::DrawStringCentered(0, 215, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("B_BACK"), 390);
+
+		/* Zeige Spiel-Informationen an. */
+		Gui::DrawStringCentered(0, 30, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("COMPUTER_USED") + ": " +
+							(this->currentGame->GetAI() ? Lang::get("YES") : Lang::get("NO")), 390);
+
+		Gui::DrawStringCentered(0, 45, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("PLAYER_AMOUNT") + ": " +
+							std::to_string(this->currentGame->GetPlayerAmount()), 390);
+
+		Gui::DrawStringCentered(0, 60, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("CARD_DECK_REMAINING") + ": " +
+							std::to_string(this->currentGame->GetDeckSize()), 390);
+
+		for (uint8_t i = 0; i < this->currentGame->GetPlayerAmount(); i++) {
+			Gui::DrawStringCentered(0, 90 + (i * 20), 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("PLAYER") + " " +
+				std::to_string(i + 1) + " " + Lang::get("CARD_AMOUNT") + ": " + std::to_string(this->currentGame->GetPlayerHandSize(i)), 390);
+		}
+
+		Gui::DrawStringCentered(0, 218, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("B_BACK"), 390);
 		GFX::DrawBaseBottom();
 
 		for (int i = 0; i < 10; i++) {
@@ -181,6 +195,9 @@ void GameScreen::Draw(void) const {
 		Gui::DrawStringCentered(-80, this->subBtn[4].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SHOW_CREDITS"));
 
 		Gui::DrawStringCentered(80, this->subBtn[5].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("CHANGE_LANGUAGE"));
+		Gui::DrawStringCentered(80, this->subBtn[6].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("NEW_GAME"));
+		Gui::DrawStringCentered(80, this->subBtn[7].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("CHANGE_COMPUTER"));
+		Gui::DrawStringCentered(80, this->subBtn[8].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("PLAYER_AMOUNT"));
 	}
 }
 
@@ -266,6 +283,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 				case 1:
 					if (Msg::promptMsg(Lang::get("SAVE_TO_FILE_PROMPT"))) {
+						Msg::DisplayMsg(Lang::get("SAVING_GAME"));
 						this->currentGame->SaveToFile(true);
 						Msg::DisplayWaitMsg(Lang::get("SAVED_TO_FILE"));
 						this->isSub = false;
@@ -288,6 +306,29 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 				case 5:
 					Overlays::LanguageOverlay();
+					break;
+
+				case 6:
+					if (Msg::promptMsg(Lang::get("NEW_GAME_PRMPT"))) {
+						Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
+						this->currentGame->InitNewGame(this->currentGame->GetPlayerAmount());
+						this->forcePlay = true;
+						this->forceElevenCheck(); // Setze den Check hier.
+						this->isSub = false;
+					}
+					break;
+
+				case 7:
+					this->currentGame->SetAI(Msg::promptMsg(Lang::get("PLAY_AGAINST_COMPUTER")));
+					break;
+
+				case 8:
+					if (Msg::promptMsg(Lang::get("PLAYERAMOUNT_PRMPT"))) {
+						this->currentGame->InitNewGame((uint8_t)KBD::SetAmount(6, Lang::get("ENTER_PLAYERAMOUNT"), this->currentGame->GetPlayerAmount()));
+						this->forcePlay = true;
+						this->forceElevenCheck(); // Setze den Check hier.
+						this->isSub = false;
+					}
 					break;
 			}
 		}
@@ -315,6 +356,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 			} else if (touching(touch, this->subBtn[1])) {
 				if (Msg::promptMsg(Lang::get("SAVE_TO_FILE_PROMPT"))) {
+					Msg::DisplayMsg(Lang::get("SAVING_GAME"));
 					this->currentGame->SaveToFile(true);
 					Msg::DisplayWaitMsg(Lang::get("SAVED_TO_FILE"));
 					this->isSub = false;
@@ -333,6 +375,26 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 			} else if (touching(touch, this->subBtn[5])) {
 				Overlays::LanguageOverlay();
+
+			} else if (touching(touch, this->subBtn[6])) {
+				if (Msg::promptMsg(Lang::get("NEW_GAME_PRMPT"))) {
+					Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
+					this->currentGame->InitNewGame(this->currentGame->GetPlayerAmount());
+					this->forcePlay = true;
+					this->forceElevenCheck(); // Setze den Check hier.
+					this->isSub = false;
+				}
+
+			} else if (touching(touch, this->subBtn[7])) {
+				this->currentGame->SetAI(Msg::promptMsg(Lang::get("PLAY_AGAINST_COMPUTER")));
+
+			} else if (touching(touch, this->subBtn[8])) {
+				if (Msg::promptMsg(Lang::get("PLAYERAMOUNT_PRMPT"))) {
+					this->currentGame->InitNewGame((uint8_t)KBD::SetAmount(6, Lang::get("ENTER_PLAYERAMOUNT"), this->currentGame->GetPlayerAmount()));
+					this->forcePlay = true;
+					this->forceElevenCheck(); // Setze den Check hier.
+					this->isSub = false;
+				}
 			}
 		}
 

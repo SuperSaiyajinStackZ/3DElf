@@ -156,6 +156,7 @@ public:
 	uint8_t GetCurrentPlayer() const { return this->currentPlayer; }
 	void SetCurrentPlayer(uint8_t p) { this->currentPlayer = p; }
 	uint8_t GetPlayerAmount() const { return this->PlayerAmount; }
+	void SetPlayerAmount(uint8_t amount) { this->PlayerAmount = amount; }
 
 	/* Zieh-Anzahl funktionen. */
 	uint8_t GetDrawAmount() const { return this->drawAmount; }

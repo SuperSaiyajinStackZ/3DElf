@@ -59,70 +59,83 @@ void GFX::DrawBaseBottom() {
 /*
 	Zeichne einen Karten-outline.
 
-	int xPos: X Position.
-	int yPos: Y Position.
+	int x: Die X Position der Karte.
+	int y: Die Y Position der Karte.
 	float Width: Die Breite der Karte.
 	float Height: Die Höhe der Karte.
-	u32 color: Die Farbe als einen uint32_t / C2D_Color32(r, g, b, a) format.
+	u32 color: Die Outline Farbe als einen uint32_t / C2D_Color32(r, g, b, a) format.
+	const int pow: Die Stärke des Outlines.
 */
-void GFX::DrawCardOutline(int xPos, int yPos, float Width, float Height, uint32_t color) {
-	static constexpr int w = 5; // Breite des outline's.
-	C2D_DrawRectSolid(xPos, yPos, 0.5, Width, Height, C2D_Color32(255, 255, 255, 255));
+void GFX::DrawCardOutline(int xPos, int yPos, float Width, float Height, uint32_t color, const int pow) {
+	/* Die Mitte. */
+	Gui::Draw_Rect(xPos + pow, yPos + pow, Width - pow, Height - pow, C2D_Color32(255, 255, 255, 255));
 
-	C2D_DrawRectSolid(xPos, yPos, 0.5, Width, w, color); // top.
+	/* Oberes Outline. */
+	Gui::Draw_Rect(xPos, yPos, Width, pow, color);
 
-	C2D_DrawRectSolid(xPos, yPos + w, 0.5, w, Height - 2 * w, color); // left.
+	/* Rechtes Outline. */
+	Gui::Draw_Rect(xPos + Width - pow, yPos, pow, Height, color);
 
-	C2D_DrawRectSolid(xPos + Width - w, yPos + w, 0.5, w, Height - 2 * w, color); // right.
+	/* Unteres Outline. */
+	Gui::Draw_Rect(xPos, yPos + Height - pow, Width, pow, color);
 
-	C2D_DrawRectSolid(xPos, yPos + Height - w, 0.5, Width, w, color); // bottom.
+	/* Linkes Outline. */
+	Gui::Draw_Rect(xPos, yPos, pow, Height, color);
 }
 
 /*
 	Zeichne eine Karte von einem Kartenstrukt.
 
 	CardStruct CS: Der Kartenstrukt.
-	int x: X Position.
-	int y: Y Position.
-	float xSize: Die Breite der Karte.
-	float ySize: Die Höhe der Karte.
-	bool top: Ob auf dem Top (true) oder Touch (false) screen. Dies wird verwendet für den Text auf der Karte.
+	int x: Die X Position der Karte.
+	int y: Die Y Position der Karte.
+	int w: Die Breite der Karte.
+	int h: Die Höhe der Karte.
+	int pow: Die Stärke des Outlines.
 */
-void GFX::DrawCard(CardStruct CS, int x, int y, float xSize, float ySize, bool top) {
+void GFX::DrawCardStruct(CardStruct CS, int x, int y, int w, int h, int pow) {
 	if (CS.CT == CardType::NUMBER_EMPTY || CS.CC == CardColor::COLOR_EMPTY) return;
 
-	DrawCardOutline(x, y, xSize, ySize, CardColors[(uint8_t)CS.CC - 1]);
-	Gui::DrawStringCentered(x - (top ? 200 : 160) + (xSize / 2), y + (ySize / 2) - 10, 0.8f, C2D_Color32(0, 0, 0, 255),
-							std::to_string((uint8_t)CS.CT));
+	DrawCardOutline(x, y, w, h, CardColors[(uint8_t)CS.CC - 1], pow);
+
+	const int wMax = w - (pow * 2) / 2;
+	const int hMax = h - (pow * 2) / 2;
+
+	Gui::DrawString(x + pow + ((wMax) - Gui::GetStringWidth(0.8, std::to_string((uint8_t)CS.CT))) / 2 - (pow / 2),
+					y + pow + ((hMax) - Gui::GetStringHeight(0.8, std::to_string((uint8_t)CS.CT))) / 2 - (pow / 2),
+					0.8, C2D_Color32(0, 0, 0, 255), std::to_string((uint8_t)CS.CT), wMax, hMax);
 }
 
-
 /*
-	Zeichne eine Karte mit einem KartenTyp und einer Kartenfarbe.
+	Zeichne eine Karte von einem Kartentypen und Kartenfarbe.
 
 	CardType CT: Der Kartentyp.
 	CardColor CC: Die Kartenfarbe.
-	int x: X Position.
-	int y: Y Position.
-	float xSize: Die Breite der Karte.
-	float ySize: Die Höhe der Karte.
-	bool top: Ob auf dem Top (true) oder Touch (false) screen. Dies wird verwendet für den Text auf der Karte.
+	int x: Die X Position der Karte.
+	int y: Die Y Position der Karte.
+	int w: Die Breite der Karte.
+	int h: Die Höhe der Karte.
+	int pow: Die Stärke des Outlines.
 */
-void GFX::DrawCard2(CardType CT, CardColor CC, int x, int y, float xSize, float ySize, bool top) {
+void GFX::DrawCardSeparate(CardType CT, CardColor CC, int x, int y, int w, int h, int pow) {
 	if (CT == CardType::NUMBER_EMPTY || CC == CardColor::COLOR_EMPTY) return;
 
-	DrawCardOutline(x, y, xSize, ySize, CardColors[(uint8_t)CC - 1]);
+	DrawCardOutline(x, y, w, h, CardColors[(uint8_t)CC - 1], 4);
 
-	Gui::DrawStringCentered(x - (top ? 200 : 160) + (xSize / 2), y + (ySize / 2) - 10, 0.8f, C2D_Color32(0, 0, 0, 255),
-							std::to_string((uint8_t)CT));
+	const int wMax = w - (pow * 2) / 2;
+	const int hMax = h - (pow * 2) / 2;
+
+	Gui::DrawString(x + pow + ((wMax) - Gui::GetStringWidth(0.8, std::to_string((uint8_t)CT))) / 2 - (pow / 2),
+					y + pow + ((hMax) - Gui::GetStringHeight(0.8, std::to_string((uint8_t)CT))) / 2 - (pow / 2),
+					0.8, C2D_Color32(0, 0, 0, 255), std::to_string((uint8_t)CT), wMax, hMax);
 }
 
 /*
 	Zeichne einen Sprite von der sprites spritesheet.
 
-	int index: Sprite Index.
-	int x: X Position.
-	int y: Y Position.
+	int index: Der index des Sprites.
+	int x: Die X Position des Sprites.
+	int y: Die Y Position des Sprites.
 	float ScaleX: Breiten-Skalierung.
 	float ScaleY: Höhen-Skalierung.
 */

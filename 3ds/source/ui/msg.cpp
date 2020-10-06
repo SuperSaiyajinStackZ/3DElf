@@ -51,7 +51,7 @@ bool Msg::promptMsg(std::string msg) {
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
 		GFX::DrawBaseTop();
-		Gui::Draw_Rect(0, 70, 400, 110, C2D_Color32(0, 130, 130, 255));
+		Gui::Draw_Rect(0, 60, 400, 120, C2D_Color32(0, 130, 130, 255));
 		Gui::DrawStringCentered(0, (240 - Gui::GetStringHeight(0.7f, msg)) / 2 - 10, 0.7f, C2D_Color32(255, 255, 255, 255), msg, 390, 90);
 
 		GFX::DrawBaseBottom();
@@ -108,11 +108,11 @@ void Msg::DisplayWaitMsg(std::string waitMsg, ...) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
 	GFX::DrawBaseTop();
-	Gui::Draw_Rect(0, 70, 400, 110, C2D_Color32(0, 130, 130, 255));
+	Gui::Draw_Rect(0, 60, 400, 120, C2D_Color32(0, 130, 130, 255));
 
 	Gui::Draw_Rect(0, 210, 400, 30, C2D_Color32(0, 130, 130, 255));
 	Gui::DrawStringCentered(0, (240 - Gui::GetStringHeight(0.7f, waitMsg)) / 2, 0.7f, C2D_Color32(255, 255, 255, 255), waitMsg, 390, 70);
-	Gui::DrawStringCentered(0, 215, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("A_CONTINUE"), 390);
+	Gui::DrawStringCentered(0, 217, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("A_CONTINUE"), 390);
 
 	GFX::DrawBaseBottom();
 	C3D_FrameEnd(0);

@@ -38,9 +38,9 @@ namespace GFX {
 	void DrawBaseBottom();
 
 	/* Kartenzeug. */
-	void DrawCardOutline(int xPos, int yPos, float Width = 60, float Height = 80, uint32_t color = C2D_Color32(255, 255, 255, 255));
-	void DrawCard(CardStruct CS, int x, int y, float xSize = 60, float ySize = 80, bool top = true);
-	void DrawCard2(CardType CT, CardColor CC, int x, int y, float xSize = 60, float ySize = 80, bool top = true);
+	void DrawCardOutline(int xPos, int yPos, float Width = 60, float Height = 80, uint32_t color = C2D_Color32(255, 255, 255, 255), const int pow = 5);
+	void DrawCardStruct(CardStruct CS, int x, int y, int w = 40, int h = 60, int pow = 4);
+	void DrawCardSeparate(CardType CT, CardColor CC, int x, int y, int w = 40, int h = 40, int pow = 4);
 
 	/* Spritezeug. */
 	void DrawSprite(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);

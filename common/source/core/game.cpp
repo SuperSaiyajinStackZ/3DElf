@@ -60,22 +60,24 @@ Game::Game(uint8_t plAmount) { this->InitNewGame(plAmount); }
 */
 void Game::InitNewGame(uint8_t plAmount) {
 	/* Bereinige alles. */
-	this->CardDeck = nullptr;
-	this->TableCard = nullptr;
-	this->Players.clear();
+	if (this->GameData) this->GameData = nullptr;
+	if (this->CardDeck) this->CardDeck = nullptr;
+	if (this->TableCard) this->TableCard = nullptr;
+	if (this->Players.size() > 0) this->Players.clear();
+
 	for (uint8_t i = 0; i < 6; i++) {
 		this->cardIndexes[i] = 0;
 		this->cardPages[i] = 0;
 	}
 
-	if (plAmount > _GAME_MAXPLAYERS) this->PlayerAmount = _GAME_MAXPLAYERS; // 6 ist die maximale Spieleranzahl. Mehr sind nicht erlaubt.
+	if (plAmount < 2 || plAmount > _GAME_MAXPLAYERS) this->PlayerAmount = 2; //2 - 6 ist die maximale Spieleranzahl. Mehr sind nicht erlaubt.
 	else this->PlayerAmount = plAmount;
 
 	this->CardDeck = std::make_unique<Deck>(); // Initialisiere Kartendeck.
 	this->TableCard = std::make_unique<Table>(); // Initialisiere Tischkarte.
 
 	/*
-		Initialisiere alle Spieler inklusive KartenIndex & Karten-Seite
+		Initialisiere alle Spieler inklusive Karten-Index & Karten-Seite
 		welche für den Spiel-Screen relevant sind.
 	*/
 	for (uint8_t i = 0; i < this->PlayerAmount; i++) {
@@ -91,7 +93,7 @@ void Game::InitNewGame(uint8_t plAmount) {
 		}
 	}
 
-	this->GameData = std::unique_ptr<uint8_t[]>(new uint8_t[_GAME_SIZE]); // Initialisiere den Spieldaten buffer für das aktuelle Spiel.
+	this->GameData = std::unique_ptr<uint8_t[]>(new uint8_t[_GAME_SIZE]);
 	this->SaveConversion(); // Konvertiere das aktuelle spiel zu dem Spiel-Buffer.
 }
 /*
@@ -130,9 +132,9 @@ bool Game::validLoaded() const { return this->validGame; }
 void Game::convertDataToGame() {
 	if (this->GameData && this->validGame) {
 		/* Bereinige alles. */
-		this->CardDeck = nullptr;
-		this->TableCard = nullptr;
-		this->Players.clear();
+		if (this->CardDeck) this->CardDeck = nullptr;
+		if (this->TableCard) this->TableCard = nullptr;
+		if (this->Players.size() > 0) this->Players.clear();
 
 		for (uint8_t i = 0; i < 6; i++) {
 			this->cardIndexes[i] = 0;
@@ -186,7 +188,7 @@ void Game::convertDataToGame() {
 
 
 		/*
-			Initialisiere alle Spieler inklusive KartenIndex & Karten-Seite
+			Initialisiere alle Spieler inklusive Karten-Index & Karten-Seite
 			welche für den Spiel-Screen relevant sind.
 		*/
 		for (uint8_t i = 0; i < this->PlayerAmount; i++) {

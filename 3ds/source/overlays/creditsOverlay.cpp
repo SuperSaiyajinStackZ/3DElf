@@ -43,7 +43,7 @@ static void Draw() {
 	Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 130, 130, 255));
 	Gui::DrawStringCentered(0, 1, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("CREDITS"));
 	Gui::DrawStringCentered(0, 30, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("DEV_BY"), 390);
-	Gui::DrawStringCentered(0, 215, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("CURRENT_VERSION") + std::string(V_STRING), 390);
+	Gui::DrawStringCentered(0, 217, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("CURRENT_VERSION") + std::string(V_STRING), 390);
 
 	GFX::DrawBaseBottom();
 	Gui::Draw_Rect(0, 0, 320, 25, C2D_Color32(0, 130, 130, 255));

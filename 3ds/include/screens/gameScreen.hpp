@@ -37,7 +37,7 @@ class GameScreen : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
-	GameScreen(uint8_t pAmount = 2);
+	GameScreen();
 private:
 	/* Zeichen-Utilities. */
 	void DrawPlayerCards(void) const;
