@@ -28,7 +28,7 @@ Hier findest du ein paar Screenshots zum aktuellen Fortschritt.
 
 
 ## Dinge, welche noch geplant sind bis v0.1.0:
-- [ ] Füge eine Konfiguration hinzu für die Sprache etc, damit sie gespeichert werden können.
+- [x] Füge eine Konfiguration hinzu für die Sprache etc, damit sie gespeichert werden können. (Die Konfigurations-Datei ist `Config.json` in `sdmc:/3ds/3DElf/`).
 - [x] Füge eine Option hinzu, um den Computer im Unter-Menü zu de/aktivieren.
 - [x] Füge eine Option hinzu, um die Spieleranzahl im Unter-Menü zu verändern.
 - [x] Zeige die Anzahl der Karten von allen Spielern irgendwo im Spiel-Screen an. (Wird nun im Unter-Menü angezeigt).

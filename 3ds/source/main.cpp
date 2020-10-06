@@ -32,6 +32,7 @@
 bool exiting = false;
 C2D_SpriteSheet sprites;
 touchPosition touch;
+std::unique_ptr<Settings> konfiguration = nullptr;
 
 /*
 	Falls eine bestimmte position berührt wird.. mache etwas.
@@ -51,8 +52,9 @@ static void init() {
 	romfsInit();
 	gfxInitDefault();
 	Gui::init();
+	konfiguration = std::make_unique<Settings>();
 
-	Lang::load(1); // Lade die Übersetzungen.
+	Lang::load(konfiguration->Language()); // Lade die Übersetzungen.
 
 	mkdir("sdmc:/3ds", 0x777);
 	mkdir("sdmc:/3ds/3DElf", 0x777);
@@ -86,6 +88,7 @@ int main() {
 	}
 
 	Gui::exit();
+	konfiguration->Save();
 	Gui::unloadSheet(sprites);
 	romfsExit();
 	gfxExit();

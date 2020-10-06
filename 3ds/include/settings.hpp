@@ -24,19 +24,32 @@
 		  reasonable ways as different from the original version.
 */
 
-#ifndef _3DELF_COMMON_HPP
-#define _3DELF_COMMON_HPP
+#ifndef _3DELF_SETTINGS_HPP
+#define _3DELF_SETTINGS_HPP
 
-/* Hier sind alle notwendigen Headers gelistet. */
-#include "gfx.hpp"
-#include "kbd.hpp"
-#include "lang.hpp"
-#include "msg.hpp"
-#include "overlay.hpp"
-#include "screenCommon.hpp"
-#include "settings.hpp"
+#include "json.hpp"
 #include <3ds.h>
+#include <string>
 
-extern std::unique_ptr<Settings> konfiguration;
+class Settings {
+public:
+	Settings();
+	void Save();
+	void Initialize();
+
+	/* Wiedergebe und Setze die Sprache. */
+	int Language() const { return this->v_language; }
+	void Language(int v) { this->v_language = v; if (!this->changesMade) this->changesMade = true; }
+
+private:
+	int GetInt(const std::string &key) const;
+	void SetInt(const std::string &key, int v);
+
+	nlohmann::json config; // Die Konfigurations Variable.
+	bool changesMade = false;
+
+	/* Variablen für die Konfiguration. */
+	int v_language;
+};
 
 #endif

@@ -93,15 +93,17 @@ void Overlays::LanguageOverlay() {
 		if (hidKeysDown() & KEY_TOUCH) {
 			for (uint8_t i = 0; i < 2; i++) {
 				if (touching(touch, langBlocks[i])) {
-					selectedLang = i;
-					Lang::load(selectedLang);
+					konfiguration->Language(i);
+					Lang::load(konfiguration->Language());
 					doOut = true;
+					break;
 				}
 			}
 		}
 
 		if (hidKeysDown() & KEY_A) {
-			Lang::load(selectedLang);
+			konfiguration->Language(selectedLang);
+			Lang::load(konfiguration->Language());
 			doOut = true;
 		}
 	}
