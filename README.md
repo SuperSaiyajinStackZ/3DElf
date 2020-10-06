@@ -1,9 +1,12 @@
 # 3DElf
-3DElf ist ein 'Work in progress' `Elfer raus!` klon für den Nintendo 3DS.
+<p align="center">
+	<a href="https://github.com/SuperSaiyajinStackZ/3DElf/releases/latest"><img src="https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/3ds/app/banner.png"></a><br>
+	<b>3DElf ist ein 'Work in progress' `Elfer raus!` klon für den Nintendo 3DS.</b><br>
+</p>
 
 3DElf's Core wurde geschrieben von [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ).
 
-3DElf wird ein Teil von [StackGames](https://github.com/SuperSaiyajinStackZ/Stack-Game-Template) werden in der Zukunft.
+3DElf wird ein Teil von [StackGames](https://github.com/SuperSaiyajinStackZ/Stack-Game-Template) in der Zukunft werden.
 
 Für eine Beschreibung zu `Elfer raus!` siehe [diesen Eintrag von Wikipedia](https://de.wikipedia.org/wiki/Elfer_raus!).
 
@@ -12,19 +15,19 @@ Für eine Beschreibung zu `Elfer raus!` siehe [diesen Eintrag von Wikipedia](htt
 Hier findest du ein paar Screenshots zum aktuellen Fortschritt.
 
 ### Credits Overlay
-![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/credits.png)
+![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/credits_en.png)
 
 ### Regeln Overlay
-![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/regeln.png)
+![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/rules_en.png)
 
 ### Spiel Screen
-![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/anweisung.png) ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/spielScreen.png)  ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/unter_menu.png)
+![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/instructions_en.png) ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/game_screen_en.png)  ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/sub_menu_en.png)
 
 ### Splash Overlay
 ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/dev_by.png)
 
 ### Sprachauswahl Overlay
-![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/sprachauswahl.png)
+![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/language_overlay_en.png)
 
 
 ## Dinge, welche noch geplant sind bis v0.1.0:
