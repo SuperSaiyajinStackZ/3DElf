@@ -36,9 +36,7 @@ Player::Player() : hand(std::make_unique<Cards>()) { }
 
 	std::vector<CardStruct> cards: Die Karten.
 */
-void Player::ImportCards(std::vector<CardStruct> cards) {
-	this->hand->ImportCards(cards);
-}
+void Player::ImportCards(std::vector<CardStruct> cards) { this->hand->ImportCards(cards); }
 
 /*
 	Füge eine Karte hinzu.

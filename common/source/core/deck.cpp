@@ -27,7 +27,7 @@
 #include "deck.hpp"
 #include <algorithm>
 
-/* Das Standard Kartendeck, mit 80 Karten. */
+/* Das Standard Karten-Deck, mit 80 Karten. */
 const std::vector<CardStruct> DefaultDeck = {
 				/* Rote Karten. */
 	{ CardType::NUMBER_1, CardColor::COLOR_RED },
@@ -128,9 +128,7 @@ Deck::Deck() { this->shuffle(); }
 
 	std::vector<CardStruct> cards: Die Karten.
 */
-void Deck::GetCardsFromStruct(std::vector<CardStruct> cards) {
-	this->deck = cards;
-}
+void Deck::GetCardsFromStruct(std::vector<CardStruct> cards) { this->deck = cards; }
 
 
 /*
@@ -154,7 +152,7 @@ CardStruct Deck::GetCard() {
 
 	if (this->GetDeckSize() > 0) {
 		CS = this->deck[this->GetDeckSize() - 1];
-		this->deck.pop_back(); // Entferne letzte Karte vom deck.
+		this->deck.pop_back(); // Entferne letzte Karte vom Karten-Deck.
 	}
 
 	return CS;
@@ -166,9 +164,7 @@ CardStruct Deck::GetCard() {
 	uint8_t index: Der Karten-Index.
 */
 CardStruct Deck::GetCardFromDeck(uint8_t index) const {
-	if (this->GetDeckSize() > index) {
-		return this->deck[index];
-	}
+	if (this->GetDeckSize() > index) return this->deck[index];
 
 	return { CardType::NUMBER_EMPTY, CardColor::COLOR_EMPTY };
 }

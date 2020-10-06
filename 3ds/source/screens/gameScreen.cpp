@@ -65,7 +65,7 @@ void GameScreen::DrawPlayerCards(void) const {
 				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].y,
 				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].w,
 				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].h,
-					.020f, C2D_Color32(0, 0, 0, 255));
+					.020f, CARD_SLT_COLOR);
 		}
 
 	} else {
@@ -74,7 +74,7 @@ void GameScreen::DrawPlayerCards(void) const {
 				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].y,
 				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].w,
 				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].h,
-				.020f, C2D_Color32(0, 0, 0, 255));
+				.020f, CARD_SLT_COLOR);
 		}
 	}
 }
@@ -152,52 +152,56 @@ void GameScreen::DrawTable(void) const {
 void GameScreen::Draw(void) const {
 	if (!this->isSub) {
 		GFX::DrawBaseTop();
-		Gui::Draw_Rect(0, 0, 400, 25, C2D_Color32(0, 130, 130, 255));
-		Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 130, 130, 255));
-		Gui::DrawStringCentered(0, 218, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SELECT_INSTRUCTIONS"), 390);
+		Gui::Draw_Rect(0, 0, 400, 25, BAR_COLOR);
+		Gui::Draw_Rect(0, 215, 400, 25, BAR_COLOR);
+		Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("GAME_SCREEN"));
+		Gui::DrawStringCentered(0, 218, 0.6f, TEXT_COLOR, Lang::get("SELECT_INSTRUCTIONS"), 390);
 		this->DrawTable();
 		GFX::DrawBaseBottom();
 		this->DrawPlayerCards();
 
 	} else {
 		GFX::DrawBaseTop();
-		Gui::Draw_Rect(0, 0, 400, 25, C2D_Color32(0, 130, 130, 255));
-		Gui::Draw_Rect(0, 215, 400, 25, C2D_Color32(0, 130, 130, 255));
-		Gui::DrawStringCentered(0, 1, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("GAME_PAUSED"));
+		Gui::Draw_Rect(0, 0, 400, 25, BAR_COLOR);
+		Gui::Draw_Rect(0, 215, 400, 25, BAR_COLOR);
+		Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("GAME_PAUSED"));
 
 		/* Zeige Spiel-Informationen an. */
-		Gui::DrawStringCentered(0, 30, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("COMPUTER_USED") + ": " +
+		Gui::DrawStringCentered(0, 30, 0.6f, TEXT_COLOR, Lang::get("COMPUTER_USED") + ": " +
 							(this->currentGame->GetAI() ? Lang::get("YES") : Lang::get("NO")), 390);
 
-		Gui::DrawStringCentered(0, 45, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("PLAYER_AMOUNT") + ": " +
+		Gui::DrawStringCentered(0, 45, 0.6f, TEXT_COLOR, Lang::get("PLAYER_AMOUNT") + ": " +
 							std::to_string(this->currentGame->GetPlayerAmount()), 390);
 
-		Gui::DrawStringCentered(0, 60, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("CARD_DECK_REMAINING") + ": " +
+		Gui::DrawStringCentered(0, 60, 0.6f, TEXT_COLOR, Lang::get("CARD_DECK_REMAINING") + ": " +
 							std::to_string(this->currentGame->GetDeckSize()), 390);
 
+		Gui::DrawStringCentered(0, 75, 0.6f, TEXT_COLOR, Lang::get("CURRENT_PLAYER") +
+							std::to_string(this->currentGame->GetCurrentPlayer() + 1), 390);
+
 		for (uint8_t i = 0; i < this->currentGame->GetPlayerAmount(); i++) {
-			Gui::DrawStringCentered(0, 90 + (i * 20), 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("PLAYER") + " " +
-				std::to_string(i + 1) + " " + Lang::get("CARD_AMOUNT") + ": " + std::to_string(this->currentGame->GetPlayerHandSize(i)), 390);
+			Gui::DrawStringCentered(0, 100 + (i * 18), 0.6f, TEXT_COLOR, Lang::get("PLAYER") + " " +
+			std::to_string(i + 1) + " " + Lang::get("CARD_AMOUNT") + ": " + std::to_string(this->currentGame->GetPlayerHandSize(i)), 390);
 		}
 
-		Gui::DrawStringCentered(0, 218, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("B_BACK"), 390);
+		Gui::DrawStringCentered(0, 218, 0.6f, TEXT_COLOR, Lang::get("B_BACK"), 390);
 		GFX::DrawBaseBottom();
 
 		for (int i = 0; i < 10; i++) {
-			if (this->subSel == i) Gui::drawAnimatedSelector(this->subBtn[i].x, this->subBtn[i].y, 140, 40, .030f, C2D_Color32(0, 222, 222, 255), C2D_Color32(0, 130, 130, 255));
-			else Gui::Draw_Rect(this->subBtn[i].x, this->subBtn[i].y, this->subBtn[i].w, this->subBtn[i].h, C2D_Color32(0, 130, 130, 255));
+			if (this->subSel == i) Gui::drawAnimatedSelector(this->subBtn[i].x, this->subBtn[i].y, 140, 40, .030f, BUTTON_SELECTED, BUTTON_UNSELECTED);
+			else Gui::Draw_Rect(this->subBtn[i].x, this->subBtn[i].y, this->subBtn[i].w, this->subBtn[i].h, BUTTON_UNSELECTED);
 		}
 
-		Gui::DrawStringCentered(-80, this->subBtn[0].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("LOAD_GAME"));
-		Gui::DrawStringCentered(-80, this->subBtn[1].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SAVE_GAME"));
-		Gui::DrawStringCentered(-80, this->subBtn[2].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("EXIT_GAME"));
-		Gui::DrawStringCentered(-80, this->subBtn[3].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SHOW_RULES"));
-		Gui::DrawStringCentered(-80, this->subBtn[4].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("SHOW_CREDITS"));
+		Gui::DrawStringCentered(-80, this->subBtn[0].y + 10, 0.6f, TEXT_COLOR, Lang::get("LOAD_GAME"));
+		Gui::DrawStringCentered(-80, this->subBtn[1].y + 10, 0.6f, TEXT_COLOR, Lang::get("SAVE_GAME"));
+		Gui::DrawStringCentered(-80, this->subBtn[2].y + 10, 0.6f, TEXT_COLOR, Lang::get("EXIT_GAME"));
+		Gui::DrawStringCentered(-80, this->subBtn[3].y + 10, 0.6f, TEXT_COLOR, Lang::get("SHOW_RULES"));
+		Gui::DrawStringCentered(-80, this->subBtn[4].y + 10, 0.6f, TEXT_COLOR, Lang::get("SHOW_CREDITS"));
 
-		Gui::DrawStringCentered(80, this->subBtn[5].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("CHANGE_LANGUAGE"));
-		Gui::DrawStringCentered(80, this->subBtn[6].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("NEW_GAME"));
-		Gui::DrawStringCentered(80, this->subBtn[7].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("CHANGE_COMPUTER"));
-		Gui::DrawStringCentered(80, this->subBtn[8].y + 10, 0.6f, C2D_Color32(255, 255, 255, 255), Lang::get("PLAYER_AMOUNT"));
+		Gui::DrawStringCentered(80, this->subBtn[5].y + 10, 0.6f, TEXT_COLOR, Lang::get("CHANGE_LANGUAGE"));
+		Gui::DrawStringCentered(80, this->subBtn[6].y + 10, 0.6f, TEXT_COLOR, Lang::get("NEW_GAME"));
+		Gui::DrawStringCentered(80, this->subBtn[7].y + 10, 0.6f, TEXT_COLOR, Lang::get("CHANGE_COMPUTER"));
+		Gui::DrawStringCentered(80, this->subBtn[8].y + 10, 0.6f, TEXT_COLOR, Lang::get("PLAYER_AMOUNT"));
 	}
 }
 
@@ -649,8 +653,8 @@ std::pair<bool, bool> GameScreen::DoPlayMove() {
 
 		this->forcePlay = false; // Wir sind nicht mehr gezwungen hier in dem fall.
 
-		/* Falls der Index größer als die anzahl der Karten der Hand ist.. gehe zur ersten position der ersten seite. */
-		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer() > this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer() - 1))) {
+		/* Falls der Index größer als die anzahl der Karten der Hand ist.. gehe zur ersten position der ersten Seite. */
+		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) >= this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
 			this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(), 0);
 			this->currentGame->SetPageIndex(this->currentGame->GetCurrentPlayer(), 0);
 		}

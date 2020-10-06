@@ -33,7 +33,7 @@ Hier findest du ein paar Screenshots zum aktuellen Fortschritt.
 - [x] Füge eine Option hinzu, um die Spieleranzahl im Unter-Menü zu verändern.
 - [x] Zeige die Anzahl der Karten von allen Spielern irgendwo im Spiel-Screen an. (Wird nun im Unter-Menü angezeigt).
 - [x] Füge eine Option hinzu, um ein Spiel im Unter-Menü von vorne zu beginnen.
-- [ ] Eventuelle Verbesserungen des Spiel-Cores und der Anwendung.
+- [x] Eventuelle Verbesserungen des Spiel-Cores und der Anwendung.
 
 ## Kompilieren
 ### Die Umgebung aufsetzen

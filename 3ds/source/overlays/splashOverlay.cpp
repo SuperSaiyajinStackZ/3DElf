@@ -32,11 +32,12 @@
 static void Draw() {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
-	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Top, NO_COLOR);
+	C2D_TargetClear(Bottom, NO_COLOR);
 
 	Gui::ScreenDraw(Top);
 	GFX::DrawSprite(sprites_dev_by_idx, 0, 0);
+
 	Gui::ScreenDraw(Bottom);
 	GFX::DrawSprite(sprites_universal_core_idx, 0, 0);
 	C3D_FrameEnd(0);

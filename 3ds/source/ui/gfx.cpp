@@ -45,7 +45,7 @@ constexpr uint32_t CardColors[4] = {
 */
 void GFX::DrawBaseTop() {
 	Gui::ScreenDraw(Top);
-	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 180, 180, 255));
+	Gui::Draw_Rect(0, 0, 400, 240, BG_COLOR);
 }
 
 /*
@@ -53,7 +53,7 @@ void GFX::DrawBaseTop() {
 */
 void GFX::DrawBaseBottom() {
 	Gui::ScreenDraw(Bottom);
-	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 180, 180, 255));
+	Gui::Draw_Rect(0, 0, 320, 240, BG_COLOR);
 }
 
 /*
@@ -103,7 +103,7 @@ void GFX::DrawCardStruct(CardStruct CS, int x, int y, int w, int h, int pow) {
 
 	Gui::DrawString(x + pow + ((wMax) - Gui::GetStringWidth(0.8, std::to_string((uint8_t)CS.CT))) / 2 - (pow / 2),
 					y + pow + ((hMax) - Gui::GetStringHeight(0.8, std::to_string((uint8_t)CS.CT))) / 2 - (pow / 2),
-					0.8, C2D_Color32(0, 0, 0, 255), std::to_string((uint8_t)CS.CT), wMax, hMax);
+					0.8, CARD_NUMB_COLOR, std::to_string((uint8_t)CS.CT), wMax, hMax);
 }
 
 /*
@@ -127,7 +127,7 @@ void GFX::DrawCardSeparate(CardType CT, CardColor CC, int x, int y, int w, int h
 
 	Gui::DrawString(x + pow + ((wMax) - Gui::GetStringWidth(0.8, std::to_string((uint8_t)CT))) / 2 - (pow / 2),
 					y + pow + ((hMax) - Gui::GetStringHeight(0.8, std::to_string((uint8_t)CT))) / 2 - (pow / 2),
-					0.8, C2D_Color32(0, 0, 0, 255), std::to_string((uint8_t)CT), wMax, hMax);
+					0.8, CARD_NUMB_COLOR, std::to_string((uint8_t)CT), wMax, hMax);
 }
 
 /*

@@ -70,11 +70,11 @@ void Game::InitNewGame(uint8_t plAmount) {
 		this->cardPages[i] = 0;
 	}
 
-	if (plAmount < 2 || plAmount > _GAME_MAXPLAYERS) this->PlayerAmount = 2; //2 - 6 ist die maximale Spieleranzahl. Mehr sind nicht erlaubt.
+	if (plAmount < 2 || plAmount > _GAME_MAXPLAYERS) this->PlayerAmount = 2; // 2 - 6 ist die maximale Spieleranzahl. Mehr sind nicht erlaubt.
 	else this->PlayerAmount = plAmount;
 
-	this->CardDeck = std::make_unique<Deck>(); // Initialisiere Kartendeck.
-	this->TableCard = std::make_unique<Table>(); // Initialisiere Tischkarte.
+	this->CardDeck = std::make_unique<Deck>(); // Initialisiere das Karten-Deck.
+	this->TableCard = std::make_unique<Table>(); // Initialisiere die Tischkarten.
 
 	/*
 		Initialisiere alle Spieler inklusive Karten-Index & Karten-Seite
@@ -86,7 +86,7 @@ void Game::InitNewGame(uint8_t plAmount) {
 		this->cardPages[i] = 0;
 	}
 
-	/* Ziehe die Initiale Karten vom Karten-Deck für die Spieler. */
+	/* Ziehe die Initialen Karten vom Karten-Deck für die Spieler. */
 	for (uint8_t i2 = 0; i2 < this->PlayerAmount; i2++) {
 		for (uint8_t i = 0; i < CoreHelper::GetStartupCards(this->PlayerAmount); i++) {
 			this->Players[i2]->AddCard(this->CardDeck);
@@ -94,14 +94,15 @@ void Game::InitNewGame(uint8_t plAmount) {
 	}
 
 	this->GameData = std::unique_ptr<uint8_t[]>(new uint8_t[_GAME_SIZE]);
-	this->SaveConversion(); // Konvertiere das aktuelle spiel zu dem Spiel-Buffer.
+	this->SaveConversion(); // Konvertiere das aktuelle Spiel zu dem Spiel-Buffer.
 }
+
 /*
 	Lade ein Spiel von Spiel-Daten.
 */
 void Game::LoadGameFromFile() {
 	this->validGame = false; // Setze das immer zu falsch, wenn die Funktion startet.
-	if (access(_GAME_SAVEPATH, F_OK) != 0) return;
+	if (access(_GAME_SAVEPATH, F_OK) != 0) return; // Datei existiert nicht.
 
 	FILE *file = fopen(_GAME_SAVEPATH, "r");
 
@@ -147,9 +148,9 @@ void Game::convertDataToGame() {
 		this->currentPlayer = this->GameData.get()[_GAME_CURRENT_PLAYER]; // Der aktuelle Spieler.
 		this->PlayerAmount = this->GameData.get()[_GAME_PLAYER_AMOUNT]; // Die Spieler-Anzahl.
 		this->drawAmount = this->GameData.get()[_GAME_DRAW_AMOUNT]; // Die Zieh-Anzahl.
-		this->useAI = this->GameData.get()[_GAME_USES_AI]; // Computer.
+		this->useAI = this->GameData.get()[_GAME_USES_AI]; // Ob der Computer benutzt wird.
 
-		/* Die Karten vom Deck. */
+		/* Die Karten vom Karten-Deck. */
 		std::vector<CardStruct> deckCards;
 		if (this->GameData.get()[_GAME_CARDDECK_CARD_AMOUNT] > 0) {
 			for (uint8_t deckKarten = 0; deckKarten < this->GameData.get()[_GAME_CARDDECK_CARD_AMOUNT]; deckKarten++) {
@@ -157,7 +158,7 @@ void Game::convertDataToGame() {
 			}
 		}
 
-		this->CardDeck->GetCardsFromStruct(deckCards); // Importiere die Karten vom vektor.
+		this->CardDeck->GetCardsFromStruct(deckCards); // Importiere die Karten vom Vektor.
 
 		/*
 			Die Tischkarten.
@@ -169,12 +170,10 @@ void Game::convertDataToGame() {
 		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_RED + 1]);
 		this->TableCard->ImportCardTypes(CardColor::COLOR_RED, CTypes);
 
-
 		/* Gelbe Karten. */
 		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_YELLOW]);
 		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_YELLOW + 1]);
 		this->TableCard->ImportCardTypes(CardColor::COLOR_YELLOW, CTypes);
-
 
 		/* Grüne Karten. */
 		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_GREEN]);
@@ -197,18 +196,18 @@ void Game::convertDataToGame() {
 			this->cardPages[i] = this->GameData.get()[_GAME_PLAYER_1_PAGEINDEX + i];
 		}
 
-		/* Und hier die Spielerkarten. */
+		/* Und hier die Spieler-Karten. */
 		std::vector<CardStruct> playerCards;
 		for (uint8_t spieler = 0; spieler < this->PlayerAmount; spieler++) {
 			for (uint8_t karten = 0; karten < _GAME_HANDSIZE; karten++) {
 
-				/* Falls die Karten in der Datei nicht NULL sind, füge sie dem Vektor hinzu. */
+				/* Falls die Karten in der Datei nicht 0 sind, füge sie dem Vektor hinzu. */
 				if (this->GameData.get()[_GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE)] != 0) {
 					playerCards.push_back({ CoreHelper::GetCardStruct(this->GameData.get(), _GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE)) });
 				}
 			}
 
-			this->Players[spieler]->ImportCards(playerCards); // Importiere die Karten vom vektor.
+			this->Players[spieler]->ImportCards(playerCards); // Importiere die Karten vom Vektor.
 			playerCards.clear();
 		}
 	}
@@ -219,10 +218,10 @@ void Game::convertDataToGame() {
 */
 void Game::SaveConversion() {
 	this->GameData.get()[_GAME_CURRENT_PLAYER] = this->currentPlayer; // Der aktuelle Spieler.
-	this->GameData.get()[_GAME_CARDDECK_CARD_AMOUNT] = this->CardDeck->GetDeckSize(); // Die Deck-Größe.
+	this->GameData.get()[_GAME_CARDDECK_CARD_AMOUNT] = this->CardDeck->GetDeckSize(); // Die Karten-Deck Größe.
 	this->GameData.get()[_GAME_PLAYER_AMOUNT] = this->PlayerAmount; // Die Spieler-Anzahl.
 	this->GameData.get()[_GAME_DRAW_AMOUNT] = this->drawAmount; // Die Zieh-Anzahl.
-	this->GameData.get()[_GAME_USES_AI] = this->useAI; // Computer.
+	this->GameData.get()[_GAME_USES_AI] = this->useAI; // Ob der Computer benutzt wird.
 
 	/* Die Karten vom Karten-Deck. */
 	for (uint8_t deckKarten = 0; deckKarten < _GAME_DECKSIZE; deckKarten++) {

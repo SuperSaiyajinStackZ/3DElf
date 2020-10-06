@@ -37,10 +37,10 @@
 int KBD::SetAmount(int maxValue, std::string Text, int oldVal) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Top, NO_COLOR);
 	GFX::DrawBaseTop();
-	Gui::Draw_Rect(0, 70, 400, 110, C2D_Color32(0, 130, 130, 255));
-	Gui::DrawStringCentered(0, (240 - Gui::GetStringHeight(0.7f, Text)) / 2 - 10, 0.7f, C2D_Color32(255, 255, 255, 255), Text, 390, 90);
+	Gui::Draw_Rect(0, 70, 400, 110, BOX_COLOR);
+	Gui::DrawStringCentered(0, (240 - Gui::GetStringHeight(0.7f, Text)) / 2 - 10, 0.7f, TEXT_COLOR, Text, 390, 90);
 	C3D_FrameEnd(0);
 
 	SwkbdState state;

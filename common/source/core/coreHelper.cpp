@@ -271,7 +271,7 @@ uint16_t CoreHelper::GetCardBytes(CardStruct CS) {
 	uint32_t offset: Der Offset wovon gelesen werden soll.
 */
 CardStruct CoreHelper::GetCardStruct(uint8_t *rawData, uint32_t offset) {
-	if (!rawData) return { CardType::NUMBER_EMPTY, CardColor::COLOR_EMPTY };
+	if (!rawData) return { CardType::NUMBER_EMPTY, CardColor::COLOR_EMPTY }; // Die Daten sind nicht gültig.
 
 	CardStruct CS = { CardType::NUMBER_EMPTY, CardColor::COLOR_EMPTY };
 

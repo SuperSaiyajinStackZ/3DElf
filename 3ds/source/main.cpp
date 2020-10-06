@@ -79,8 +79,8 @@ int main() {
 
 		Gui::clearTextBufs();
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
-		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+		C2D_TargetClear(Top, NO_COLOR);
+		C2D_TargetClear(Bottom, NO_COLOR);
 
 		Gui::DrawScreen(true);
 		Gui::ScreenLogic(hDown, hHeld, touch, true, true);

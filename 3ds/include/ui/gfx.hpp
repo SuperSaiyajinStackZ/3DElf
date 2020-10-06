@@ -32,6 +32,19 @@
 #include "sprites.h"
 #include <citro2d.h>
 
+/* Definiere die Farben hier. */
+#define TEXT_COLOR C2D_Color32(255, 255, 255, 255) // Text Farbe.
+#define BG_COLOR C2D_Color32(0, 180, 180, 255) // Hintergrund Farbe.
+#define BOX_COLOR C2D_Color32(0, 130, 130, 255) // Nachrichten Box Farbe.
+#define BUTTON_SELECTED C2D_Color32(0, 222, 222, 255) // Ausgewählte Schaltflächen Farbe.
+#define BUTTON_UNSELECTED C2D_Color32(0, 130, 130, 255) // Nicht Ausgewählte Schaltflächen Farbe.
+#define DIM_COLOR C2D_Color32(0, 0, 0, 170) // Gedunkelter Bildschirm Farbe.
+#define BAR_COLOR C2D_Color32(0, 130, 130, 255) // Balken Farbe.
+#define NO_COLOR C2D_Color32(0, 0, 0, 0) // Transparente Farbe.
+#define CARD_SLT_COLOR C2D_Color32(0, 0, 0, 255) // Karten-Selektor Farbe.
+#define CARD_NUMB_COLOR C2D_Color32(0, 0, 0, 255) // Karten-Nummer Farbe.
+
+
 namespace GFX {
 	/* Basiszeug. */
 	void DrawBaseTop();

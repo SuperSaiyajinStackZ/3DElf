@@ -48,23 +48,24 @@ const std::vector<Structs::ButtonPos> langBlocks = {
 static void Draw(const uint8_t &sltLang) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
-	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Top, NO_COLOR);
+	C2D_TargetClear(Bottom, NO_COLOR);
 
 	GFX::DrawBaseTop();
-	Gui::Draw_Rect(0, 0, 400, 25, C2D_Color32(0, 130, 130, 255));
-	Gui::DrawStringCentered(0, 1, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("SELECT_LANG"));
+	Gui::Draw_Rect(0, 0, 400, 25, BAR_COLOR);
+	Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("SELECT_LANG"));
 
 	GFX::DrawBaseBottom();
+	Gui::Draw_Rect(0, 0, 320, 25, BAR_COLOR);
+	Gui::Draw_Rect(0, 215, 320, 25, BAR_COLOR);
 
 	for (uint8_t language = 0; language < 2; language++) {
-		if (sltLang == language) Gui::drawAnimatedSelector(langBlocks[language].x, langBlocks[language].y, langBlocks[language].w, langBlocks[language].h, .010f, C2D_Color32(0, 222, 222, 255), C2D_Color32(0, 130, 130, 255));
-		else Gui::Draw_Rect(langBlocks[language].x, langBlocks[language].y, langBlocks[language].w, langBlocks[language].h, C2D_Color32(0, 130, 130, 255));
+		if (sltLang == language) Gui::drawAnimatedSelector(langBlocks[language].x, langBlocks[language].y, langBlocks[language].w, langBlocks[language].h, .010f, BUTTON_SELECTED, BUTTON_UNSELECTED);
+		else Gui::Draw_Rect(langBlocks[language].x, langBlocks[language].y, langBlocks[language].w, langBlocks[language].h, BUTTON_UNSELECTED);
 	}
 
-	Gui::DrawString(langBlocks[0].x + 25, langBlocks[0].y, 0.7f, C2D_Color32(255, 255, 255, 255), "Deutsch", 320);
-	Gui::DrawString(langBlocks[1].x + 25, langBlocks[1].y, 0.7f, C2D_Color32(255, 255, 255, 255), "English", 320);
-
+	Gui::DrawString(langBlocks[0].x + 25, langBlocks[0].y, 0.7f, TEXT_COLOR, "Deutsch", 320);
+	Gui::DrawString(langBlocks[1].x + 25, langBlocks[1].y, 0.7f, TEXT_COLOR, "English", 320);
 	C3D_FrameEnd(0);
 }
 

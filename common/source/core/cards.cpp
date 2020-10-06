@@ -27,9 +27,7 @@
 #include "cards.hpp"
 
 /*
-	Karten klasse konstruktor.
-
-	Aktuell ist dort nichts enthalten.
+	Karten Klasse konstruktor.
 */
 Cards::Cards() { }
 
@@ -38,9 +36,7 @@ Cards::Cards() { }
 
 	std::vector<CardStruct> cards: Die Karten.
 */
-void Cards::ImportCards(std::vector<CardStruct> cards) {
-	this->hand = cards;
-}
+void Cards::ImportCards(std::vector<CardStruct> cards) { this->hand = cards; }
 
 /*
 	Füge eine Karte der Hand hinzu vom Kartendeck.
@@ -48,10 +44,10 @@ void Cards::ImportCards(std::vector<CardStruct> cards) {
 	std::unique_ptr<Deck> &cardDeck: Das Karten-Deck.
 */
 void Cards::AddCard(std::unique_ptr<Deck> &cardDeck) {
-	if (!cardDeck) return;
+	if (!cardDeck) return; // Karten-Deck ist ein nullpointer und somit nicht gültig.
 
 	if (cardDeck->GetDeckSize() > 0) {
-		this->hand.push_back({ cardDeck->GetCard() }); // Füge eine Karte vom deck hinzu.
+		this->hand.push_back({ cardDeck->GetCard() }); // Füge eine Karte vom Karten-Deck hinzu.
 	}
 }
 
@@ -61,9 +57,7 @@ void Cards::AddCard(std::unique_ptr<Deck> &cardDeck) {
 	uint8_t index: Der Karten-Index.
 */
 void Cards::RemoveCard(uint8_t index) {
-	if (index < this->GetHandSize()) {
-		this->hand.erase(this->hand.begin() + index);
-	}
+	if (index < this->GetHandSize()) this->hand.erase(this->hand.begin() + index);
 }
 
 /*
@@ -102,6 +96,4 @@ CardStruct Cards::GetCard(uint8_t index) const {
 /*
 	Wiedergebe die anzahl der Karten von der Hand.
 */
-uint8_t Cards::GetHandSize() const {
-	return (uint8_t)this->hand.size();
-}
+uint8_t Cards::GetHandSize() const { return (uint8_t)this->hand.size(); }

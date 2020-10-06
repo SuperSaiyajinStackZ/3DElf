@@ -48,7 +48,7 @@ std::pair<CardType, CardType> Table::GetPlayCard(CardColor CLR) {
 	if (this->TableCards[(uint8_t)CLR - 1].first == CardType::NUMBER_EMPTY &&
 		this->TableCards[(uint8_t)CLR - 1].second == CardType::NUMBER_EMPTY) {
 			return { CardType::NUMBER_11, CardType::NUMBER_11 };
-	}
+		}
 
 	/* 1 wäre die erste Karte, somit verhindere den folgenden Code. */
 	if (this->TableCards[(uint8_t)CLR - 1].first != CardType::NUMBER_1) {
@@ -128,6 +128,4 @@ std::pair<CardType, CardType> Table::GetCurrent(CardColor CLR) const { return th
 	CardColor CLR: Kartenfarbe.
 	std::pair<CardType, CardType> CT = Kartentypen.
 */
-void Table::ImportCardTypes(CardColor CLR, std::pair<CardType, CardType> CT) {
-	this->TableCards[(uint8_t)CLR - 1] = CT;
-}
+void Table::ImportCardTypes(CardColor CLR, std::pair<CardType, CardType> CT) { this->TableCards[(uint8_t)CLR - 1] = CT; }
