@@ -102,9 +102,9 @@ void Game::InitNewGame(uint8_t plAmount) {
 */
 void Game::LoadGameFromFile() {
 	this->validGame = false; // Setze das immer zu falsch, wenn die Funktion startet.
-	if (access(_GAME_SAVEPATH, F_OK) != 0) return; // Datei existiert nicht.
+	if (access(_GAME_DATA_FILE, F_OK) != 0) return; // Datei existiert nicht.
 
-	FILE *file = fopen(_GAME_SAVEPATH, "r");
+	FILE *file = fopen(_GAME_DATA_FILE, "r");
 
 	if (file) {
 		fseek(file, 0, SEEK_END);
@@ -121,11 +121,6 @@ void Game::LoadGameFromFile() {
 		fclose(file);
 	}
 }
-
-/*
-	Gibt an, ob das geladene spiel auch ordnungsgemäß geladen worden ist.
-*/
-bool Game::validLoaded() const { return this->validGame; }
 
 /*
 	Konvertiere die Daten zu einem Spiel.
@@ -280,7 +275,7 @@ void Game::SaveConversion() {
 void Game::SaveToFile(bool update) {
 	if (update) this->SaveConversion(); // Konvertiere, falls update ist gewollt (true).
 
-	FILE *out = fopen(_GAME_SAVEPATH, "w");
+	FILE *out = fopen(_GAME_DATA_FILE, "w");
 	fwrite(this->GameData.get(), 1, _GAME_SIZE, out);
 	fclose(out);
 }
@@ -353,12 +348,26 @@ void Game::RemovePlayerCard(uint8_t player, uint8_t index) {
 }
 
 /*
+	Wiedergebe, ob die Karte von einem Spieler gespielt werden kann.
+
+	uint8_t player: Der Spieler-Index.
+	uint8_t index: Der Karten-Index.
+*/
+bool Game::Playable(uint8_t player, uint8_t index) {
+	if (player < (uint8_t)this->Players.size()) {
+		return this->Players[player]->Playable(index, this->TableCard);
+	}
+
+	return false;
+}
+
+/*
 	Wiedergebe die Anzahl der Karten von der Spielerhand.
 
 	uint8_t player: Der Spieler-Index.
 */
 uint8_t Game::GetPlayerHandSize(uint8_t player) const {
-	if (player < (int)this->Players.size()) return this->Players[player]->GetHandSize();
+	if (player < (uint8_t)this->Players.size()) return this->Players[player]->GetHandSize();
 
 	return 0;
 }

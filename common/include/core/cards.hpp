@@ -29,6 +29,7 @@
 
 #include "coreHelper.hpp"
 #include "deck.hpp"
+#include "table.hpp"
 #include <vector>
 
 class Cards {
@@ -40,6 +41,7 @@ public:
 
 	void AddCard(std::unique_ptr<Deck> &cardDeck);
 	void RemoveCard(uint8_t index);
+	bool Playable(uint8_t index, std::unique_ptr<Table> &table);
 
 	CardType GetType(uint8_t index) const;
 	CardColor GetColor(uint8_t index) const;

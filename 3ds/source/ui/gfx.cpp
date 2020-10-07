@@ -29,16 +29,30 @@
 extern C2D_SpriteSheet sprites;
 
 /*
-	Dies beinhaltet alle Kartenfarben in Rot, Gelb, Grün und Blau.
+	Wiedergibt einen uint32_t mit der Karten-Outline Farbe.
 
-	Dies kann ebenfalls modifiziert werden, für Farb-Mods.
+	CardColor CL: Die Kartenfarbe.
 */
-constexpr uint32_t CardColors[4] = {
-	C2D_Color32(222, 0, 0, 255),
-	C2D_Color32(222, 222, 0, 255),
-	C2D_Color32(0, 222, 0, 255),
-	C2D_Color32(0, 0, 222, 255)
-};
+static const uint32_t ReturnCardColor(CardColor CL) {
+	switch(CL) {
+		case CardColor::COLOR_EMPTY:
+			return NO_COLOR;
+
+		case CardColor::COLOR_RED:
+			return RED_CARD;
+
+		case CardColor::COLOR_YELLOW:
+			return YELLOW_CARD;
+
+		case CardColor::COLOR_GREEN:
+			return GREEN_CARD;
+
+		case CardColor::COLOR_BLUE:
+			return BLUE_CARD;
+	}
+
+	return NO_COLOR;
+}
 
 /*
 	Zeichne eine basis für den Top Screen.
@@ -65,10 +79,11 @@ void GFX::DrawBaseBottom() {
 	float Height: Die Höhe der Karte.
 	u32 color: Die Outline Farbe als einen uint32_t / C2D_Color32(r, g, b, a) format.
 	const int pow: Die Stärke des Outlines.
+	bool playable: Ob die Karte gespielt werden kann.
 */
-void GFX::DrawCardOutline(int xPos, int yPos, float Width, float Height, uint32_t color, const int pow) {
+void GFX::DrawCardOutline(int xPos, int yPos, float Width, float Height, uint32_t color, const int pow, bool playable) {
 	/* Die Mitte. */
-	Gui::Draw_Rect(xPos + pow, yPos + pow, Width - pow, Height - pow, C2D_Color32(255, 255, 255, 255));
+	Gui::Draw_Rect(xPos + pow, yPos + pow, Width - pow, Height - pow, CARD_MIDDLE_COLOR);
 
 	/* Oberes Outline. */
 	Gui::Draw_Rect(xPos, yPos, Width, pow, color);
@@ -81,6 +96,9 @@ void GFX::DrawCardOutline(int xPos, int yPos, float Width, float Height, uint32_
 
 	/* Linkes Outline. */
 	Gui::Draw_Rect(xPos, yPos, pow, Height, color);
+
+	/* Falls die Karte nicht gespielt werden kann, blende die Karte etwas aus. */
+	if (!playable) Gui::Draw_Rect(xPos, yPos, Width, Height, CARD_DIM_COLOR);
 }
 
 /*
@@ -92,11 +110,12 @@ void GFX::DrawCardOutline(int xPos, int yPos, float Width, float Height, uint32_
 	int w: Die Breite der Karte.
 	int h: Die Höhe der Karte.
 	int pow: Die Stärke des Outlines.
+	bool playable: Ob die Karte gespielt werden kann.
 */
-void GFX::DrawCardStruct(CardStruct CS, int x, int y, int w, int h, int pow) {
+void GFX::DrawCardStruct(CardStruct CS, int x, int y, int w, int h, int pow, bool playable) {
 	if (CS.CT == CardType::NUMBER_EMPTY || CS.CC == CardColor::COLOR_EMPTY) return;
 
-	DrawCardOutline(x, y, w, h, CardColors[(uint8_t)CS.CC - 1], pow);
+	DrawCardOutline(x, y, w, h, ReturnCardColor(CS.CC), pow, playable);
 
 	const int wMax = w - (pow * 2) / 2;
 	const int hMax = h - (pow * 2) / 2;
@@ -116,11 +135,12 @@ void GFX::DrawCardStruct(CardStruct CS, int x, int y, int w, int h, int pow) {
 	int w: Die Breite der Karte.
 	int h: Die Höhe der Karte.
 	int pow: Die Stärke des Outlines.
+	bool valid: Ob die Karte gespielt werden kann.
 */
-void GFX::DrawCardSeparate(CardType CT, CardColor CC, int x, int y, int w, int h, int pow) {
+void GFX::DrawCardSeparate(CardType CT, CardColor CC, int x, int y, int w, int h, int pow, bool playable) {
 	if (CT == CardType::NUMBER_EMPTY || CC == CardColor::COLOR_EMPTY) return;
 
-	DrawCardOutline(x, y, w, h, CardColors[(uint8_t)CC - 1], 4);
+	DrawCardOutline(x, y, w, h, ReturnCardColor(CC), 4, playable);
 
 	const int wMax = w - (pow * 2) / 2;
 	const int hMax = h - (pow * 2) / 2;

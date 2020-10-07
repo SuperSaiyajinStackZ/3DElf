@@ -97,3 +97,18 @@ CardStruct Cards::GetCard(uint8_t index) const {
 	Wiedergebe die anzahl der Karten von der Hand.
 */
 uint8_t Cards::GetHandSize() const { return (uint8_t)this->hand.size(); }
+
+/*
+	Wiedergebe, ob die Karte gespielt werden kann.
+
+	uint8_t index: Der Karten-Index.
+	std::unique_ptr<Table> &table: Eine Referenz zum Tischkarten Zeiger.
+*/
+bool Cards::Playable(uint8_t index, std::unique_ptr<Table> &table) {
+	if (!table) return false;
+
+	const bool isUpper = (uint8_t)this->GetType(index) >= 11 ? true : false; // 12 + ist die obere Karte.
+	return table->CanPlay(this->GetColor(index), isUpper, this->GetType(index));
+
+	return false;
+}

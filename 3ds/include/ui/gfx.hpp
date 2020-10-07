@@ -34,26 +34,51 @@
 
 /* Definiere die Farben hier. */
 #define TEXT_COLOR C2D_Color32(255, 255, 255, 255) // Text Farbe.
+#define BAR_COLOR C2D_Color32(0, 130, 130, 255) // Balken Farbe.
 #define BG_COLOR C2D_Color32(0, 180, 180, 255) // Hintergrund Farbe.
-#define BOX_COLOR C2D_Color32(0, 130, 130, 255) // Nachrichten Box Farbe.
+#define BOX_COLOR C2D_Color32(0, 130, 130, 255) // TextBox Farbe.
+
 #define BUTTON_SELECTED C2D_Color32(0, 222, 222, 255) // Ausgewählte Schaltflächen Farbe.
 #define BUTTON_UNSELECTED C2D_Color32(0, 130, 130, 255) // Nicht Ausgewählte Schaltflächen Farbe.
+
 #define DIM_COLOR C2D_Color32(0, 0, 0, 170) // Gedunkelter Bildschirm Farbe.
-#define BAR_COLOR C2D_Color32(0, 130, 130, 255) // Balken Farbe.
 #define NO_COLOR C2D_Color32(0, 0, 0, 0) // Transparente Farbe.
+
 #define CARD_SLT_COLOR C2D_Color32(0, 0, 0, 255) // Karten-Selektor Farbe.
 #define CARD_NUMB_COLOR C2D_Color32(0, 0, 0, 255) // Karten-Nummer Farbe.
+#define CARD_DIM_COLOR C2D_Color32(0, 0, 0, 150) // Falls die Karte nicht spielbar ist.
+#define CARD_MIDDLE_COLOR C2D_Color32(255, 255, 255, 255) // Karten-Mitte Farbe.
 
+#define RED_CARD C2D_Color32(222, 0, 0, 255) // Rote Karten Farbe.
+#define YELLOW_CARD C2D_Color32(222, 222, 0, 255) // Gelbe Karten Farbe.
+#define GREEN_CARD C2D_Color32(0, 222, 0, 255) // Grüne Karten Farbe.
+#define BLUE_CARD C2D_Color32(0, 0, 222, 255) // Blaue Karten Farbe.
 
 namespace GFX {
 	/* Basiszeug. */
 	void DrawBaseTop();
 	void DrawBaseBottom();
 
-	/* Kartenzeug. */
-	void DrawCardOutline(int xPos, int yPos, float Width = 60, float Height = 80, uint32_t color = C2D_Color32(255, 255, 255, 255), const int pow = 5);
-	void DrawCardStruct(CardStruct CS, int x, int y, int w = 40, int h = 60, int pow = 4);
-	void DrawCardSeparate(CardType CT, CardColor CC, int x, int y, int w = 40, int h = 40, int pow = 4);
+	/* Karten-Outline Zeichnungs-Funktion. */
+	void DrawCardOutline(
+		int xPos, int yPos, float Width = 60, float Height = 80,
+		uint32_t color = NO_COLOR, const int pow = 5,
+		bool playable = true
+	);
+
+	/* Karten-Outline mit Kartenstrukt Zeichnungs-Funktion. */
+	void DrawCardStruct(
+		CardStruct CS, int x, int y, int w = 40, int h = 60,
+		int pow = PLAYER_CARD_OUTLINE_SIZE,
+		bool playable = true
+	);
+
+	/* Karten-Outline mit separatem Kartentyp + Kartenfarbe Zeichnungs-Funktion. */
+	void DrawCardSeparate(
+		CardType CT, CardColor CC, int x, int y, int w = 40, int h = 40,
+		int pow = TABLE_CARD_OUTLINE_SIZE,
+		bool playable = true
+	);
 
 	/* Spritezeug. */
 	void DrawSprite(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);

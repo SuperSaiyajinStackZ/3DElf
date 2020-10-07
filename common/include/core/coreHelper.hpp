@@ -41,7 +41,7 @@ inline std::mt19937 randomGen; // Zufalls-Generator.
 	Bei 6 Spielern verbleiben 10 Karten im Karten-Deck.
 */
 
-/* Kartentypen enum Klasse. */
+/* Kartentypen Enum Klasse. */
 enum class CardType : uint8_t {
 	NUMBER_EMPTY,
 	NUMBER_1,
@@ -66,7 +66,7 @@ enum class CardType : uint8_t {
 	NUMBER_20
 };
 
-/* Kartenfarbe enum Klasse. */
+/* Kartenfarbe Enum Klasse. */
 enum class CardColor : uint8_t {
 	COLOR_EMPTY,
 	COLOR_RED,

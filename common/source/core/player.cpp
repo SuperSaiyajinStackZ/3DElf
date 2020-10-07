@@ -53,6 +53,18 @@ void Player::AddCard(std::unique_ptr<Deck> &cardDeck) { this->hand->AddCard(card
 void Player::RemoveCard(uint8_t index) { this->hand->RemoveCard(index); }
 
 /*
+	Wiedergebe, ob die Karte gespielt werden kann.
+
+	uint8_t index: Der Karten-Index.
+	std::unique_ptr<Table> &table: Eine Referenz zum Tischkarten Zeiger.
+*/
+bool Player::Playable(uint8_t index, std::unique_ptr<Table> &table) {
+	if (!table) return false;
+
+	return this->hand->Playable(index, table);
+}
+
+/*
 	Wiedergebe den Kartentyp einer Karte von der Hand.
 
 	uint8_t index: Der Karten-Index.

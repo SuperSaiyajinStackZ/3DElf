@@ -33,14 +33,11 @@
 #include "table.hpp"
 #include <vector>
 
-class Deck;
-class Player;
-class Table;
-
 #define _GAME_CURRENT_PLAYER 0x0
 #define _GAME_CARDDECK_CARD_AMOUNT 0x1
 #define _GAME_PLAYER_AMOUNT 0x2
 #define _GAME_DRAW_AMOUNT 0x3
+#define _GAME_CARDDECK_CARDS 0x4
 
 #define _GAME_DECKSIZE 0xA0
 #define _GAME_TABLECARD_SIZE 0x2
@@ -48,8 +45,6 @@ class Table;
 #define _GAME_HANDSIZE 0x50
 #define _GAME_CARDSIZE 0x2
 #define _GAME_MAXPLAYERS 6
-
-#define _GAME_CARDDECK_CARDS 0x4
 
 #define _GAME_TABLECARD_RED 0xA4
 #define _GAME_TABLECARD_YELLOW 0xA6
@@ -78,10 +73,9 @@ class Table;
 #define _GAME_PLAYER_6_PAGEINDEX 0x47D
 
 #define _GAME_USES_AI 0x47E
-
 #define _GAME_SIZE 0x47F
 
-#define _GAME_SAVEPATH "sdmc:/3ds/3DElf/GameData.dat"
+#define _GAME_DATA_FILE "sdmc:/3ds/3DElf/GameData.dat" // Die Spiel-Daten werden hier gespeichert.
 
 /*
 	Spieldaten Struktur...
@@ -136,11 +130,13 @@ class Game {
 public:
 	Game(uint8_t plAmount);
 	~Game();
+
+	/* Spiel-Utilities. */
 	void InitNewGame(uint8_t plAmount);
-	void LoadGameFromFile();
-	void convertDataToGame();
+	void LoadGameFromFile(); // Lade die Spiel-Daten von der Datei.
+	void convertDataToGame(); // Konvertiere die Spiel-Daten zu einem Spiel.
 	void SaveConversion(); // Konvertiere das aktuelle Spiel zu einem Buffer.
-	void SaveToFile(bool update = true); // Konvertiere wenn true und schreibe zu datei.
+	void SaveToFile(bool update = true); // Konvertiere wenn true und schreibe zur Datei.
 
 	/* Spielerkarten wiedergebung funktionen. */
 	CardType GetPlayerCardType(uint8_t player, uint8_t index) const;
@@ -150,6 +146,7 @@ public:
 	/* Karten mit Spielerhand funktionen. */
 	void AddPlayerCard(uint8_t player);
 	void RemovePlayerCard(uint8_t player, uint8_t index);
+	bool Playable(uint8_t player, uint8_t index);
 	uint8_t GetPlayerHandSize(uint8_t player) const;
 
 	/* Aktueller Spieler & Anzahl funktionen. */
@@ -178,7 +175,8 @@ public:
 	/* Karten-Deck funktionen. */
 	uint8_t GetDeckSize() const { return this->CardDeck->GetDeckSize(); }
 
-	bool validLoaded() const;
+	/* Wiedergebe ob das Spiel gültig ist. */
+	bool validLoaded() const { return this->validGame; };
 
 	/* Computer part. */
 	bool GetAI() const { return this->useAI; }
@@ -198,7 +196,7 @@ private:
 	uint8_t PlayerAmount = 2, currentPlayer = 0, drawAmount = 0;
 	bool validGame = false, useAI = false;
 
-	std::unique_ptr<uint8_t[]> GameData = nullptr; // Spieledaten Buffer.
+	std::unique_ptr<uint8_t[]> GameData = nullptr; // Spiel-Daten Buffer.
 };
 
 #endif

@@ -54,7 +54,9 @@ void GameScreen::DrawPlayerCards(void) const {
 		/* Falls der Kartenindex 15 oder kleiner ist. */
 		if (index2 < MAX_CARDS + 1) {
 			GFX::DrawCardStruct(this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(), i),
-				CardPos[index2 - 1].x, CardPos[index2 - 1].y);
+				CardPos[index2 - 1].x, CardPos[index2 - 1].y,
+				CardPos[index2 - 1].w, CardPos[index2 - 1].h, PLAYER_CARD_OUTLINE_SIZE,
+				this->currentGame->Playable(this->currentGame->GetCurrentPlayer(), i));
 		}
 	}
 

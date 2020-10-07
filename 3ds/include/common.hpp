@@ -27,6 +27,9 @@
 #ifndef _3DELF_COMMON_HPP
 #define _3DELF_COMMON_HPP
 
+#define PLAYER_CARD_OUTLINE_SIZE 5
+#define TABLE_CARD_OUTLINE_SIZE 4
+
 /* Hier sind alle notwendigen Headers gelistet. */
 #include "gfx.hpp"
 #include "kbd.hpp"
