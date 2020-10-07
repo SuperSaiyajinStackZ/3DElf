@@ -24,6 +24,7 @@
 	"GAME_SCREEN": "Spiel Screen",
 	"LOAD_FROM_FILE_PROMPT": "Möchtest du dein zuletztes gespeichertes Spiel laden?",
 	"LOAD_GAME": "Spiel Laden",
+	"NEXT_GAME": "Möchtest du ein anderes Spiel starten?",
 	"NEXT_PLAYER": "Spieler %i hat seine / ihre Runde beendet.\nSpieler %i ist an der Reihe!",
 	"NEW_GAME": "Neues Spiel",
 	"NEW_GAME_PRMPT": "Möchtest du eine Neues Spiel starten?\nDu verlierst dadurch deinen kompletten Fortschritt.",
@@ -47,6 +48,7 @@
 	"SELECT_LANG": "Wähle eine Sprache.",
 	"SHOW_CREDITS": "Credits anzeigen",
 	"SHOW_RULES": "Regeln anzeigen",
+	"STACKZ_PRESENTS": "SuperSaiyajinStackZ Präsentiert...",
 	"UNIVERSAL_CORE": "- Für Universal-Core.",
 	"YES": "Ja"
 }

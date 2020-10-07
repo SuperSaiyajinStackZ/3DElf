@@ -52,13 +52,13 @@ static void init() {
 	romfsInit();
 	gfxInitDefault();
 	Gui::init();
-	konfiguration = std::make_unique<Settings>();
-
-	Lang::load(konfiguration->Language()); // Lade die Übersetzungen.
+	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);
 
 	mkdir("sdmc:/3ds", 0x777);
 	mkdir("sdmc:/3ds/3DElf", 0x777);
-	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);
+
+	konfiguration = std::make_unique<Settings>();
+	Lang::load(konfiguration->Language()); // Lade die Übersetzungen.
 
 	Overlays::SplashOverlay();
 	Overlays::RulesOverlay();

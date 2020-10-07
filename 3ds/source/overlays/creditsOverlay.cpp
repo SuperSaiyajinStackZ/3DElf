@@ -39,11 +39,11 @@ static void Draw() {
 	Gui::Draw_Rect(0, 0, 400, 25, BAR_COLOR);
 	Gui::Draw_Rect(0, 215, 400, 25, BAR_COLOR);
 
-	GFX::DrawSprite(sprites_stackZ_idx, 2, 76);
-	GFX::DrawSprite(sprites_u_c_idx, 190, 105);
+	GFX::DrawSprite(sprites_stackZ_idx, 2, 75);
+	GFX::DrawSprite(sprites_Logo_idx, 140, 56);
 
-	Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("CREDITS"));
-	Gui::DrawStringCentered(0, 30, 0.7f, TEXT_COLOR, Lang::get("DEV_BY"), 390);
+	Gui::DrawStringCentered(0, 1, 0.6f, TEXT_COLOR, Lang::get("CREDITS"));
+	Gui::DrawStringCentered(0, 30, 0.6f, TEXT_COLOR, Lang::get("DEV_BY"), 390);
 	Gui::DrawStringCentered(0, 217, 0.6f, TEXT_COLOR, Lang::get("CURRENT_VERSION") + std::string(V_STRING), 390);
 
 	GFX::DrawBaseBottom();

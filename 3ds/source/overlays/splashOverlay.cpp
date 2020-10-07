@@ -26,20 +26,33 @@
 
 #include "common.hpp"
 
+#define _SPLASH_X_LOGO_POS 140
+#define _SPLASH_LOGO_INIT_DELAY 50
+#define _SPLASH_WAIT_DELAY 200
+
 /*
 	Zeichne den Splash-Screen.
+
+	const int &logoPos: Die Position des 3DElf's Logo.
 */
-static void Draw() {
+static void Draw(const int &logoPos) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, NO_COLOR);
 	C2D_TargetClear(Bottom, NO_COLOR);
 
-	Gui::ScreenDraw(Top);
-	GFX::DrawSprite(sprites_dev_by_idx, 0, 0);
+	GFX::DrawBaseTop();
+	Gui::Draw_Rect(0, 0, 400, 25, BAR_COLOR);
+	Gui::Draw_Rect(0, 215, 400, 25, BAR_COLOR);
 
-	Gui::ScreenDraw(Bottom);
-	GFX::DrawSprite(sprites_universal_core_idx, 0, 0);
+	Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("STACKZ_PRESENTS"));
+	GFX::DrawSprite(sprites_stackZ_idx, 2, 75);
+	if (logoPos < 400) GFX::DrawSprite(sprites_Logo_idx, logoPos, 56);
+	Gui::DrawStringCentered(0, 217, 0.7f, TEXT_COLOR, "2020 - 2020", 390);
+
+	GFX::DrawBaseBottom();
+	GFX::DrawSprite(sprites_universal_core_idx, 0, 26);
+
 	C3D_FrameEnd(0);
 }
 
@@ -47,22 +60,46 @@ static void Draw() {
 	Zeige den Splash-Screen.
 */
 void Overlays::SplashOverlay() {
-	int delay = 255;
-	bool doOut = false;
+	int delay = _SPLASH_WAIT_DELAY, logoPos = 402, swipeDelay = _SPLASH_LOGO_INIT_DELAY;
+	bool doOut = false, swipedIn = false, doSwipe = false;
 
 	while(!doOut) {
-		Draw();
+		Draw(logoPos);
 
 		hidScanInput();
 
 		if (hidKeysDown()) doOut = true;
 
-		/* Falls der Delay größer als 0 ist, reduziere es jede frame. */
-		if (delay > 0) {
-			delay--;
+		/* Als erstes die Initiale Overlay Verzögerung. */
+		if (!swipedIn) {
+			if (swipeDelay > 0) {
+				swipeDelay--;
 
-			/* Falls Delay == 0, verlasse das Overlay. */
-			if (delay == 0) doOut = true;
+				if (swipeDelay == 0) {
+					doSwipe = true;
+				}
+			}
+		}
+
+		/* Dann die Logo Animation. */
+		if (doSwipe) {
+			if (logoPos > _SPLASH_X_LOGO_POS) {
+				logoPos--;
+
+				if (logoPos == _SPLASH_X_LOGO_POS) {
+					swipedIn = true;
+				}
+			}
+		}
+
+		/* Dann die restliche Logik. */
+		if (swipedIn) {
+			if (delay > 0) {
+				delay--;
+
+				/* Falls Delay == 0, verlasse das Overlay. */
+				if (delay == 0) doOut = true;
+			}
 		}
 	}
 }

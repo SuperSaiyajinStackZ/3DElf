@@ -242,6 +242,20 @@ void GameScreen::pageHandle(bool fw) {
 	Die HauptLogik des Spiel-Screen's.
 */
 void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+	/* Falls das Spiel vorbei ist. */
+	if (this->gameOver) {
+		if (Msg::promptMsg(Lang::get("NEXT_GAME"))) {
+			Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
+			this->currentGame->InitNewGame(this->currentGame->GetPlayerAmount());
+			this->forcePlay = true;
+			this->forceElevenCheck(); // Setze den Check hier.
+			this->gameOver = false;
+
+		} else {
+			exiting = true;
+		}
+	}
+
 	/* Falls im Unter-Menü. */
 	if (this->isSub) {
 		if (hDown & KEY_B) this->isSub = false;
@@ -523,7 +537,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		/* Spiel-Logik. */
 		if (hDown & KEY_A) {
 			if (!this->DoPlayMove().second) {
-				if (!exiting) this->NextPHandle();
+				if (!this->gameOver) this->NextPHandle();
 			}
 		}
 
@@ -538,7 +552,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 								i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15));
 
 							if (!this->DoPlayMove().second) {
-								if (!exiting) this->NextPHandle();
+								if (!this->gameOver) this->NextPHandle();
 							}
 					}
 				}
@@ -655,19 +669,34 @@ std::pair<bool, bool> GameScreen::DoPlayMove() {
 
 		this->forcePlay = false; // Wir sind nicht mehr gezwungen hier in dem fall.
 
-		/* Falls der Index größer als die anzahl der Karten der Hand ist.. gehe zur ersten position der ersten Seite. */
+		/* Falls der Karten-Index größer als die Anzahl der Karten ist.. gehe Eins zurück. */
 		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) >= this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
-			this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(), 0);
-			this->currentGame->SetPageIndex(this->currentGame->GetCurrentPlayer(), 0);
+			switch(this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
+				case 15:
+				case 30:
+				case 45:
+				case 60:
+				case 75:
+					this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
+						(this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) - 1) * 15);
+
+					this->currentGame->SetPageIndex(this->currentGame->GetCurrentPlayer(),
+						this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) - 1);
+					break;
+
+				default:
+					this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
+						this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 1);
+					break;
+			}
 		}
 
 		/* 0 Karten auf der Hand -- Gewonnen. */
 		if (this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer()) == 0) {
+			this->gameOver = true;
 			char msg[100];
 			snprintf(msg, sizeof(msg), Lang::get("PLAYER_WON").c_str(), this->currentGame->GetCurrentPlayer() + 1);
 			Msg::DisplayWaitMsg(msg);
-
-			exiting = true;
 			return { false, false };
 		}
 
@@ -749,7 +778,7 @@ void GameScreen::AILogic() {
 		}
 	}
 
-	if (!exiting) this->NextPHandle();
+	if (!this->gameOver) this->NextPHandle();
 }
 
 /*
