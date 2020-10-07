@@ -39,7 +39,7 @@
 	"PLAYERAMOUNT_PRMPT": "If you change the Player amount\nthe game will be fully restarted.\nThat means you will lose all your progress.\nDo you like to continue?",
 	"PREPARE_GAME": "Preparing the game...",
 	"RULES": "Rules",
-	"RULES_INSTR": "The rules of this game are the following:\n\nFirst of all, you need to play an 11, if one exist.\nAfter it, you can play any other card.\n\nYou can play as many cards as possible.\nBut you can also only play one card\nto block other players, which may have a higher or lower number.\n\nYou need to play at least one card.. if you can't\nyou need to draw up to 3 cards.",
+	"RULES_INSTR": "The rules of this game are the following:\n\nFirst of all, you need to play an 11, if one exist.\nAfter it, you can play any other card.\n\nYou can play as many cards as possible.\nBut you can also only play one card\nto block other players, which may have a higher or lower number.\n\nYou need to play at least one card, if you can't\nyou need to draw up to 3 cards.",
 	"SAVE_GAME": "Save Game",
 	"SAVE_TO_FILE_PROMPT": "Would you like to save your current game?",
 	"SAVED_TO_FILE": "Game saved.",
@@ -50,5 +50,6 @@
 	"SHOW_RULES": "Show Rules",
 	"STACKZ_PRESENTS": "SuperSaiyajinStackZ Presents...",
 	"UNIVERSAL_CORE": "- For Universal-Core.",
+	"WRONG_11": "This is the wrong 11!\nThe 11 must be played in this order:\nRed, Yellow, Green, Blue.",
 	"YES": "Yes"
 }

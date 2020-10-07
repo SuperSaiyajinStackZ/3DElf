@@ -24,7 +24,7 @@ Hier findest du ein paar Screenshots zum aktuellen Fortschritt.
 ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/instructions_en.png) ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/game_screen_en.png)  ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/sub_menu_en.png)
 
 ### Splash Overlay
-![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/dev_by.png)
+![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/splash_en.png)
 
 ### Sprachauswahl Overlay
 ![](https://github.com/SuperSaiyajinStackZ/3DElf/blob/main/screenshots/language_overlay_en.png)

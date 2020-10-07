@@ -536,9 +536,27 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 		/* Spiel-Logik. */
 		if (hDown & KEY_A) {
-			if (!this->DoPlayMove().second) {
-				if (!this->gameOver) this->NextPHandle();
-			}
+			/* Überprüfe ob Spielbar. */
+			if (this->currentGame->Playable(this->currentGame->GetCurrentPlayer(),
+				this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()))) {
+					if (this->forceEleven) {
+						/* Checke, ob diese Karte eine 11 ist. */
+						if (this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(),
+							this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())).CT != CardType::NUMBER_11) {
+								Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
+								return;
+							}
+
+						if (!this->checkProper11()) {
+							Msg::DisplayWaitMsg(Lang::get("WRONG_11"));
+							return;
+						}
+					}
+
+					if (!this->DoPlayMove().second) {
+						if (!this->gameOver) this->NextPHandle();
+					}
+				}
 		}
 
 		/* Touch Berührung's Logik und spiel. */
@@ -551,13 +569,31 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 							this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
 								i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15));
 
-							if (!this->DoPlayMove().second) {
-								if (!this->gameOver) this->NextPHandle();
-							}
+							/* Überprüfe ob Spielbar. */
+							if (this->currentGame->Playable(this->currentGame->GetCurrentPlayer(),
+								this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()))) {
+									if (this->forceEleven) {
+										/* Checke, ob diese Karte eine 11 ist. */
+										if (this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(),
+											this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())).CT != CardType::NUMBER_11) {
+												Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
+												return;
+											}
+
+										if (!this->checkProper11()) {
+											Msg::DisplayWaitMsg(Lang::get("WRONG_11"));
+											return;
+										}
+									}
+
+									if (!this->DoPlayMove().second) {
+										if (!this->gameOver) this->NextPHandle();
+									}
+								}
+						}
 					}
 				}
 			}
-		}
 
 		/* Karten-Zieh Logik. */
 		if (hDown & KEY_X) {
@@ -625,6 +661,39 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 }
 
+/*
+	Überprüfe, ob die richtige 11 gespielt wurde.
+
+	Die Reihenfolge ist: Rot, Gelb, Grün und Blau.
+*/
+bool GameScreen::checkProper11() const {
+	const CardStruct CS = this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(),
+							this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()));
+
+	if (CS.CT != CardType::NUMBER_11) return false;
+
+	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_RED)) {
+		return CS.CC == CardColor::COLOR_RED;
+	}
+
+	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_YELLOW)) {
+		return CS.CC == CardColor::COLOR_YELLOW;
+	}
+
+	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_GREEN)) {
+		return CS.CC == CardColor::COLOR_GREEN;
+	}
+
+	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_BLUE)) {
+		return CS.CC == CardColor::COLOR_BLUE;
+	}
+
+	return false;
+}
+
+/*
+	Nächster Spieler Handle.
+*/
 void GameScreen::NextPHandle() {
 	/* Nächster Spieler handle. */
 	if (this->currentGame->GetCurrentPlayer() < this->currentGame->GetPlayerAmount() - 1) {

@@ -51,6 +51,7 @@ private:
 	void NextPHandle();
 	bool checkSpecificCard(CardType CT, CardColor CC) const;
 	void forceElevenCheck();
+	bool checkProper11() const;
 
 	std::unique_ptr<Game> currentGame = nullptr; // Der Spiel-Zeiger.
 	bool forcePlay = true, forceEleven = false, isSub = false, gameOver = false;
