@@ -25,6 +25,7 @@
 */
 
 #include "common.hpp"
+#include <ctime>
 
 #define _SPLASH_X_LOGO_POS 135
 #define _SPLASH_LOGO_INIT_DELAY 50
@@ -35,8 +36,9 @@
 
 	const int &logoPos: Die Position des 3DElf's Logo.
 	const int &fadeAlpha: Der Fade Alpha wert.
+	const uint32_t &year: Das aktulle Jahr.
 */
-static void Draw(const int &logoPos, const int &fadeAlpha) {
+static void Draw(const int &logoPos, const int &fadeAlpha, const uint32_t &year) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, NO_COLOR);
@@ -49,7 +51,7 @@ static void Draw(const int &logoPos, const int &fadeAlpha) {
 	Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("STACKZ_PRESENTS"));
 	GFX::DrawSprite(sprites_stackZ_idx, 2, 75);
 	if (logoPos < 400) GFX::DrawSprite(sprites_Logo_idx, logoPos, 56);
-	Gui::DrawStringCentered(0, 217, 0.7f, TEXT_COLOR, "2020 - 2020", 390);
+	Gui::DrawStringCentered(0, 217, 0.7f, TEXT_COLOR, "2020 - " + std::to_string(year), 390);
 	if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadeAlpha));
 
 	GFX::DrawBaseBottom();
@@ -67,6 +69,10 @@ void Overlays::SplashOverlay() {
 	int delay = _SPLASH_WAIT_DELAY, logoPos = 402, swipeDelay = _SPLASH_LOGO_INIT_DELAY, fadeAlpha = 255;
 	bool doOut = false, swipedIn = false, doSwipe = false, fadeInSplash = true;
 
+	time_t currentTime = time(NULL);
+	struct tm *currentTimeStruct = localtime(&currentTime);
+	const uint32_t year = 1900 + currentTimeStruct->tm_year;
+
 	while(!doOut) {
 		/* Fade in effekt. */
 		if (fadeInSplash) {
@@ -79,7 +85,7 @@ void Overlays::SplashOverlay() {
 			}
 		}
 
-		Draw(logoPos, fadeAlpha);
+		Draw(logoPos, fadeAlpha, year);
 
 		hidScanInput();
 
