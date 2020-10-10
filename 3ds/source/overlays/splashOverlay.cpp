@@ -26,7 +26,7 @@
 
 #include "common.hpp"
 
-#define _SPLASH_X_LOGO_POS 140
+#define _SPLASH_X_LOGO_POS 135
 #define _SPLASH_LOGO_INIT_DELAY 50
 #define _SPLASH_WAIT_DELAY 200
 
@@ -34,8 +34,9 @@
 	Zeichne den Splash-Screen.
 
 	const int &logoPos: Die Position des 3DElf's Logo.
+	const int &fadeAlpha: Der Fade Alpha wert.
 */
-static void Draw(const int &logoPos) {
+static void Draw(const int &logoPos, const int &fadeAlpha) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, NO_COLOR);
@@ -49,9 +50,11 @@ static void Draw(const int &logoPos) {
 	GFX::DrawSprite(sprites_stackZ_idx, 2, 75);
 	if (logoPos < 400) GFX::DrawSprite(sprites_Logo_idx, logoPos, 56);
 	Gui::DrawStringCentered(0, 217, 0.7f, TEXT_COLOR, "2020 - 2020", 390);
+	if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadeAlpha));
 
 	GFX::DrawBaseBottom();
 	GFX::DrawSprite(sprites_universal_core_idx, 0, 26);
+	if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadeAlpha));
 
 	C3D_FrameEnd(0);
 }
@@ -60,11 +63,23 @@ static void Draw(const int &logoPos) {
 	Zeige den Splash-Screen.
 */
 void Overlays::SplashOverlay() {
-	int delay = _SPLASH_WAIT_DELAY, logoPos = 402, swipeDelay = _SPLASH_LOGO_INIT_DELAY;
-	bool doOut = false, swipedIn = false, doSwipe = false;
+	/* Initiale Werte. */
+	int delay = _SPLASH_WAIT_DELAY, logoPos = 402, swipeDelay = _SPLASH_LOGO_INIT_DELAY, fadeAlpha = 255;
+	bool doOut = false, swipedIn = false, doSwipe = false, fadeInSplash = true;
 
 	while(!doOut) {
-		Draw(logoPos);
+		/* Fade in effekt. */
+		if (fadeInSplash) {
+			if (fadeAlpha > 0) {
+				fadeAlpha -= 2;
+				if (fadeAlpha <= 0) {
+					fadeAlpha = 0;
+					fadeInSplash = 0;
+				}
+			}
+		}
+
+		Draw(logoPos, fadeAlpha);
 
 		hidScanInput();
 

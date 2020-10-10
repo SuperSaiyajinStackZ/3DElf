@@ -33,6 +33,7 @@ bool exiting = false;
 C2D_SpriteSheet sprites;
 touchPosition touch;
 std::unique_ptr<Settings> konfiguration = nullptr;
+int fadeAlpha = 0;
 
 /*
 	Falls eine bestimmte position berührt wird.. mache etwas.
@@ -69,9 +70,11 @@ static void init() {
 	Die Hauptfunktion.
 */
 int main() {
+	bool fullExit = false;
+
 	init();
 
-	while(aptMainLoop() && !exiting) {
+	while(aptMainLoop() && !fullExit) {
 		hidScanInput();
 		touchRead(&touch);
 		uint32_t hDown = hidKeysDown();
@@ -83,8 +86,17 @@ int main() {
 		C2D_TargetClear(Bottom, NO_COLOR);
 
 		Gui::DrawScreen(true);
-		Gui::ScreenLogic(hDown, hHeld, touch, true, true);
+		if (!exiting) Gui::ScreenLogic(hDown, hHeld, touch, true, true);
 		C3D_FrameEnd(0);
+
+		if (exiting) {
+			if (fadeAlpha < 255) {
+				fadeAlpha += 2;
+				if (fadeAlpha >= 255) {
+					fullExit = true;
+				}
+			}
+		}
 	}
 
 	Gui::exit();

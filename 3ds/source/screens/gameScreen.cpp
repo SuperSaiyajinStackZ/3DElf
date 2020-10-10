@@ -26,6 +26,7 @@
 
 #include "gameScreen.hpp"
 
+extern int fadeAlpha;
 extern bool exiting;
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 #define MAX_CARDS 15
@@ -159,8 +160,10 @@ void GameScreen::Draw(void) const {
 		Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("GAME_SCREEN"));
 		Gui::DrawStringCentered(0, 218, 0.6f, TEXT_COLOR, Lang::get("SELECT_INSTRUCTIONS"), 390);
 		this->DrawTable();
+		if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadeAlpha));
 		GFX::DrawBaseBottom();
 		this->DrawPlayerCards();
+		if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadeAlpha));
 
 	} else {
 		GFX::DrawBaseTop();
@@ -187,6 +190,8 @@ void GameScreen::Draw(void) const {
 		}
 
 		Gui::DrawStringCentered(0, 218, 0.6f, TEXT_COLOR, Lang::get("B_BACK"), 390);
+		if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadeAlpha));
+
 		GFX::DrawBaseBottom();
 
 		for (int i = 0; i < 10; i++) {
@@ -204,6 +209,8 @@ void GameScreen::Draw(void) const {
 		Gui::DrawStringCentered(80, this->subBtn[6].y + 10, 0.6f, TEXT_COLOR, Lang::get("NEW_GAME"));
 		Gui::DrawStringCentered(80, this->subBtn[7].y + 10, 0.6f, TEXT_COLOR, Lang::get("CHANGE_COMPUTER"));
 		Gui::DrawStringCentered(80, this->subBtn[8].y + 10, 0.6f, TEXT_COLOR, Lang::get("PLAYER_AMOUNT"));
+
+		if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadeAlpha));
 	}
 }
 
@@ -316,6 +323,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 					/* Spiel Beenden. */
 					if (Msg::promptMsg(Lang::get("EXIT_GAME_PRMPT"))) {
 						exiting = true;
+						this->isSub = false;
 					}
 					break;
 
@@ -397,6 +405,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			} else if (touching(touch, this->subBtn[2])) {
 				if (Msg::promptMsg(Lang::get("EXIT_GAME_PRMPT"))) {
 					exiting = true;
+					this->isSub = false;
 				}
 
 			/* Regeln anzeigen. */
