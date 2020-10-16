@@ -42,6 +42,12 @@ private:
 	/* Zeichen-Utilities. */
 	void DrawPlayerCards(void) const;
 	void DrawTable(void) const;
+	void ShowGame(void) const;
+	void ShowSub(void) const;
+
+	/* Haupt Logiken. */
+	void SubLogic(u32 hDown, u32 hHeld, touchPosition touch);
+	void GameLogic(u32 hDown, u32 hHeld, touchPosition touch);
 
 	/* Logik-Utilities. */
 	void pageHandle(bool fw);

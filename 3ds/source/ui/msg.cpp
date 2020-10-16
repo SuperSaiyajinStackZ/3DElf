@@ -85,13 +85,9 @@ bool Msg::promptMsg(std::string msg) {
 			}
 		}
 
-		if (hidKeysDown() & KEY_TOUCH && touching(touch, promptBtn[0])) {
-			return true;
-		}
+		if (hidKeysDown() & KEY_TOUCH && touching(touch, promptBtn[0])) return true;
 
-		if (hidKeysDown() & KEY_TOUCH && touching(touch, promptBtn[1])) {
-			return false;
-		}
+		if (hidKeysDown() & KEY_TOUCH && touching(touch, promptBtn[1])) return false;
 	}
 }
 
@@ -146,9 +142,7 @@ void Msg::DisplayMsg(std::string Message) {
 /*
 	Zeigt eine noch nicht implementierte Nachricht an.
 */
-void Msg::NotImplementedYet(void) {
-	Msg::DisplayWaitMsg(Lang::get("NOT_IMPLEMENTED_YET"));
-}
+void Msg::NotImplementedYet(void) { Msg::DisplayWaitMsg(Lang::get("NOT_IMPLEMENTED_YET")); }
 
 /*
 	Zeige eine Hilfsbox an.

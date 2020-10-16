@@ -107,5 +107,7 @@ void Overlays::LanguageOverlay() {
 			Lang::load(konfiguration->Language());
 			doOut = true;
 		}
+
+		if (hidKeysDown() & KEY_B) doOut = true;
 	}
 }

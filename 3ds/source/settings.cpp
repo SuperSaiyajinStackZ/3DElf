@@ -30,7 +30,8 @@
 #define CONF_PATH "sdmc:/3ds/3DElf/Config.json"
 
 /*
-	Falls du Konfigurations-Datei nicht existiert, erstelle sie und setze die Sprache auf Englisch.
+	Falls die Konfigurations-Datei nicht existiert,
+	erstelle sie und setze die Sprache auf Englisch.
 */
 void Settings::Initialize() {
 	FILE *file = fopen(CONF_PATH, "w");

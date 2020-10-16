@@ -159,7 +159,6 @@ void GFX::DrawCardSeparate(CardType CT, CardColor CC, int x, int y, int w, int h
 	float ScaleX: Breiten-Skalierung.
 	float ScaleY: Höhen-Skalierung.
 */
-
 void GFX::DrawSprite(int index, int x, int y, float ScaleX, float ScaleY) {
 	Gui::DrawSprite(sprites, index, x, y, ScaleX, ScaleY);
 }

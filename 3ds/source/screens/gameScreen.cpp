@@ -48,6 +48,7 @@ GameScreen::GameScreen() {
 */
 void GameScreen::DrawPlayerCards(void) const {
 	uint8_t index2 = 0;
+
 	for (uint8_t i = 0 + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS);
 		i < this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer()); i++) {
 			index2++;
@@ -55,8 +56,8 @@ void GameScreen::DrawPlayerCards(void) const {
 		/* Falls der Kartenindex 15 oder kleiner ist. */
 		if (index2 < MAX_CARDS + 1) {
 			GFX::DrawCardStruct(this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(), i),
-				CardPos[index2 - 1].x, CardPos[index2 - 1].y,
-				CardPos[index2 - 1].w, CardPos[index2 - 1].h, PLAYER_CARD_OUTLINE_SIZE,
+				this->CardPos[index2 - 1].x, this->CardPos[index2 - 1].y,
+				this->CardPos[index2 - 1].w, this->CardPos[index2 - 1].h, PLAYER_CARD_OUTLINE_SIZE,
 				this->currentGame->Playable(this->currentGame->GetCurrentPlayer(), i));
 		}
 	}
@@ -64,19 +65,19 @@ void GameScreen::DrawPlayerCards(void) const {
 	/* Selektor part. */
 	if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) < MAX_CARDS) {
 		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) < MAX_CARDS + 1) {
-			Gui::drawAnimatedSelector(CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].x,
-				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].y,
-				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].w,
-				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].h,
+			Gui::drawAnimatedSelector(this->CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].x,
+				this->CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].y,
+				this->CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].w,
+				this->CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())].h,
 					.020f, CARD_SLT_COLOR);
 		}
 
 	} else {
 		if (index2 < MAX_CARDS + 1) {
-			Gui::drawAnimatedSelector(CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].x,
-				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].y,
-				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].w,
-				CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].h,
+			Gui::drawAnimatedSelector(this->CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].x,
+				this->CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].y,
+				this->CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].w,
+				this->CardPos[this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * MAX_CARDS)].h,
 				.020f, CARD_SLT_COLOR);
 		}
 	}
@@ -94,13 +95,8 @@ void GameScreen::DrawTable(void) const {
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
 		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_RED, 175, 30);
 
-		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_RED, 125, 30);
-		}
-
-		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_RED, 225, 30);
-		}
+		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_RED, 125, 30);
+		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_RED, 225, 30);
 	}
 
 	/* Gelb als zweites. */
@@ -109,13 +105,8 @@ void GameScreen::DrawTable(void) const {
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
 		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_YELLOW, 175, 75);
 
-		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_YELLOW, 125, 75);
-		}
-
-		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_YELLOW, 225, 75);
-		}
+		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_YELLOW, 125, 75);
+		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_YELLOW, 225, 75);
 	}
 
 	/* Grün als drittes. */
@@ -124,13 +115,8 @@ void GameScreen::DrawTable(void) const {
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
 		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_GREEN, 175, 120);
 
-		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_GREEN, 125, 120);
-		}
-
-		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_GREEN, 225, 120);
-		}
+		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_GREEN, 125, 120);
+		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_GREEN, 225, 120);
 	}
 
 	/* Blau als letztes. */
@@ -139,14 +125,77 @@ void GameScreen::DrawTable(void) const {
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
 		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_BLUE, 175, 165);
 
-		if (tempCards.first != CardType::NUMBER_11) {
-			GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_BLUE, 125, 165);
-		}
-
-		if (tempCards.second != CardType::NUMBER_11) {
-			GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_BLUE, 225, 165);
-		}
+		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_BLUE, 125, 165);
+		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_BLUE, 225, 165);
 	}
+}
+
+/*
+	Zeige das Spiel.
+*/
+void GameScreen::ShowGame(void) const {
+	GFX::DrawBaseTop();
+	Gui::Draw_Rect(0, 0, 400, 25, BAR_COLOR);
+	Gui::Draw_Rect(0, 215, 400, 25, BAR_COLOR);
+	Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("GAME_SCREEN"));
+	Gui::DrawStringCentered(0, 218, 0.6f, TEXT_COLOR, Lang::get("SELECT_INSTRUCTIONS"), 390);
+	this->DrawTable();
+	if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadeAlpha));
+
+	GFX::DrawBaseBottom();
+	this->DrawPlayerCards();
+	if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadeAlpha));
+}
+
+/*
+	Zeige das Unter-Menü.
+*/
+void GameScreen::ShowSub(void) const {
+	GFX::DrawBaseTop();
+	Gui::Draw_Rect(0, 0, 400, 25, BAR_COLOR);
+	Gui::Draw_Rect(0, 215, 400, 25, BAR_COLOR);
+	Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("GAME_PAUSED"));
+
+	/* Zeige Spiel-Informationen an. */
+	Gui::DrawStringCentered(0, 30, 0.6f, TEXT_COLOR, Lang::get("COMPUTER_USED") + ": " +
+							(this->currentGame->GetAI() ? Lang::get("YES") : Lang::get("NO")), 390);
+
+	Gui::DrawStringCentered(0, 45, 0.6f, TEXT_COLOR, Lang::get("PLAYER_AMOUNT") + ": " +
+							std::to_string(this->currentGame->GetPlayerAmount()), 390);
+
+	Gui::DrawStringCentered(0, 60, 0.6f, TEXT_COLOR, Lang::get("CARD_DECK_REMAINING") + ": " +
+							std::to_string(this->currentGame->GetDeckSize()), 390);
+
+	Gui::DrawStringCentered(0, 75, 0.6f, TEXT_COLOR, Lang::get("CURRENT_PLAYER") +
+							std::to_string(this->currentGame->GetCurrentPlayer() + 1), 390);
+
+	for (uint8_t i = 0; i < this->currentGame->GetPlayerAmount(); i++) {
+		Gui::DrawStringCentered(0, 100 + (i * 18), 0.6f, TEXT_COLOR, Lang::get("PLAYER") + " " +
+		std::to_string(i + 1) + " " + Lang::get("CARD_AMOUNT") + ": " + std::to_string(this->currentGame->GetPlayerHandSize(i)), 390);
+	}
+
+	Gui::DrawStringCentered(0, 218, 0.6f, TEXT_COLOR, Lang::get("B_BACK"), 390);
+	if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadeAlpha));
+
+	GFX::DrawBaseBottom();
+
+	for (int i = 0; i < 10; i++) {
+		if (this->subSel == i) Gui::drawAnimatedSelector(this->subBtn[i].x, this->subBtn[i].y, 140, 40, .030f, BUTTON_SELECTED, BUTTON_UNSELECTED);
+		else Gui::Draw_Rect(this->subBtn[i].x, this->subBtn[i].y, this->subBtn[i].w, this->subBtn[i].h, BUTTON_UNSELECTED);
+	}
+
+	Gui::DrawStringCentered(-80, this->subBtn[0].y + 10, 0.6f, TEXT_COLOR, Lang::get("LOAD_GAME"), 135);
+	Gui::DrawStringCentered(-80, this->subBtn[1].y + 10, 0.6f, TEXT_COLOR, Lang::get("SAVE_GAME"), 135);
+	Gui::DrawStringCentered(-80, this->subBtn[2].y + 10, 0.6f, TEXT_COLOR, Lang::get("EXIT_GAME"), 135);
+	Gui::DrawStringCentered(-80, this->subBtn[3].y + 10, 0.6f, TEXT_COLOR, Lang::get("SHOW_RULES"), 135);
+	Gui::DrawStringCentered(-80, this->subBtn[4].y + 10, 0.6f, TEXT_COLOR, Lang::get("SHOW_CREDITS"), 135);
+
+	Gui::DrawStringCentered(80, this->subBtn[5].y + 10, 0.6f, TEXT_COLOR, Lang::get("CHANGE_LANGUAGE"), 135);
+	Gui::DrawStringCentered(80, this->subBtn[6].y + 10, 0.6f, TEXT_COLOR, Lang::get("NEW_GAME"), 135);
+	Gui::DrawStringCentered(80, this->subBtn[7].y + 10, 0.6f, TEXT_COLOR, Lang::get("TOGGLE_COMPUTER"), 135);
+	Gui::DrawStringCentered(80, this->subBtn[8].y + 10, 0.6f, TEXT_COLOR, Lang::get("PLAYER_AMOUNT"), 135);
+
+	if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadeAlpha));
 }
 
 /*
@@ -154,63 +203,10 @@ void GameScreen::DrawTable(void) const {
 */
 void GameScreen::Draw(void) const {
 	if (!this->isSub) {
-		GFX::DrawBaseTop();
-		Gui::Draw_Rect(0, 0, 400, 25, BAR_COLOR);
-		Gui::Draw_Rect(0, 215, 400, 25, BAR_COLOR);
-		Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("GAME_SCREEN"));
-		Gui::DrawStringCentered(0, 218, 0.6f, TEXT_COLOR, Lang::get("SELECT_INSTRUCTIONS"), 390);
-		this->DrawTable();
-		if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadeAlpha));
-		GFX::DrawBaseBottom();
-		this->DrawPlayerCards();
-		if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadeAlpha));
+		this->ShowGame();
 
 	} else {
-		GFX::DrawBaseTop();
-		Gui::Draw_Rect(0, 0, 400, 25, BAR_COLOR);
-		Gui::Draw_Rect(0, 215, 400, 25, BAR_COLOR);
-		Gui::DrawStringCentered(0, 1, 0.7f, TEXT_COLOR, Lang::get("GAME_PAUSED"));
-
-		/* Zeige Spiel-Informationen an. */
-		Gui::DrawStringCentered(0, 30, 0.6f, TEXT_COLOR, Lang::get("COMPUTER_USED") + ": " +
-							(this->currentGame->GetAI() ? Lang::get("YES") : Lang::get("NO")), 390);
-
-		Gui::DrawStringCentered(0, 45, 0.6f, TEXT_COLOR, Lang::get("PLAYER_AMOUNT") + ": " +
-							std::to_string(this->currentGame->GetPlayerAmount()), 390);
-
-		Gui::DrawStringCentered(0, 60, 0.6f, TEXT_COLOR, Lang::get("CARD_DECK_REMAINING") + ": " +
-							std::to_string(this->currentGame->GetDeckSize()), 390);
-
-		Gui::DrawStringCentered(0, 75, 0.6f, TEXT_COLOR, Lang::get("CURRENT_PLAYER") +
-							std::to_string(this->currentGame->GetCurrentPlayer() + 1), 390);
-
-		for (uint8_t i = 0; i < this->currentGame->GetPlayerAmount(); i++) {
-			Gui::DrawStringCentered(0, 100 + (i * 18), 0.6f, TEXT_COLOR, Lang::get("PLAYER") + " " +
-			std::to_string(i + 1) + " " + Lang::get("CARD_AMOUNT") + ": " + std::to_string(this->currentGame->GetPlayerHandSize(i)), 390);
-		}
-
-		Gui::DrawStringCentered(0, 218, 0.6f, TEXT_COLOR, Lang::get("B_BACK"), 390);
-		if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadeAlpha));
-
-		GFX::DrawBaseBottom();
-
-		for (int i = 0; i < 10; i++) {
-			if (this->subSel == i) Gui::drawAnimatedSelector(this->subBtn[i].x, this->subBtn[i].y, 140, 40, .030f, BUTTON_SELECTED, BUTTON_UNSELECTED);
-			else Gui::Draw_Rect(this->subBtn[i].x, this->subBtn[i].y, this->subBtn[i].w, this->subBtn[i].h, BUTTON_UNSELECTED);
-		}
-
-		Gui::DrawStringCentered(-80, this->subBtn[0].y + 10, 0.6f, TEXT_COLOR, Lang::get("LOAD_GAME"));
-		Gui::DrawStringCentered(-80, this->subBtn[1].y + 10, 0.6f, TEXT_COLOR, Lang::get("SAVE_GAME"));
-		Gui::DrawStringCentered(-80, this->subBtn[2].y + 10, 0.6f, TEXT_COLOR, Lang::get("EXIT_GAME"));
-		Gui::DrawStringCentered(-80, this->subBtn[3].y + 10, 0.6f, TEXT_COLOR, Lang::get("SHOW_RULES"));
-		Gui::DrawStringCentered(-80, this->subBtn[4].y + 10, 0.6f, TEXT_COLOR, Lang::get("SHOW_CREDITS"));
-
-		Gui::DrawStringCentered(80, this->subBtn[5].y + 10, 0.6f, TEXT_COLOR, Lang::get("CHANGE_LANGUAGE"));
-		Gui::DrawStringCentered(80, this->subBtn[6].y + 10, 0.6f, TEXT_COLOR, Lang::get("NEW_GAME"));
-		Gui::DrawStringCentered(80, this->subBtn[7].y + 10, 0.6f, TEXT_COLOR, Lang::get("CHANGE_COMPUTER"));
-		Gui::DrawStringCentered(80, this->subBtn[8].y + 10, 0.6f, TEXT_COLOR, Lang::get("PLAYER_AMOUNT"));
-
-		if (fadeAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadeAlpha));
+		this->ShowSub();
 	}
 }
 
@@ -246,133 +242,33 @@ void GameScreen::pageHandle(bool fw) {
 }
 
 /*
-	Die HauptLogik des Spiel-Screen's.
+	Die Unter-Menü Logik.
 */
-void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	/* Falls das Spiel vorbei ist. */
-	if (this->gameOver) {
-		if (Msg::promptMsg(Lang::get("NEXT_GAME"))) {
-			Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
-			this->currentGame->InitNewGame(this->currentGame->GetPlayerAmount());
-			this->forcePlay = true;
-			this->forceElevenCheck(); // Setze den Check hier.
-			this->gameOver = false;
+void GameScreen::SubLogic(u32 hDown, u32 hHeld, touchPosition touch) {
+	if (hDown & KEY_B) this->isSub = false;
 
-		} else {
-			exiting = true;
-		}
+	if (hDown & KEY_DOWN) {
+		if (this->subSel < 4) this->subSel++;
+		else if (this->subSel > 4 && this->subSel < 9) this->subSel++;
 	}
 
-	/* Falls im Unter-Menü. */
-	if (this->isSub) {
-		if (hDown & KEY_B) this->isSub = false;
+	if (hDown & KEY_UP) {
+		if (this->subSel > 5) this->subSel--;
+		else if (this->subSel < 5 && this->subSel > 0) this->subSel--;
+	}
 
-		if (hDown & KEY_DOWN) {
-			if (this->subSel < 4) this->subSel++;
-			else if (this->subSel > 4 && this->subSel < 9) this->subSel++;
-		}
+	if (hDown & KEY_RIGHT) {
+		if (this->subSel < 5) this->subSel += 5;
+	}
 
-		if (hDown & KEY_UP) {
-			if (this->subSel > 5) this->subSel--;
-			else if (this->subSel < 5 && this->subSel > 0) this->subSel--;
-		}
+	if (hDown & KEY_LEFT) {
+		if (this->subSel > 4) this->subSel -= 5;
+	}
 
-		if (hDown & KEY_RIGHT) {
-			if (this->subSel < 5) this->subSel += 5;
-		}
-
-		if (hDown & KEY_LEFT) {
-			if (this->subSel > 4) this->subSel -= 5;
-		}
-
-		if (hDown & KEY_A) {
-			switch(this->subSel) {
-				case 0:
-					/* Spiel Laden. */
-					if (Msg::promptMsg(Lang::get("LOAD_FROM_FILE_PROMPT"))) {
-						this->currentGame->LoadGameFromFile();
-						if (this->currentGame->validLoaded()) {
-							Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
-							this->currentGame->convertDataToGame();
-							this->forceElevenCheck(); // Setze den Check hier.
-
-							if (this->currentGame->GetDrawAmount() == 3) {
-								this->forcePlay = false; // Weil wir bereits 3 mal gezogen haben.
-							}
-
-							this->isSub = false;
-
-						} else {
-							Msg::DisplayWaitMsg(Lang::get("NOT_VALID_GAME"));
-							return;
-						}
-					}
-					break;
-
-				case 1:
-					/* Spiel Speichern. */
-					if (Msg::promptMsg(Lang::get("SAVE_TO_FILE_PROMPT"))) {
-						Msg::DisplayMsg(Lang::get("SAVING_GAME"));
-						this->currentGame->SaveToFile(true);
-						Msg::DisplayWaitMsg(Lang::get("SAVED_TO_FILE"));
-						this->isSub = false;
-					}
-					break;
-
-				case 2:
-					/* Spiel Beenden. */
-					if (Msg::promptMsg(Lang::get("EXIT_GAME_PRMPT"))) {
-						exiting = true;
-						this->isSub = false;
-					}
-					break;
-
-				case 3:
-					/* Regeln anzeigen. */
-					Overlays::RulesOverlay();
-					break;
-
-				case 4:
-					/* Credits anzeigen. */
-					Overlays::CreditsOverlay();
-					break;
-
-				case 5:
-					/* Sprache ändern. */
-					Overlays::LanguageOverlay();
-					break;
-
-				case 6:
-					/* Spiel Neustarten. */
-					if (Msg::promptMsg(Lang::get("NEW_GAME_PRMPT"))) {
-						Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
-						this->currentGame->InitNewGame(this->currentGame->GetPlayerAmount());
-						this->forcePlay = true;
-						this->forceElevenCheck(); // Setze den Check hier.
-						this->isSub = false;
-					}
-					break;
-
-				case 7:
-					/* Computer De-/Aktivieren. */
-					this->currentGame->SetAI(Msg::promptMsg(Lang::get("PLAY_AGAINST_COMPUTER")));
-					break;
-
-				case 8:
-					/* Spieleranzahl verändern. */
-					if (Msg::promptMsg(Lang::get("PLAYERAMOUNT_PRMPT"))) {
-						this->currentGame->InitNewGame((uint8_t)KBD::SetAmount(6, Lang::get("ENTER_PLAYERAMOUNT"), this->currentGame->GetPlayerAmount()));
-						this->forcePlay = true;
-						this->forceElevenCheck(); // Setze den Check hier.
-						this->isSub = false;
-					}
-					break;
-			}
-		}
-
-		if (hDown & KEY_TOUCH) {
-			/* Spiel Laden. */
-			if (touching(touch, this->subBtn[0])) {
+	if (hDown & KEY_A) {
+		switch(this->subSel) {
+			case 0:
+				/* Spiel Laden. */
 				if (Msg::promptMsg(Lang::get("LOAD_FROM_FILE_PROMPT"))) {
 					this->currentGame->LoadGameFromFile();
 					if (this->currentGame->validLoaded()) {
@@ -391,37 +287,43 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 						return;
 					}
 				}
+				break;
 
-			/* Spiel Speichern. */
-			} else if (touching(touch, this->subBtn[1])) {
+			case 1:
+				/* Spiel Speichern. */
 				if (Msg::promptMsg(Lang::get("SAVE_TO_FILE_PROMPT"))) {
 					Msg::DisplayMsg(Lang::get("SAVING_GAME"));
 					this->currentGame->SaveToFile(true);
 					Msg::DisplayWaitMsg(Lang::get("SAVED_TO_FILE"));
 					this->isSub = false;
 				}
+				break;
 
-			/* Spiel Beenden. */
-			} else if (touching(touch, this->subBtn[2])) {
+			case 2:
+				/* Spiel Beenden. */
 				if (Msg::promptMsg(Lang::get("EXIT_GAME_PRMPT"))) {
 					exiting = true;
 					this->isSub = false;
 				}
+				break;
 
-			/* Regeln anzeigen. */
-			} else if (touching(touch, this->subBtn[3])) {
+			case 3:
+				/* Regeln anzeigen. */
 				Overlays::RulesOverlay();
+				break;
 
-			/* Credits anzeigen. */
-			} else if (touching(touch, this->subBtn[4])) {
+			case 4:
+				/* Credits anzeigen. */
 				Overlays::CreditsOverlay();
+				break;
 
-			/* Sprache ändern. */
-			} else if (touching(touch, this->subBtn[5])) {
+			case 5:
+				/* Sprache ändern. */
 				Overlays::LanguageOverlay();
+				break;
 
-			/* Spiel Neustarten. */
-			} else if (touching(touch, this->subBtn[6])) {
+			case 6:
+				/* Spiel Neustarten. */
 				if (Msg::promptMsg(Lang::get("NEW_GAME_PRMPT"))) {
 					Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
 					this->currentGame->InitNewGame(this->currentGame->GetPlayerAmount());
@@ -429,244 +331,347 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 					this->forceElevenCheck(); // Setze den Check hier.
 					this->isSub = false;
 				}
+				break;
 
-			/* Computer De-/Aktivieren. */
-			} else if (touching(touch, this->subBtn[7])) {
+			case 7:
+				/* Computer De-/Aktivieren. */
 				this->currentGame->SetAI(Msg::promptMsg(Lang::get("PLAY_AGAINST_COMPUTER")));
+				break;
 
-			/* Spieleranzahl ändern. */
-			} else if (touching(touch, this->subBtn[8])) {
+			case 8:
+				/* Spieleranzahl verändern. */
 				if (Msg::promptMsg(Lang::get("PLAYERAMOUNT_PRMPT"))) {
 					this->currentGame->InitNewGame((uint8_t)KBD::SetAmount(6, Lang::get("ENTER_PLAYERAMOUNT"), this->currentGame->GetPlayerAmount()));
 					this->forcePlay = true;
 					this->forceElevenCheck(); // Setze den Check hier.
 					this->isSub = false;
 				}
-			}
+				break;
 		}
+	}
 
-	/* Falls im Spiel. */
-	} else {
-		if (this->currentGame->GetCurrentPlayer() != 0) {
-			if (this->currentGame->GetAI()) {
-				this->AILogic();
-			}
-		}
+	if (hDown & KEY_TOUCH) {
+		/* Spiel Laden. */
+		if (touching(touch, this->subBtn[0])) {
+			if (Msg::promptMsg(Lang::get("LOAD_FROM_FILE_PROMPT"))) {
+				this->currentGame->LoadGameFromFile();
+				if (this->currentGame->validLoaded()) {
+					Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
+					this->currentGame->convertDataToGame();
+					this->forceElevenCheck(); // Setze den Check hier.
 
-		/* Navigation nach Rechts. */
-		if (hDown & KEY_RIGHT) {
-			if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 1 <
-				this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
-					switch(this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())) {
-						case 4:
-						case 9:
-						case 14:
-						case 29:
-						case 34:
-						case 39:
-						case 44:
-						case 49:
-						case 54:
-						case 59:
-						case 64:
-						case 69:
-						case 74:
-							return;
+					if (this->currentGame->GetDrawAmount() == 3) {
+						this->forcePlay = false; // Weil wir bereits 3 mal gezogen haben.
 					}
 
-					this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
-						this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 1);
-				}
-		}
+					this->isSub = false;
 
-		/* Navigation nach Links. */
-		if (hDown & KEY_LEFT) {
-			if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 1 >= 0) {
+				} else {
+					Msg::DisplayWaitMsg(Lang::get("NOT_VALID_GAME"));
+					return;
+				}
+			}
+
+		/* Spiel Speichern. */
+		} else if (touching(touch, this->subBtn[1])) {
+			if (Msg::promptMsg(Lang::get("SAVE_TO_FILE_PROMPT"))) {
+				Msg::DisplayMsg(Lang::get("SAVING_GAME"));
+				this->currentGame->SaveToFile(true);
+				Msg::DisplayWaitMsg(Lang::get("SAVED_TO_FILE"));
+				this->isSub = false;
+			}
+
+		/* Spiel Beenden. */
+		} else if (touching(touch, this->subBtn[2])) {
+			if (Msg::promptMsg(Lang::get("EXIT_GAME_PRMPT"))) {
+				exiting = true;
+				this->isSub = false;
+			}
+
+		/* Regeln anzeigen. */
+		} else if (touching(touch, this->subBtn[3])) {
+			Overlays::RulesOverlay();
+
+		/* Credits anzeigen. */
+		} else if (touching(touch, this->subBtn[4])) {
+			Overlays::CreditsOverlay();
+
+		/* Sprache ändern. */
+		} else if (touching(touch, this->subBtn[5])) {
+			Overlays::LanguageOverlay();
+
+		/* Spiel Neustarten. */
+		} else if (touching(touch, this->subBtn[6])) {
+			if (Msg::promptMsg(Lang::get("NEW_GAME_PRMPT"))) {
+				Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
+				this->currentGame->InitNewGame(this->currentGame->GetPlayerAmount());
+				this->forcePlay = true;
+				this->forceElevenCheck(); // Setze den Check hier.
+				this->isSub = false;
+			}
+
+		/* Computer De-/Aktivieren. */
+		} else if (touching(touch, this->subBtn[7])) {
+			this->currentGame->SetAI(Msg::promptMsg(Lang::get("PLAY_AGAINST_COMPUTER")));
+
+		/* Spieleranzahl ändern. */
+		} else if (touching(touch, this->subBtn[8])) {
+			if (Msg::promptMsg(Lang::get("PLAYERAMOUNT_PRMPT"))) {
+				this->currentGame->InitNewGame((uint8_t)KBD::SetAmount(6, Lang::get("ENTER_PLAYERAMOUNT"), this->currentGame->GetPlayerAmount()));
+				this->forcePlay = true;
+				this->forceElevenCheck(); // Setze den Check hier.
+				this->isSub = false;
+			}
+		}
+	}
+}
+
+/*
+	Die Spiel-Logik.
+*/
+void GameScreen::GameLogic(u32 hDown, u32 hHeld, touchPosition touch) {
+	if (this->currentGame->GetCurrentPlayer() != 0) {
+		if (this->currentGame->GetAI()) {
+			this->AILogic();
+		}
+	}
+
+	/* Navigation nach Rechts. */
+	if (hDown & KEY_RIGHT) {
+		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 1 <
+			this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
 				switch(this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())) {
-					case 0:
-					case 5:
-					case 10:
-					case 15:
-					case 20:
-					case 25:
-					case 30:
-					case 35:
-					case 40:
-					case 45:
-					case 50:
-					case 55:
-					case 60:
-					case 65:
-					case 70:
-					case 75:
-					case 80:
+					case 4:
+					case 9:
+					case 14:
+					case 29:
+					case 34:
+					case 39:
+					case 44:
+					case 49:
+					case 54:
+					case 59:
+					case 64:
+					case 69:
+					case 74:
 						return;
 				}
 
 				this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
-					this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 1);
+					this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 1);
 			}
+	}
+
+	/* Navigation nach Links. */
+	if (hDown & KEY_LEFT) {
+		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 1 >= 0) {
+			switch(this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())) {
+				case 0:
+				case 5:
+				case 10:
+				case 15:
+				case 20:
+				case 25:
+				case 30:
+				case 35:
+				case 40:
+				case 45:
+				case 50:
+				case 55:
+				case 60:
+				case 65:
+				case 70:
+				case 75:
+				case 80:
+					return;
+			}
+
+			this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
+				this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 1);
 		}
+	}
 
-		/* Navigation zur nächsten Seite. */
-		if (hDown & KEY_R) {
-			this->pageHandle(true);
-		}
+	/* Navigation zur nächsten Seite. */
+	if (hDown & KEY_R) {
+		this->pageHandle(true);
+	}
 
-		/* Navigation zur vorherigen Seite. */
-		if (hDown & KEY_L) {
-			this->pageHandle(false);
-		}
+	/* Navigation zur vorherigen Seite. */
+	if (hDown & KEY_L) {
+		this->pageHandle(false);
+	}
 
-		/* Navigation nach Unten. */
-		if (hDown & KEY_DOWN) {
-			if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5 <
-				this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
-					if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5 <
-						15 + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15)) {
-
-							this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
-							this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5);
-						}
-				}
-		}
-
-		/* Navigation nach Oben. */
-		if (hDown & KEY_UP) {
-			if ((this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5) >= 0) {
-				if ((this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5) >=
-					(0 + this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15)) {
+	/* Navigation nach Unten. */
+	if (hDown & KEY_DOWN) {
+		if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5 <
+			this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
+				if (this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5 <
+					15 + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15)) {
 
 						this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
-						this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5);
+						this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) + 5);
 					}
 			}
+	}
+
+	/* Navigation nach Oben. */
+	if (hDown & KEY_UP) {
+		if ((this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5) >= 0) {
+			if ((this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5) >=
+				(0 + this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15)) {
+
+					this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
+					this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()) - 5);
+				}
 		}
+	}
 
-		/* Spiel-Logik. */
-		if (hDown & KEY_A) {
-			/* Überprüfe ob Spielbar. */
-			if (this->currentGame->Playable(this->currentGame->GetCurrentPlayer(),
-				this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()))) {
-					if (this->forceEleven) {
-						/* Checke, ob diese Karte eine 11 ist. */
-						if (this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(),
-							this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())).CT != CardType::NUMBER_11) {
-								Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
-								return;
-							}
-
-						if (!this->checkProper11()) {
-							Msg::DisplayWaitMsg(Lang::get("WRONG_11"));
+	/* Spiel-Logik. */
+	if (hDown & KEY_A) {
+		/* Überprüfe ob Spielbar. */
+		if (this->currentGame->Playable(this->currentGame->GetCurrentPlayer(),
+			this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()))) {
+				if (this->forceEleven) {
+					/* Checke, ob diese Karte eine 11 ist. */
+					if (this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(),
+						this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())).CT != CardType::NUMBER_11) {
+							Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
 							return;
 						}
-					}
 
-					if (!this->DoPlayMove().second) {
-						if (!this->gameOver) this->NextPHandle();
-					}
-				}
-		}
-
-		/* Touch Berührung's Logik und spiel. */
-		if (hDown & KEY_TOUCH) {
-			for (int i = 0; i < 15; i++) {
-				if (touching(touch, this->CardPos[i])) {
-					if (i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15) <
-						this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
-
-							this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
-								i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15));
-
-							/* Überprüfe ob Spielbar. */
-							if (this->currentGame->Playable(this->currentGame->GetCurrentPlayer(),
-								this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()))) {
-									if (this->forceEleven) {
-										/* Checke, ob diese Karte eine 11 ist. */
-										if (this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(),
-											this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())).CT != CardType::NUMBER_11) {
-												Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
-												return;
-											}
-
-										if (!this->checkProper11()) {
-											Msg::DisplayWaitMsg(Lang::get("WRONG_11"));
-											return;
-										}
-									}
-
-									if (!this->DoPlayMove().second) {
-										if (!this->gameOver) this->NextPHandle();
-									}
-								}
-						}
-					}
-				}
-			}
-
-		/* Karten-Zieh Logik. */
-		if (hDown & KEY_X) {
-			if (this->forceEleven) {
-				Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
-				return;
-			}
-
-			/* Falls Kartendeck größer als 0 ist. */
-			if (this->currentGame->GetDeckSize() > 0) {
-				if (this->currentGame->GetDrawAmount() < 3) {
-					this->currentGame->AddPlayerCard(this->currentGame->GetCurrentPlayer());
-					this->forceElevenCheck();
-
-					/* Wenn wir schon 3 mal gezogen haben, zwinge uns nicht zu spielen. */
-					if (this->currentGame->GetDrawAmount() == 3) {
-						this->forcePlay = false;
-
-						/* Falls wir nicht können, gehe zum nächsten Spieler. */
-						if (!this->checkPlay()) {
-							this->NextPHandle();
-						}
-					}
-
-				} else {
-					Msg::DisplayWaitMsg(Lang::get("ONLY_3_CARDS"));
-				}
-
-			} else {
-				Msg::DisplayWaitMsg(Lang::get("DECK_ALREADY_EMPTY"));
-			}
-		}
-
-		/* Spieler-Wechsel Logik. */
-		if (hDown & KEY_Y) {
-			if (this->forceEleven) {
-				Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
-				return;
-			}
-
-			/* Falls Kartendeck größer als 0 ist. */
-			if (this->currentGame->GetDeckSize() > 0) {
-				if (this->forcePlay) {
-					Msg::DisplayWaitMsg(Lang::get("GAME_PRMPT_1"));
-					return;
-				}
-
-			} else {
-				if (this->forcePlay) {
-					if (this->checkPlay()) {
-						Msg::DisplayWaitMsg(Lang::get("GAME_PRMPT_2"));
+					if (!this->checkProper11()) {
+						Msg::DisplayWaitMsg(Lang::get("WRONG_11"));
 						return;
 					}
 				}
+
+				if (!this->DoPlayMove().second) {
+					if (!this->gameOver) this->NextPHandle();
+				}
+			}
+	}
+
+	/* Touch Berührung's Logik und spiel. */
+	if (hDown & KEY_TOUCH) {
+		for (int i = 0; i < 15; i++) {
+			if (touching(touch, this->CardPos[i])) {
+				if (i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15) <
+					this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer())) {
+
+						this->currentGame->SetCardIndex(this->currentGame->GetCurrentPlayer(),
+							i + (this->currentGame->GetPageIndex(this->currentGame->GetCurrentPlayer()) * 15));
+
+						/* Überprüfe ob Spielbar. */
+						if (this->currentGame->Playable(this->currentGame->GetCurrentPlayer(),
+							this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()))) {
+								if (this->forceEleven) {
+									/* Checke, ob diese Karte eine 11 ist. */
+									if (this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(),
+										this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer())).CT != CardType::NUMBER_11) {
+											Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
+											return;
+										}
+
+									if (!this->checkProper11()) {
+										Msg::DisplayWaitMsg(Lang::get("WRONG_11"));
+										return;
+									}
+								}
+
+								if (!this->DoPlayMove().second) {
+									if (!this->gameOver) this->NextPHandle();
+								}
+							}
+					}
+				}
+			}
+	}
+
+	/* Karten-Zieh Logik. */
+	if (hDown & KEY_X) {
+		/* Zwinge die 11. */
+		if (this->forceEleven) {
+			Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
+			return;
+		}
+
+		/* Falls Kartendeck größer als 0 ist. */
+		if (this->currentGame->GetDeckSize() > 0) {
+			if (this->currentGame->GetDrawAmount() < 3) {
+				this->currentGame->AddPlayerCard(this->currentGame->GetCurrentPlayer());
+				this->forceElevenCheck();
+
+				/* Wenn wir schon 3 mal gezogen haben, zwinge uns nicht zu spielen. */
+				if (this->currentGame->GetDrawAmount() == 3) {
+					this->forcePlay = false;
+
+					/* Falls wir nicht können, gehe zum nächsten Spieler. */
+					if (!this->checkPlay()) this->NextPHandle();
+				}
+
+			} else {
+				Msg::DisplayWaitMsg(Lang::get("ONLY_3_CARDS"));
 			}
 
-			this->NextPHandle();
+		} else {
+			Msg::DisplayWaitMsg(Lang::get("DECK_ALREADY_EMPTY"));
+		}
+	}
+
+	/* Spieler-Wechsel Logik. */
+	if (hDown & KEY_Y) {
+		if (this->forceEleven) {
+			Msg::DisplayWaitMsg(Lang::get("FORCE_ELEVEN"));
+			return;
 		}
 
-		if (hHeld & KEY_SELECT) {
-			Msg::HelperBox(Lang::get("GAME_INSTR"));
+		/* Falls Kartendeck größer als 0 ist. */
+		if (this->currentGame->GetDeckSize() > 0) {
+			if (this->forcePlay) {
+				Msg::DisplayWaitMsg(Lang::get("GAME_PRMPT_1"));
+				return;
+			}
+
+		} else {
+			if (this->forcePlay) {
+				if (this->checkPlay()) {
+					Msg::DisplayWaitMsg(Lang::get("GAME_PRMPT_2"));
+					return;
+				}
+			}
 		}
 
-		if (hDown & KEY_START) this->isSub = true; // Gehe zum Unter-Menü.
+		this->NextPHandle();
+	}
+
+	if (hHeld & KEY_SELECT) Msg::HelperBox(Lang::get("GAME_INSTR"));
+
+	if (hDown & KEY_START) this->isSub = true; // Gehe zum Unter-Menü.
+}
+
+/*
+	Die HauptLogik des Spiel-Screen's.
+*/
+void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+	/* Falls das Spiel vorbei ist. */
+	if (this->gameOver) {
+		if (Msg::promptMsg(Lang::get("NEXT_GAME"))) {
+			Msg::DisplayMsg(Lang::get("PREPARE_GAME"));
+			this->currentGame->InitNewGame(this->currentGame->GetPlayerAmount());
+			this->forcePlay = true;
+			this->forceElevenCheck(); // Setze den Check hier.
+			this->gameOver = false;
+
+		} else {
+			exiting = true;
+		}
+	}
+
+	if (this->isSub) {
+		this->SubLogic(hDown, hHeld, touch);
+
+	} else {
+		this->GameLogic(hDown, hHeld, touch);
 	}
 }
 
@@ -737,12 +742,16 @@ void GameScreen::NextPHandle() {
 std::pair<bool, bool> GameScreen::DoPlayMove() {
 	std::pair<bool, bool> results = { false, true };
 
-	const CardStruct CS = this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(), this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()));
+	const CardStruct CS = this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(),
+							this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()));
+
 	const bool isUpper = (uint8_t)CS.CT >= 12 ? true : false; // 12 + wäre die obere Karte.
 
 	if (this->currentGame->CanPlay(CS.CC, isUpper, CS.CT)) {
 		results.first = true;
-		this->currentGame->RemovePlayerCard(this->currentGame->GetCurrentPlayer(), this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()));
+		this->currentGame->RemovePlayerCard(this->currentGame->GetCurrentPlayer(),
+			this->currentGame->GetCardIndex(this->currentGame->GetCurrentPlayer()));
+
 		this->currentGame->SetCard(CS.CC, isUpper, CS.CT);
 
 		this->forcePlay = false; // Wir sind nicht mehr gezwungen hier in dem fall.
@@ -769,7 +778,7 @@ std::pair<bool, bool> GameScreen::DoPlayMove() {
 			}
 		}
 
-		/* 0 Karten auf der Hand -- Gewonnen. */
+		/* 0 Karten auf der Hand --> Gewonnen. */
 		if (this->currentGame->GetPlayerHandSize(this->currentGame->GetCurrentPlayer()) == 0) {
 			this->gameOver = true;
 			char msg[100];
@@ -794,9 +803,7 @@ bool GameScreen::checkPlay() {
 		const CardStruct CS = this->currentGame->GetPlayerCard(this->currentGame->GetCurrentPlayer(), i);
 		const bool isUpper = (uint8_t)CS.CT >= 12 ? true : false; // 12 + wäre die obere Karte.
 
-		if (this->currentGame->CanPlay(CS.CC, isUpper, CS.CT)) {
-			return true; // Weil wir fortfahren können --> Beende die Runde nicht!
-		}
+		if (this->currentGame->CanPlay(CS.CC, isUpper, CS.CT)) return true; // Weil wir fortfahren können --> Beende die Runde nicht!
 	}
 
 	return false;
@@ -837,9 +844,7 @@ void GameScreen::AILogic() {
 		}
 
 		if (canPlay) {
-			if (!this->DoPlayMove().second) {
-				doOut = true;
-			}
+			if (!this->DoPlayMove().second) doOut = true;
 		}
 
 		if (!canPlay) {
