@@ -161,24 +161,24 @@ void Game::convertDataToGame() {
 		std::pair<CardType, CardType> CTypes;
 
 		/* Rote Karten. */
-		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_RED]);
-		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_RED + 1]);
-		this->TableCard->ImportCardTypes(CardColor::COLOR_RED, CTypes);
+		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_1]);
+		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_1 + 1]);
+		this->TableCard->ImportCardTypes(CardColor::COLOR_1, CTypes);
 
 		/* Gelbe Karten. */
-		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_YELLOW]);
-		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_YELLOW + 1]);
-		this->TableCard->ImportCardTypes(CardColor::COLOR_YELLOW, CTypes);
+		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_2]);
+		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_2 + 1]);
+		this->TableCard->ImportCardTypes(CardColor::COLOR_2, CTypes);
 
 		/* Grüne Karten. */
-		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_GREEN]);
-		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_GREEN + 1]);
-		this->TableCard->ImportCardTypes(CardColor::COLOR_GREEN, CTypes);
+		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_3]);
+		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_3 + 1]);
+		this->TableCard->ImportCardTypes(CardColor::COLOR_3, CTypes);
 
 		/* Blaue Karten. */
-		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_BLUE]);
-		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_BLUE + 1]);
-		this->TableCard->ImportCardTypes(CardColor::COLOR_BLUE, CTypes);
+		CTypes.first = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_4]);
+		CTypes.second = CoreHelper::Uint8ToCardType(this->GameData.get()[_GAME_TABLECARD_4 + 1]);
+		this->TableCard->ImportCardTypes(CardColor::COLOR_4, CTypes);
 
 
 		/*
@@ -228,20 +228,20 @@ void Game::SaveConversion() {
 	*/
 
 	/* Rote Karten. */
-	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_RED) =
-		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_RED).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_RED).first;
+	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_1) =
+		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_1).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_1).first;
 
 	/* Gelbe Karten. */
-	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_YELLOW) =
-		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_YELLOW).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_YELLOW).first;
+	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_2) =
+		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_2).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_2).first;
 
 	/* Grüne Karten. */
-	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_GREEN) =
-		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_GREEN).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_GREEN).first;
+	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_3) =
+		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_3).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_3).first;
 
 	/* Blaue Karten. */
-	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_BLUE) =
-		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_BLUE).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_BLUE).first;
+	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_4) =
+		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_4).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_4).first;
 
 
 	/* Und hier die Spielerkarten. */

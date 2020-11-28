@@ -32,6 +32,7 @@
 	"NOT_VALID_GAME": "Dies ist kein gültiges Spiel.",
 	"ONLY_3_CARDS": "Du kannst nur bis zu 3 Karten ziehen!",
 	"PLAY_AGAINST_COMPUTER": "Möchtest du gegen Computer(s) spielen?",
+	"PLAY_ORDER": "Du musst deine 11 in dieser Karten-Reihenfolge spielen.",
 	"PLAYER": "Spieler",
 	"PLAYER_AMOUNT": "Spieleranzahl",
 	"PLAYER_WON": "Spieler %i hat gewonnen!",
@@ -50,6 +51,5 @@
 	"STACKZ_PRESENTS": "SuperSaiyajinStackZ Präsentiert...",
 	"TOGGLE_COMPUTER": "Computer umschalten",
 	"UNIVERSAL_CORE": "- Für Universal-Core.",
-	"WRONG_11": "Das ist die falsche 11!\nDie 11 muss in dieser Reihenfolge gespielt werden:\nRot, Gelb, Grün, Blau.",
 	"YES": "Ja"
 }

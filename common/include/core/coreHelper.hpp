@@ -69,10 +69,10 @@ enum class CardType : uint8_t {
 /* Kartenfarbe Enum Klasse. */
 enum class CardColor : uint8_t {
 	COLOR_EMPTY,
-	COLOR_RED,
-	COLOR_YELLOW,
-	COLOR_GREEN,
-	COLOR_BLUE
+	COLOR_1,
+	COLOR_2,
+	COLOR_3,
+	COLOR_4
 };
 
 /*

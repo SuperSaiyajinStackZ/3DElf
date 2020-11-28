@@ -34,6 +34,7 @@ namespace Overlays {
 	void RulesOverlay();
 	void CreditsOverlay();
 	void LanguageOverlay();
+	void CardOrderOverlay();
 };
 
 #endif

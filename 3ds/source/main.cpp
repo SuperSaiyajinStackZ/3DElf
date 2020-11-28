@@ -60,6 +60,7 @@ static void init() {
 	konfiguration = std::make_unique<Settings>();
 	Lang::load(konfiguration->Language()); // Lade die Übersetzungen.
 
+	//Overlays::CardOrderOverlay();
 	Overlays::SplashOverlay();
 	Overlays::RulesOverlay();
 	Gui::setScreen(std::make_unique<GameScreen>(), false, true);

@@ -38,16 +38,16 @@ static const uint32_t ReturnCardColor(CardColor CL) {
 		case CardColor::COLOR_EMPTY:
 			return NO_COLOR;
 
-		case CardColor::COLOR_RED:
+		case CardColor::COLOR_1:
 			return RED_CARD;
 
-		case CardColor::COLOR_YELLOW:
+		case CardColor::COLOR_2:
 			return YELLOW_CARD;
 
-		case CardColor::COLOR_GREEN:
+		case CardColor::COLOR_3:
 			return GREEN_CARD;
 
-		case CardColor::COLOR_BLUE:
+		case CardColor::COLOR_4:
 			return BLUE_CARD;
 	}
 

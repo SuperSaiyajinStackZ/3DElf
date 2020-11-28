@@ -90,43 +90,43 @@ void GameScreen::DrawTable(void) const {
 	std::pair<CardType, CardType> tempCards = { CardType::NUMBER_EMPTY, CardType::NUMBER_EMPTY };
 
 	/* Rot als erstes. */
-	tempCards = this->currentGame->getTableCard(CardColor::COLOR_RED);
+	tempCards = this->currentGame->getTableCard(CardColor::COLOR_1);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_RED, 175, 30);
+		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_1, 175, 30);
 
-		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_RED, 125, 30);
-		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_RED, 225, 30);
+		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_1, 125, 30);
+		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_1, 225, 30);
 	}
 
 	/* Gelb als zweites. */
-	tempCards = this->currentGame->getTableCard(CardColor::COLOR_YELLOW);
+	tempCards = this->currentGame->getTableCard(CardColor::COLOR_2);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_YELLOW, 175, 75);
+		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_2, 175, 75);
 
-		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_YELLOW, 125, 75);
-		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_YELLOW, 225, 75);
+		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_2, 125, 75);
+		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_2, 225, 75);
 	}
 
 	/* Grün als drittes. */
-	tempCards = this->currentGame->getTableCard(CardColor::COLOR_GREEN);
+	tempCards = this->currentGame->getTableCard(CardColor::COLOR_3);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_GREEN, 175, 120);
+		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_3, 175, 120);
 
-		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_GREEN, 125, 120);
-		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_GREEN, 225, 120);
+		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_3, 125, 120);
+		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_3, 225, 120);
 	}
 
 	/* Blau als letztes. */
-	tempCards = this->currentGame->getTableCard(CardColor::COLOR_BLUE);
+	tempCards = this->currentGame->getTableCard(CardColor::COLOR_4);
 
 	if (tempCards.first != CardType::NUMBER_EMPTY) {
-		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_BLUE, 175, 165);
+		GFX::DrawCardSeparate(CardType::NUMBER_11, CardColor::COLOR_4, 175, 165);
 
-		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_BLUE, 125, 165);
-		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_BLUE, 225, 165);
+		if (tempCards.first != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.first, CardColor::COLOR_4, 125, 165);
+		if (tempCards.second != CardType::NUMBER_11) GFX::DrawCardSeparate(tempCards.second, CardColor::COLOR_4, 225, 165);
 	}
 }
 
@@ -540,7 +540,7 @@ void GameScreen::GameLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 						}
 
 					if (!this->checkProper11()) {
-						Msg::DisplayWaitMsg(Lang::get("WRONG_11"));
+						Overlays::CardOrderOverlay();
 						return;
 					}
 				}
@@ -573,7 +573,7 @@ void GameScreen::GameLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 										}
 
 									if (!this->checkProper11()) {
-										Msg::DisplayWaitMsg(Lang::get("WRONG_11"));
+										Overlays::CardOrderOverlay();
 										return;
 									}
 								}
@@ -686,20 +686,20 @@ bool GameScreen::checkProper11() const {
 
 	if (CS.CT != CardType::NUMBER_11) return false;
 
-	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_RED)) {
-		return CS.CC == CardColor::COLOR_RED;
+	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_1)) {
+		return CS.CC == CardColor::COLOR_1;
 	}
 
-	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_YELLOW)) {
-		return CS.CC == CardColor::COLOR_YELLOW;
+	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_2)) {
+		return CS.CC == CardColor::COLOR_2;
 	}
 
-	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_GREEN)) {
-		return CS.CC == CardColor::COLOR_GREEN;
+	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_3)) {
+		return CS.CC == CardColor::COLOR_3;
 	}
 
-	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_BLUE)) {
-		return CS.CC == CardColor::COLOR_BLUE;
+	if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_4)) {
+		return CS.CC == CardColor::COLOR_4;
 	}
 
 	return false;
@@ -871,8 +871,8 @@ void GameScreen::forceElevenCheck() {
 	this->forceEleven = false;
 
 	/* Überprüfe Rote Karte zuerst. */
-	if (this->currentGame->getTableCard(CardColor::COLOR_RED).first == CardType::NUMBER_EMPTY) {
-		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_RED)) {
+	if (this->currentGame->getTableCard(CardColor::COLOR_1).first == CardType::NUMBER_EMPTY) {
+		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_1)) {
 			//Msg::DisplayWaitMsg("Rote Elf wurde gezwungen.");
 			this->forceEleven = true;
 			return;
@@ -880,8 +880,8 @@ void GameScreen::forceElevenCheck() {
 	}
 
 	/* Dann überprüfe Gelb. */
-	if (this->currentGame->getTableCard(CardColor::COLOR_YELLOW).first == CardType::NUMBER_EMPTY) {
-		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_YELLOW)) {
+	if (this->currentGame->getTableCard(CardColor::COLOR_2).first == CardType::NUMBER_EMPTY) {
+		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_2)) {
 			//Msg::DisplayWaitMsg("Gelbe Elf wurde gezwungen.");
 			this->forceEleven = true;
 			return;
@@ -889,8 +889,8 @@ void GameScreen::forceElevenCheck() {
 	}
 
 	/* Dann überprüfe Grün. */
-	if (this->currentGame->getTableCard(CardColor::COLOR_GREEN).first == CardType::NUMBER_EMPTY) {
-		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_GREEN)) {
+	if (this->currentGame->getTableCard(CardColor::COLOR_3).first == CardType::NUMBER_EMPTY) {
+		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_3)) {
 			//Msg::DisplayWaitMsg("Grüne Elf wurde gezwungen.");
 			this->forceEleven = true;
 			return;
@@ -898,8 +898,8 @@ void GameScreen::forceElevenCheck() {
 	}
 
 	/* Und als letztes... überprüfe Blau. */
-	if (this->currentGame->getTableCard(CardColor::COLOR_BLUE).first == CardType::NUMBER_EMPTY) {
-		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_BLUE)) {
+	if (this->currentGame->getTableCard(CardColor::COLOR_4).first == CardType::NUMBER_EMPTY) {
+		if (this->checkSpecificCard(CardType::NUMBER_11, CardColor::COLOR_4)) {
 			//Msg::DisplayWaitMsg("Blaue Elf wurde gezwungen.");
 			this->forceEleven = true;
 			return;

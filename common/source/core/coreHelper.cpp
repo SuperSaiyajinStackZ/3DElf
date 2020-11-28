@@ -243,19 +243,19 @@ uint16_t CoreHelper::GetCardBytes(CardStruct CS) {
 			CColor = 0x0;
 			break;
 
-		case CardColor::COLOR_RED:
+		case CardColor::COLOR_1:
 			CColor = 0x1;
 			break;
 
-		case CardColor::COLOR_YELLOW:
+		case CardColor::COLOR_2:
 			CColor = 0x2;
 			break;
 
-		case CardColor::COLOR_GREEN:
+		case CardColor::COLOR_3:
 			CColor = 0x3;
 			break;
 
-		case CardColor::COLOR_BLUE:
+		case CardColor::COLOR_4:
 			CColor = 0x4;
 			break;
 	}
@@ -371,19 +371,19 @@ CardStruct CoreHelper::GetCardStruct(const std::unique_ptr<uint8_t[]> &rawData, 
 			break;
 
 		case 1:
-			CS.CC = CardColor::COLOR_RED;
+			CS.CC = CardColor::COLOR_1;
 			break;
 
 		case 2:
-			CS.CC = CardColor::COLOR_YELLOW;
+			CS.CC = CardColor::COLOR_2;
 			break;
 
 		case 3:
-			CS.CC = CardColor::COLOR_GREEN;
+			CS.CC = CardColor::COLOR_3;
 			break;
 
 		case 4:
-			CS.CC = CardColor::COLOR_BLUE;
+			CS.CC = CardColor::COLOR_4;
 			break;
 	}
 
