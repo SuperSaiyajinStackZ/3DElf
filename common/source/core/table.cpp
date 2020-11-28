@@ -41,7 +41,7 @@ Table::Table() {
 
 	CardColor CLR: Die Kartenfarbe.
 */
-std::pair<CardType, CardType> Table::GetPlayCard(CardColor CLR) {
+std::pair<CardType, CardType> Table::GetPlayCard(CardColor CLR) const {
 	std::pair<CardType, CardType> temp = { CardType::NUMBER_EMPTY, CardType::NUMBER_EMPTY };
 
 
@@ -76,7 +76,7 @@ std::pair<CardType, CardType> Table::GetPlayCard(CardColor CLR) {
 	bool upper: Ob auf die obere oder untere Karte gelegt werden soll.
 	CardType CT: Der Kartentyp.
 */
-bool Table::CanPlay(CardColor CLR, bool upper, CardType CT) {
+bool Table::CanPlay(CardColor CLR, bool upper, CardType CT) const {
 	if (CT == CardType::NUMBER_EMPTY) return false;
 
 	if (upper) {
@@ -120,12 +120,12 @@ void Table::SetCard(CardColor CLR, bool upper, CardType CT) {
 
 	CardColor CLR: Die Kartenfarbe, welche wiedergeben werden soll.
 */
-std::pair<CardType, CardType> Table::GetCurrent(CardColor CLR) const { return this->TableCards[(uint8_t)CLR - 1]; }
+std::pair<CardType, CardType> Table::GetCurrent(CardColor CLR) const { return this->TableCards[(uint8_t)CLR - 1]; };
 
 /*
 	Importiere Die Kartentypen vom Buffer.
 
 	CardColor CLR: Kartenfarbe.
-	std::pair<CardType, CardType> CT = Kartentypen.
+	const std::pair<CardType, CardType> &CT = Kartentypen.
 */
-void Table::ImportCardTypes(CardColor CLR, std::pair<CardType, CardType> CT) { this->TableCards[(uint8_t)CLR - 1] = CT; }
+void Table::ImportCardTypes(CardColor CLR, const std::pair<CardType, CardType> &CT) { this->TableCards[(uint8_t)CLR - 1] = CT; };

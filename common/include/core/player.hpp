@@ -37,11 +37,11 @@ protected:
 	std::unique_ptr<Cards> hand; // Die Spielerhand.
 public:
 	Player();
-	void ImportCards(std::vector<CardStruct> cards);
+	void ImportCards(const std::vector<CardStruct> &cards);
 
 	void AddCard(std::unique_ptr<Deck> &cardDeck);
 	void RemoveCard(uint8_t index);
-	bool Playable(uint8_t index, std::unique_ptr<Table> &table);
+	bool Playable(uint8_t index, const std::unique_ptr<Table> &table);
 
 	CardType GetType(uint8_t index) const;
 	CardColor GetColor(uint8_t index) const;

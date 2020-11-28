@@ -29,36 +29,36 @@
 /*
 	Initialisiere den Spieler.
 */
-Player::Player() : hand(std::make_unique<Cards>()) { }
+Player::Player() : hand(std::make_unique<Cards>()) { };
 
 /*
 	Setze Karten in die Spielerhand von einem Kartenstrukt.
 
-	std::vector<CardStruct> cards: Die Karten.
+	const std::vector<CardStruct> &cards: Die Karten.
 */
-void Player::ImportCards(std::vector<CardStruct> cards) { this->hand->ImportCards(cards); }
+void Player::ImportCards(const std::vector<CardStruct> &cards) { this->hand->ImportCards(cards); };
 
 /*
 	Füge eine Karte hinzu.
 
 	std::unique_ptr<Deck> &cardDeck: Das Karten-Deck.
 */
-void Player::AddCard(std::unique_ptr<Deck> &cardDeck) { this->hand->AddCard(cardDeck); }
+void Player::AddCard(std::unique_ptr<Deck> &cardDeck) { this->hand->AddCard(cardDeck); };
 
 /*
 	Entferne eine Karte von der Hand.
 
 	uint8_t index: Der Karten-Index.
 */
-void Player::RemoveCard(uint8_t index) { this->hand->RemoveCard(index); }
+void Player::RemoveCard(uint8_t index) { this->hand->RemoveCard(index); };
 
 /*
 	Wiedergebe, ob die Karte gespielt werden kann.
 
 	uint8_t index: Der Karten-Index.
-	std::unique_ptr<Table> &table: Eine Referenz zum Tischkarten Zeiger.
+	const std::unique_ptr<Table> &table: Eine Referenz zum Tischkarten Zeiger.
 */
-bool Player::Playable(uint8_t index, std::unique_ptr<Table> &table) {
+bool Player::Playable(uint8_t index, const std::unique_ptr<Table> &table) {
 	if (!table) return false;
 
 	return this->hand->Playable(index, table);
@@ -69,23 +69,23 @@ bool Player::Playable(uint8_t index, std::unique_ptr<Table> &table) {
 
 	uint8_t index: Der Karten-Index.
 */
-CardType Player::GetType(uint8_t index) const { return this->hand->GetType(index); }
+CardType Player::GetType(uint8_t index) const { return this->hand->GetType(index); };
 
 /*
 	Wiedergebe die Kartenfarbe einer Karte von der Hand.
 
 	uint8_t index: Der Karten-Index.
 */
-CardColor Player::GetColor(uint8_t index) const { return this->hand->GetColor(index); }
+CardColor Player::GetColor(uint8_t index) const { return this->hand->GetColor(index); };
 
 /*
 	Wiedergebe eine Karte von der Hand.
 
 	uint8_t index: Der Karten-Index.
 */
-CardStruct Player::GetCard(uint8_t index) const { return this->hand->GetCard(index); }
+CardStruct Player::GetCard(uint8_t index) const { return this->hand->GetCard(index); };
 
 /*
 	Wiedergebe die Anzahl der Karten von der Hand.
 */
-uint8_t Player::GetHandSize() const { return this->hand->GetHandSize(); }
+uint8_t Player::GetHandSize() const { return this->hand->GetHandSize(); };

@@ -36,7 +36,7 @@ protected:
 public:
 	Deck();
 
-	void GetCardsFromStruct(std::vector<CardStruct> cards);
+	void GetCardsFromStruct(const std::vector<CardStruct> &cards);
 
 	void Initialize();
 	void shuffle();

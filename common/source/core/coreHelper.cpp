@@ -267,15 +267,15 @@ uint16_t CoreHelper::GetCardBytes(CardStruct CS) {
 	Generiere aus einem uint8_t buffer einen Kartenstrukt.
 	Dies wird verwendet, um einen Buffer als Kartenstrukt wiederzugeben.
 
-	uint8_t *rawData: Der Buffer, wovon gelesen werden soll.
+	const std::unique_ptr<uint8_t[]> &rawData: Der Buffer, wovon gelesen werden soll.
 	uint32_t offset: Der Offset wovon gelesen werden soll.
 */
-CardStruct CoreHelper::GetCardStruct(uint8_t *rawData, uint32_t offset) {
+CardStruct CoreHelper::GetCardStruct(const std::unique_ptr<uint8_t[]> &rawData, uint32_t offset) {
 	if (!rawData) return { CardType::NUMBER_EMPTY, CardColor::COLOR_EMPTY }; // Die Daten sind nicht gültig.
 
 	CardStruct CS = { CardType::NUMBER_EMPTY, CardColor::COLOR_EMPTY };
 
-	uint8_t CT = rawData[offset], CC = rawData[offset + 0x1];
+	uint8_t CT = rawData.get()[offset], CC = rawData.get()[offset + 0x1];
 
 	/* Generiere den KartenTypen. */
 	switch(CT) {

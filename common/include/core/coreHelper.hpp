@@ -92,7 +92,7 @@ namespace CoreHelper {
 
 	CardType Uint8ToCardType(uint8_t card);
 	uint16_t GetCardBytes(CardStruct CS);
-	CardStruct GetCardStruct(uint8_t *rawData, uint32_t offset);
+	CardStruct GetCardStruct(const std::unique_ptr<uint8_t[]> &rawData, uint32_t offset);
 };
 
 #endif

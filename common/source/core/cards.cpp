@@ -34,9 +34,9 @@ Cards::Cards() { }
 /*
 	Setze Karten von einem Kartenstrukt.
 
-	std::vector<CardStruct> cards: Die Karten.
+	const std::vector<CardStruct> &cards: Die Karten.
 */
-void Cards::ImportCards(std::vector<CardStruct> cards) { this->hand = cards; }
+void Cards::ImportCards(const std::vector<CardStruct> &cards) { this->hand = cards; }
 
 /*
 	Füge eine Karte der Hand hinzu vom Kartendeck.
@@ -102,9 +102,9 @@ uint8_t Cards::GetHandSize() const { return (uint8_t)this->hand.size(); }
 	Wiedergebe, ob die Karte gespielt werden kann.
 
 	uint8_t index: Der Karten-Index.
-	std::unique_ptr<Table> &table: Eine Referenz zum Tischkarten Zeiger.
+	const std::unique_ptr<Table> &table: Eine Referenz zum Tischkarten Zeiger.
 */
-bool Cards::Playable(uint8_t index, std::unique_ptr<Table> &table) {
+bool Cards::Playable(uint8_t index, const std::unique_ptr<Table> &table) {
 	if (!table) return false;
 
 	const bool isUpper = (uint8_t)this->GetType(index) >= 11 ? true : false; // 12 + ist die obere Karte.

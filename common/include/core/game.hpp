@@ -150,37 +150,37 @@ public:
 	uint8_t GetPlayerHandSize(uint8_t player) const;
 
 	/* Aktueller Spieler & Anzahl funktionen. */
-	uint8_t GetCurrentPlayer() const { return this->currentPlayer; }
-	void SetCurrentPlayer(uint8_t p) { this->currentPlayer = p; }
-	uint8_t GetPlayerAmount() const { return this->PlayerAmount; }
-	void SetPlayerAmount(uint8_t amount) { this->PlayerAmount = amount; }
+	uint8_t GetCurrentPlayer() const { return this->currentPlayer; };
+	void SetCurrentPlayer(uint8_t p) { this->currentPlayer = p; };
+	uint8_t GetPlayerAmount() const { return this->PlayerAmount; };
+	void SetPlayerAmount(uint8_t amount) { this->PlayerAmount = amount; };
 
 	/* Zieh-Anzahl funktionen. */
-	uint8_t GetDrawAmount() const { return this->drawAmount; }
-	void ResetDrawAmount() { this->drawAmount = 0; }
+	uint8_t GetDrawAmount() const { return this->drawAmount; };
+	void ResetDrawAmount() { this->drawAmount = 0; };
 
 	/* Karten-Index funktionen. */
-	uint8_t GetCardIndex(uint8_t player) const { return this->cardIndexes[player]; }
-	void SetCardIndex(uint8_t player, uint8_t indx) { this->cardIndexes[player] = indx; }
+	uint8_t GetCardIndex(uint8_t player) const { return this->cardIndexes[player]; };
+	void SetCardIndex(uint8_t player, uint8_t indx) { this->cardIndexes[player] = indx; };
 
 	/* Karten-Seiten funktionen. */
-	uint8_t GetPageIndex(uint8_t player) const { return this->cardPages[player]; }
-	void SetPageIndex(uint8_t player, uint8_t indx) { this->cardPages[player] = indx; }
+	uint8_t GetPageIndex(uint8_t player) const { return this->cardPages[player]; };
+	void SetPageIndex(uint8_t player, uint8_t indx) { this->cardPages[player] = indx; };
 
 	/* Haupt-Spiel Logik und so. */
-	std::pair<CardType, CardType> getTableCard(CardColor CR) const { return this->TableCard->GetCurrent(CR); }
-	bool CanPlay(CardColor CLR, bool upper, CardType CT) { return this->TableCard->CanPlay(CLR, upper, CT); }
-	void SetCard(CardColor CLR, bool upper, CardType CT) { this->TableCard->SetCard(CLR, upper, CT); }
+	std::pair<CardType, CardType> getTableCard(CardColor CR) const { return this->TableCard->GetCurrent(CR); };
+	bool CanPlay(CardColor CLR, bool upper, CardType CT) { return this->TableCard->CanPlay(CLR, upper, CT); };
+	void SetCard(CardColor CLR, bool upper, CardType CT) { this->TableCard->SetCard(CLR, upper, CT); };
 
 	/* Karten-Deck funktionen. */
-	uint8_t GetDeckSize() const { return this->CardDeck->GetDeckSize(); }
+	uint8_t GetDeckSize() const { return this->CardDeck->GetDeckSize(); };
 
 	/* Wiedergebe ob das Spiel gültig ist. */
 	bool validLoaded() const { return this->validGame; };
 
 	/* Computer part. */
-	bool GetAI() const { return this->useAI; }
-	void SetAI(bool AI) { this->useAI = AI; }
+	bool GetAI() const { return this->useAI; };
+	void SetAI(bool AI) { this->useAI = AI; };
 private:
 	/* Setze die Karten in den Save Buffer. */
 	void SetCard(uint32_t offset, CardStruct CS);

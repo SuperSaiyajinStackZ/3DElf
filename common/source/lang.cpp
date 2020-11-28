@@ -42,7 +42,7 @@ std::string Lang::get(const std::string &key) {
 	return appJson.at(key).get_ref<const std::string&>();
 }
 
-static std::string langs[] = {"de", "en"};
+static std::string langs[] = { "de", "en" };
 
 /*
 	Lädt eine app.json datei.

@@ -27,7 +27,9 @@
 #include "deck.hpp"
 #include <algorithm>
 
-/* Das Standard Karten-Deck, mit 80 Karten. */
+/*
+	Das Standard Karten-Deck, mit 80 Karten.
+*/
 const std::vector<CardStruct> DefaultDeck = {
 				/* Rote Karten. */
 	{ CardType::NUMBER_1, CardColor::COLOR_RED },
@@ -121,26 +123,27 @@ const std::vector<CardStruct> DefaultDeck = {
 /*
 	Konstruktor von der Deck klasse.
 */
-Deck::Deck() { this->shuffle(); }
+Deck::Deck() { this->shuffle(); };
 
 /*
 	Setze Karten in das Deck von einem Kartenstrukt.
 
-	std::vector<CardStruct> cards: Die Karten.
+	const std::vector<CardStruct> &cards: Die Karten.
 */
-void Deck::GetCardsFromStruct(std::vector<CardStruct> cards) { this->deck = cards; }
+void Deck::GetCardsFromStruct(const std::vector<CardStruct> &cards) { this->deck = cards; };
 
 
 /*
 	Initialisiere das Kartendeck mit dem Standard-Deck.
 */
-void Deck::Initialize() { this->deck = DefaultDeck; }
+void Deck::Initialize() { this->deck = DefaultDeck; };
 
 /*
 	Initialisiere und mixe das deck.
 */
 void Deck::shuffle() {
 	this->Initialize();
+
 	std::shuffle(this->deck.begin(), this->deck.end(), std::default_random_engine(randomGen()));
 }
 
@@ -172,4 +175,4 @@ CardStruct Deck::GetCardFromDeck(uint8_t index) const {
 /*
 	Wiedergebe die Anzahl der Karten vom Deck.
 */
-uint8_t Deck::GetDeckSize() const { return (uint8_t)this->deck.size(); }
+uint8_t Deck::GetDeckSize() const { return (uint8_t)this->deck.size(); };

@@ -40,6 +40,6 @@
 #include "settings.hpp"
 #include <3ds.h>
 
-extern std::unique_ptr<Settings> konfiguration;
+inline std::unique_ptr<Settings> konfiguration;
 
 #endif

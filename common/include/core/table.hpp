@@ -38,12 +38,12 @@ protected:
 public:
 	Table();
 
-	std::pair<CardType, CardType> GetPlayCard(CardColor CLR);
-	bool CanPlay(CardColor CLR, bool upper, CardType CT);
+	std::pair<CardType, CardType> GetPlayCard(CardColor CLR) const;
+	bool CanPlay(CardColor CLR, bool upper, CardType CT) const;
 	void SetCard(CardColor CLR, bool upper, CardType CT);
 	std::pair<CardType, CardType> GetCurrent(CardColor CLR) const;
 
-	void ImportCardTypes(CardColor CLR, std::pair<CardType, CardType> CT);
+	void ImportCardTypes(CardColor CLR, const std::pair<CardType, CardType> &CT);
 };
 
 #endif

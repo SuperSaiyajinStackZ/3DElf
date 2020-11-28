@@ -34,7 +34,7 @@
 	CardStruct CS: Der Kartenstrukt.
 */
 void Game::SetCard(uint32_t offset, CardStruct CS) {
-	*reinterpret_cast<uint16_t*>(this->GameData.get() + offset) = CoreHelper::GetCardBytes(CS);
+	*reinterpret_cast<uint16_t *>(this->GameData.get() + offset) = CoreHelper::GetCardBytes(CS);
 }
 
 /*
@@ -43,7 +43,7 @@ void Game::SetCard(uint32_t offset, CardStruct CS) {
 	uint32_t offset: Der Offset, auf welche die Karte gesetzt werden soll.
 */
 void Game::SetEmptyCard(uint32_t offset) {
-	*reinterpret_cast<uint16_t*>(this->GameData.get() + offset) = 0;
+	*reinterpret_cast<uint16_t *>(this->GameData.get() + offset) = 0;
 }
 
 /*
@@ -51,7 +51,7 @@ void Game::SetEmptyCard(uint32_t offset) {
 
 	uint8_t plAmount: Die Spieleranzahl.
 */
-Game::Game(uint8_t plAmount) { this->InitNewGame(plAmount); }
+Game::Game(uint8_t plAmount) { this->InitNewGame(plAmount); };
 
 /*
 	Initialisiere ein neues Spiel.
@@ -108,7 +108,7 @@ void Game::LoadGameFromFile() {
 
 	if (file) {
 		fseek(file, 0, SEEK_END);
-		uint32_t size = ftell(file); // Teile uns die größe der Datei mit.
+		const uint32_t size = ftell(file); // Teile uns die größe der Datei mit.
 		fseek(file, 0, SEEK_SET);
 
 		if (size == _GAME_SIZE) {
@@ -149,7 +149,7 @@ void Game::convertDataToGame() {
 		std::vector<CardStruct> deckCards;
 		if (this->GameData.get()[_GAME_CARDDECK_CARD_AMOUNT] > 0) {
 			for (uint8_t deckKarten = 0; deckKarten < this->GameData.get()[_GAME_CARDDECK_CARD_AMOUNT]; deckKarten++) {
-				deckCards.push_back( { CoreHelper::GetCardStruct(this->GameData.get(), _GAME_CARDDECK_CARDS + (deckKarten * _GAME_CARDSIZE)) });
+				deckCards.push_back( { CoreHelper::GetCardStruct(this->GameData, _GAME_CARDDECK_CARDS + (deckKarten * _GAME_CARDSIZE)) });
 			}
 		}
 
@@ -198,7 +198,7 @@ void Game::convertDataToGame() {
 
 				/* Falls die Karten in der Datei nicht 0 sind, füge sie dem Vektor hinzu. */
 				if (this->GameData.get()[_GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE)] != 0) {
-					playerCards.push_back({ CoreHelper::GetCardStruct(this->GameData.get(), _GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE)) });
+					playerCards.push_back({ CoreHelper::GetCardStruct(this->GameData, _GAME_PLAYER_1 + (karten * _GAME_CARDSIZE) + (spieler * _GAME_PLAYERCARDSIZE)) });
 				}
 			}
 
@@ -228,19 +228,19 @@ void Game::SaveConversion() {
 	*/
 
 	/* Rote Karten. */
-	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_RED) =
+	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_RED) =
 		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_RED).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_RED).first;
 
 	/* Gelbe Karten. */
-	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_YELLOW) =
+	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_YELLOW) =
 		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_YELLOW).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_YELLOW).first;
 
 	/* Grüne Karten. */
-	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_GREEN) =
+	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_GREEN) =
 		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_GREEN).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_GREEN).first;
 
 	/* Blaue Karten. */
-	*reinterpret_cast<uint16_t*>(this->GameData.get() + _GAME_TABLECARD_BLUE) =
+	*reinterpret_cast<uint16_t *>(this->GameData.get() + _GAME_TABLECARD_BLUE) =
 		256U * (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_BLUE).second + (uint8_t)this->TableCard->GetCurrent(CardColor::COLOR_BLUE).first;
 
 
@@ -285,7 +285,7 @@ void Game::SaveToFile(bool update) {
 	Aktuell keinen plan was dort alles kommt.
 	Eventuell einen boolean parameter um auf die Speicherdatei zu schreiben?
 */
-Game::~Game() { this->GameData = nullptr; }
+Game::~Game() { this->GameData = nullptr; };
 
 /*
 	Wiedergebe den Kartentyp von der Spielerhand.
@@ -354,9 +354,7 @@ void Game::RemovePlayerCard(uint8_t player, uint8_t index) {
 	uint8_t index: Der Karten-Index.
 */
 bool Game::Playable(uint8_t player, uint8_t index) {
-	if (player < (uint8_t)this->Players.size()) {
-		return this->Players[player]->Playable(index, this->TableCard);
-	}
+	if (player < (uint8_t)this->Players.size()) return this->Players[player]->Playable(index, this->TableCard);
 
 	return false;
 }
