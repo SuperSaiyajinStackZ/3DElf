@@ -27,16 +27,11 @@
 #include "cards.hpp"
 
 /*
-	Karten Klasse konstruktor.
-*/
-Cards::Cards() { }
-
-/*
 	Setze Karten von einem Kartenstrukt.
 
 	const std::vector<CardStruct> &cards: Die Karten.
 */
-void Cards::ImportCards(const std::vector<CardStruct> &cards) { this->hand = cards; }
+void Cards::ImportCards(const std::vector<CardStruct> &cards) { this->hand = cards; };
 
 /*
 	Füge eine Karte der Hand hinzu vom Kartendeck.
@@ -46,9 +41,7 @@ void Cards::ImportCards(const std::vector<CardStruct> &cards) { this->hand = car
 void Cards::AddCard(std::unique_ptr<Deck> &cardDeck) {
 	if (!cardDeck) return; // Karten-Deck ist ein nullpointer und somit nicht gültig.
 
-	if (cardDeck->GetDeckSize() > 0) {
-		this->hand.push_back({ cardDeck->GetCard() }); // Füge eine Karte vom Karten-Deck hinzu.
-	}
+	if (cardDeck->GetDeckSize() > 0) this->hand.push_back({ cardDeck->GetCard() }); // Füge eine Karte vom Karten-Deck hinzu.
 }
 
 /*
@@ -96,7 +89,7 @@ CardStruct Cards::GetCard(uint8_t index) const {
 /*
 	Wiedergebe die anzahl der Karten von der Hand.
 */
-uint8_t Cards::GetHandSize() const { return (uint8_t)this->hand.size(); }
+uint8_t Cards::GetHandSize() const { return (uint8_t)this->hand.size(); };
 
 /*
 	Wiedergebe, ob die Karte gespielt werden kann.

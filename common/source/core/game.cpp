@@ -113,7 +113,7 @@ void Game::LoadGameFromFile() {
 
 		if (size == _GAME_SIZE) {
 			this->GameData = nullptr;
-			this->GameData = std::unique_ptr<uint8_t[]>(new uint8_t[_GAME_SIZE]);
+			this->GameData = std::make_unique<uint8_t[]>(_GAME_SIZE);
 			fread(this->GameData.get(), 1, _GAME_SIZE, file);
 			this->validGame = true;
 		}

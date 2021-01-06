@@ -36,7 +36,7 @@ class Player {
 protected:
 	std::unique_ptr<Cards> hand; // Die Spielerhand.
 public:
-	Player();
+	Player() : hand(std::make_unique<Cards>()) { };
 	void ImportCards(const std::vector<CardStruct> &cards);
 
 	void AddCard(std::unique_ptr<Deck> &cardDeck);

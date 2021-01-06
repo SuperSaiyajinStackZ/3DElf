@@ -27,9 +27,6 @@
 #include "common.hpp"
 #include "gfx.hpp"
 
-/*
-	Zeichne den Karten-Reihenfolge.
-*/
 static void Draw() {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -54,9 +51,6 @@ static void Draw() {
 	C3D_FrameEnd(0);
 }
 
-/*
-	Zeige den Karten-Reihenfolgen-Screen.
-*/
 void Overlays::CardOrderOverlay() {
 	bool doOut = false;
 

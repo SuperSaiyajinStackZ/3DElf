@@ -32,7 +32,7 @@
 bool exiting = false;
 C2D_SpriteSheet sprites;
 touchPosition touch;
-int fadeAlpha = 0;
+uint8_t fadeAlpha = 0;
 
 /*
 	Falls eine bestimmte position berührt wird.. mache etwas.
@@ -45,9 +45,7 @@ bool touching(touchPosition touch, Structs::ButtonPos pos) {
 	return false;
 }
 
-/*
-	Initialisiere 3DElf.
-*/
+/* Initialisiere 3DElf. */
 static void init() {
 	romfsInit();
 	gfxInitDefault();
@@ -60,15 +58,12 @@ static void init() {
 	konfiguration = std::make_unique<Settings>();
 	Lang::load(konfiguration->Language()); // Lade die Übersetzungen.
 
-	//Overlays::CardOrderOverlay();
 	Overlays::SplashOverlay();
 	Overlays::RulesOverlay();
 	Gui::setScreen(std::make_unique<GameScreen>(), false, true);
 }
 
-/*
-	Die Hauptfunktion.
-*/
+/* Die Hauptfunktion. */
 int main() {
 	bool fullExit = false;
 

@@ -26,13 +26,9 @@
 
 #include "table.hpp"
 
-/*
-	Initialisiere die Tisch-Karten.
-*/
+/* Initialisiere die Tisch-Karten. */
 Table::Table() {
-	for (uint8_t i = 0; i < 4; i++) {
-		this->TableCards[i] = std::make_pair(CardType::NUMBER_EMPTY, CardType::NUMBER_EMPTY);
-	}
+	for (uint8_t i = 0; i < 4; i++) this->TableCards[i] = std::make_pair(CardType::NUMBER_EMPTY, CardType::NUMBER_EMPTY);
 }
 
 /*
@@ -44,11 +40,9 @@ Table::Table() {
 std::pair<CardType, CardType> Table::GetPlayCard(CardColor CLR) const {
 	std::pair<CardType, CardType> temp = { CardType::NUMBER_EMPTY, CardType::NUMBER_EMPTY };
 
-
-	if (this->TableCards[(uint8_t)CLR - 1].first == CardType::NUMBER_EMPTY &&
-		this->TableCards[(uint8_t)CLR - 1].second == CardType::NUMBER_EMPTY) {
-			return { CardType::NUMBER_11, CardType::NUMBER_11 };
-		}
+	if (this->TableCards[(uint8_t)CLR - 1].first == CardType::NUMBER_EMPTY && this->TableCards[(uint8_t)CLR - 1].second == CardType::NUMBER_EMPTY) {
+		return { CardType::NUMBER_11, CardType::NUMBER_11 };
+	}
 
 	/* 1 wäre die erste Karte, somit verhindere den folgenden Code. */
 	if (this->TableCards[(uint8_t)CLR - 1].first != CardType::NUMBER_1) {
@@ -102,7 +96,7 @@ bool Table::CanPlay(CardColor CLR, bool upper, CardType CT) const {
 */
 void Table::SetCard(CardColor CLR, bool upper, CardType CT) {
 	if (this->CanPlay(CLR, upper, CT)) {
-		/* For 11.. set it to both. */
+		/* Bei 11, setze es zu beide, weil 11 die basis ist. */
 		if (CT == CardType::NUMBER_11) {
 			this->TableCards[(uint8_t)CLR - 1].first = CT;
 			this->TableCards[(uint8_t)CLR - 1].second = CT;

@@ -39,19 +39,18 @@ static nlohmann::json appJson;
 std::string Lang::get(const std::string &key) {
 	if (!appJson.contains(key)) return "";
 
-	return appJson.at(key).get_ref<const std::string&>();
+	return appJson.at(key).get_ref<const std::string &>();
 }
 
 static std::string langs[] = { "de", "en" };
 
 /*
-	Lädt eine app.json datei.
+	Lädt eine app.json Datei.
 
 	int lang: Der Sprachen-Index, welcher oben als string array angegeben ist.
 */
 void Lang::load(int lang) {
-	FILE* values;
-	values = fopen((LANG_PATH + langs[lang] + "/app.json").c_str(), "rt");
+	FILE *values = fopen((LANG_PATH + langs[lang] + "/app.json").c_str(), "rt");
 	if (values) appJson = nlohmann::json::parse(values, nullptr, false);
 	fclose(values);
 }

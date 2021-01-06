@@ -36,7 +36,7 @@ class Cards {
 protected:
 	std::vector<CardStruct> hand; // Die Karten-Hand.
 public:
-	Cards();
+	Cards() { };
 	void ImportCards(const std::vector<CardStruct> &cards);
 
 	void AddCard(std::unique_ptr<Deck> &cardDeck);

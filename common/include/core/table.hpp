@@ -31,9 +31,7 @@
 
 class Table {
 protected:
-	/*
-		Wir benutzen std::pair, weil wir dem unteren und oberen Kartentypen vertrauen.
-	*/
+	/* Wir benutzen std::pair, weil wir dem unteren und oberen Kartentypen vertrauen. */
 	std::pair<CardType, CardType> TableCards[4];
 public:
 	Table();

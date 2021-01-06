@@ -27,11 +27,6 @@
 #include "player.hpp"
 
 /*
-	Initialisiere den Spieler.
-*/
-Player::Player() : hand(std::make_unique<Cards>()) { };
-
-/*
 	Setze Karten in die Spielerhand von einem Kartenstrukt.
 
 	const std::vector<CardStruct> &cards: Die Karten.

@@ -42,29 +42,21 @@ void Settings::Initialize() {
 	fclose(file);
 }
 
-/*
-	Konfiguration Konstruktor.
-*/
+/* Konfiguration Konstruktor. */
 Settings::Settings() {
 	if (access(CONF_PATH, F_OK) != 0) this->Initialize();
 
-	FILE* file = fopen(CONF_PATH, "r");
+	FILE *file = fopen(CONF_PATH, "r");
 	this->config = nlohmann::json::parse(file, nullptr, false);
 	fclose(file);
 
-	if (!this->config.contains("Language")) {
-		this->Language(1); // 1 ist Englisch, was die Standard Sprache ist.
-
-	} else {
-		this->Language(this->GetInt("Language"));
-	}
+	if (!this->config.contains("Language")) this->Language(1); // 1 ist Englisch, was die Standard Sprache ist.
+	else this->Language(this->GetInt("Language"));
 
 	this->changesMade = false;
 }
 
-/*
-	Schreibe in die Konfiguration, falls Änderungen gemacht worden sind.
-*/
+/* Schreibe in die Konfiguration, falls Änderungen gemacht worden sind. */
 void Settings::Save() {
 	if (this->changesMade) {
 		FILE *file = fopen(CONF_PATH, "w");
@@ -85,7 +77,7 @@ void Settings::Save() {
 int Settings::GetInt(const std::string &key) const {
 	if (!this->config.contains(key)) return 0;
 
-	return this->config.at(key).get_ref<const int64_t&>();
+	return this->config.at(key).get_ref<const int64_t &>();
 }
 
 /*
@@ -94,4 +86,4 @@ int Settings::GetInt(const std::string &key) const {
 	const std::string &key: Wohin dies gesetzt werden soll.
 	int v: Der Wert.
 */
-void Settings::SetInt(const std::string &key, int v) { this->config[key] = v; }
+void Settings::SetInt(const std::string &key, int v) { this->config[key] = v; };

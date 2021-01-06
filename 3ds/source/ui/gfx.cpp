@@ -54,17 +54,13 @@ static const uint32_t ReturnCardColor(CardColor CL) {
 	return NO_COLOR;
 }
 
-/*
-	Zeichne eine basis für den Top Screen.
-*/
+/* Zeichne eine basis für den Top Screen. */
 void GFX::DrawBaseTop() {
 	Gui::ScreenDraw(Top);
 	Gui::Draw_Rect(0, 0, 400, 240, BG_COLOR);
 }
 
-/*
-	Zeichne eine basis für den Touch Screen.
-*/
+/* Zeichne eine basis für den Touch Screen. */
 void GFX::DrawBaseBottom() {
 	Gui::ScreenDraw(Bottom);
 	Gui::Draw_Rect(0, 0, 320, 240, BG_COLOR);
@@ -115,7 +111,7 @@ void GFX::DrawCardOutline(int xPos, int yPos, float Width, float Height, uint32_
 void GFX::DrawCardStruct(CardStruct CS, int x, int y, int w, int h, int pow, bool playable) {
 	if (CS.CT == CardType::NUMBER_EMPTY || CS.CC == CardColor::COLOR_EMPTY) return;
 
-	DrawCardOutline(x, y, w, h, ReturnCardColor(CS.CC), pow, playable);
+	GFX::DrawCardOutline(x, y, w, h, ReturnCardColor(CS.CC), pow, playable);
 
 	const int wMax = w - (pow * 2) / 2;
 	const int hMax = h - (pow * 2) / 2;
@@ -140,7 +136,7 @@ void GFX::DrawCardStruct(CardStruct CS, int x, int y, int w, int h, int pow, boo
 void GFX::DrawCardSeparate(CardType CT, CardColor CC, int x, int y, int w, int h, int pow, bool playable) {
 	if (CT == CardType::NUMBER_EMPTY || CC == CardColor::COLOR_EMPTY) return;
 
-	DrawCardOutline(x, y, w, h, ReturnCardColor(CC), 4, playable);
+	GFX::DrawCardOutline(x, y, w, h, ReturnCardColor(CC), 4, playable);
 
 	const int wMax = w - (pow * 2) / 2;
 	const int hMax = h - (pow * 2) / 2;

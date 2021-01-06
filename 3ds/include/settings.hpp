@@ -38,8 +38,8 @@ public:
 	void Initialize();
 
 	/* Wiedergebe und Setze die Sprache. */
-	int Language() const { return this->v_language; }
-	void Language(int v) { this->v_language = v; if (!this->changesMade) this->changesMade = true; }
+	int Language() const { return this->v_language; };
+	void Language(int v) { this->v_language = v; if (!this->changesMade) this->changesMade = true; };
 
 private:
 	int GetInt(const std::string &key) const;

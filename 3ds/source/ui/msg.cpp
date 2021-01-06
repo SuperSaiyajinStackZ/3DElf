@@ -39,9 +39,9 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 /*
 	Zeige eine Prompt Nachricht an.
 
-	std::string msg: Die Nachricht.
+	const std::string &msg: Die Nachricht.
 */
-bool Msg::promptMsg(std::string msg) {
+bool Msg::promptMsg(const std::string &msg) {
 	s32 selection = 0;
 	while(1) {
 		Gui::clearTextBufs();
@@ -94,9 +94,9 @@ bool Msg::promptMsg(std::string msg) {
 /*
 	Zeight eine Nachricht an, welche mit A übersprungen werden kann.
 
-	std::string waitMsg: Die Nachricht.
+	const std::string &waitMsg: Die Nachricht.
 */
-void Msg::DisplayWaitMsg(std::string waitMsg, ...) {
+void Msg::DisplayWaitMsg(const std::string &waitMsg, ...) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, NO_COLOR);
@@ -123,9 +123,9 @@ void Msg::DisplayWaitMsg(std::string waitMsg, ...) {
 /*
 	Zeigt eine Nachricht an.
 
-	std::string Message: Die Nachricht.
+	const std::string &Message: Die Nachricht.
 */
-void Msg::DisplayMsg(std::string Message) {
+void Msg::DisplayMsg(const std::string &Message) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, NO_COLOR);
@@ -142,14 +142,14 @@ void Msg::DisplayMsg(std::string Message) {
 /*
 	Zeigt eine noch nicht implementierte Nachricht an.
 */
-void Msg::NotImplementedYet(void) { Msg::DisplayWaitMsg(Lang::get("NOT_IMPLEMENTED_YET")); }
+void Msg::NotImplementedYet(void) { Msg::DisplayWaitMsg(Lang::get("NOT_IMPLEMENTED_YET")); };
 
 /*
 	Zeige eine Hilfsbox an.
 
-	std::string Msg: Die Nachricht.
+	const std::string &Msg: Die Nachricht.
 */
-void Msg::HelperBox(std::string Msg) {
+void Msg::HelperBox(const std::string &Msg) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 

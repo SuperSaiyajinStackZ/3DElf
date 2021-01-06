@@ -30,7 +30,6 @@
 #include "common.hpp"
 #include "game.hpp"
 #include "structs.hpp"
-
 #include <vector>
 
 class GameScreen : public Screen {
@@ -96,7 +95,6 @@ private:
 		{ 170, 145, 140, 40 },
 		{ 170, 190, 140, 40 }
 	};
-
 };
 
 #endif

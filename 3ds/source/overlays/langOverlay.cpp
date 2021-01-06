@@ -28,24 +28,24 @@
 
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 const std::vector<Structs::ButtonPos> langBlocks = {
-	{37, 32, 20, 20},
-	{37, 72, 20, 20},
-	{37, 112, 20, 20},
-	{37, 152, 20, 20},
-	{37, 188, 20, 20},
-	{177, 32, 20, 20},
-	{177, 72, 20, 20},
-	{177, 112, 20, 20},
-	{177, 152, 20, 20},
-	{177, 188, 20, 20}
+	{ 37, 32, 20, 20 },
+	{ 37, 72, 20, 20 },
+	{ 37, 112, 20, 20 },
+	{ 37, 152, 20, 20 },
+	{ 37, 188, 20, 20 },
+	{ 177, 32, 20, 20 },
+	{ 177, 72, 20, 20 },
+	{ 177, 112, 20, 20 },
+	{ 177, 152, 20, 20 },
+	{ 177, 188, 20, 20 }
 };
 
 /*
-	Zeichne das Sprachen-Auswahl Overlay.
+	Zeige das Sprachen-Auswahl Overlay.
 
-	const uint8_t &sltLang: Die aktuelle ausgewählte Sprache.
+	uint8_t sltLang: Die aktuelle ausgewählte Sprache.
 */
-static void Draw(const uint8_t &sltLang) {
+static void Draw(uint8_t sltLang) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, NO_COLOR);
@@ -69,9 +69,7 @@ static void Draw(const uint8_t &sltLang) {
 	C3D_FrameEnd(0);
 }
 
-/*
-	Zeige das Sprach-Auswahl Overlay.
-*/
+/* Zeige das Sprach-Auswahl Overlay. */
 void Overlays::LanguageOverlay() {
 	uint8_t selectedLang = 0;
 	bool doOut = false;

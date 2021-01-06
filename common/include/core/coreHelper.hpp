@@ -81,8 +81,8 @@ enum class CardColor : uint8_t {
 	Beides zusammen entspricht einem uint16_t / 2 byte.
 */
 struct CardStruct {
-	CardType CT;
-	CardColor CC;
+	CardType CT = CardType::NUMBER_EMPTY;
+	CardColor CC = CardColor::COLOR_EMPTY;
 };
 
 namespace CoreHelper {

@@ -92,21 +92,21 @@
 	0x3: Die Anzahl der gezogenen Karten.
 	0x4 - 0xA3: KartenDeck Karten. Größe: 0xA0. (80 Karten)
 
-		/ Tischkarten. \
+	/ Tischkarten. \
 	0xA4 - 0xA5: Tischkarte Rot. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
 	0xA6 - 0xA7: Tischkarte Gelb. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
 	0xA8 - 0xA9: Tischkarte Grün. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
 	0xAA - 0xAB: Tischkarte Blau. (Jeweils 2 KartenTypen (uint16_t) für die Ober und Unter-karte).
 
-		/ Spielerkarten. \
-	 0xAC - 0x14C: Spieler 1 Karten. Größe: 0xA0. (80 Karten)
+	/ Spielerkarten. \
+	0xAC - 0x14C: Spieler 1 Karten. Größe: 0xA0. (80 Karten)
 	0x14D - 0x1ED: Spieler 2 Karten. Größe: 0xA0. (80 Karten)
 	0x1EE - 0x28E: Spieler 3 Karten. Größe: 0xA0. (80 Karten)
 	0x28F - 0x32F: Spieler 4 Karten. Größe: 0xA0. (80 Karten)
 	0x330 - 0x3D0: Spieler 5 Karten. Größe: 0xA0. (80 Karten)
 	0x3D1 - 0x471: Spieler 6 Karten. Größe: 0xA0. (80 Karten)
 
-		/ Zuletzt noch die Karten und Seiten Indexe. \
+	/ Zuletzt noch die Karten und Seiten Indexe. \
 	0x472: Spieler 1 Karten Index.
 	0x473: Spieler 2 Karten Index.
 	0x474: Spieler 3 Karten Index.

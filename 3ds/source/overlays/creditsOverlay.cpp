@@ -26,9 +26,6 @@
 
 #include "common.hpp"
 
-/*
-	Zeichne den Credits-Screen.
-*/
 static void Draw() {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -59,9 +56,6 @@ static void Draw() {
 	C3D_FrameEnd(0);
 }
 
-/*
-	Zeige den Credits-Screen.
-*/
 void Overlays::CreditsOverlay() {
 	bool doOut = false;
 

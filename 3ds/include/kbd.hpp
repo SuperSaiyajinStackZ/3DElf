@@ -30,7 +30,7 @@
 #include <string>
 
 namespace KBD {
-	int SetAmount(int maxValue, std::string Text, int oldVal);
+	int SetAmount(int maxValue, const std::string &Text, int oldVal);
 };
 
 #endif

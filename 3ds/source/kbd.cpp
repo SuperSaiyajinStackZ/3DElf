@@ -31,10 +31,10 @@
 	Lasse eine Eingabe vom System-Keyboard wiedergeben.
 
 	int maxValue: Die Maximale anzahl, welche erlaubt ist.
-	std::string Text: Der Text, welcher angezeigt werden soll.
+	const std::string &Text: Der Text, welcher angezeigt werden soll.
 	int oldVal: Alter Wert.
 */
-int KBD::SetAmount(int maxValue, std::string Text, int oldVal) {
+int KBD::SetAmount(int maxValue, const std::string &Text, int oldVal) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, NO_COLOR);

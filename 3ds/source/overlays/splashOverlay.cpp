@@ -32,7 +32,7 @@
 #define _SPLASH_WAIT_DELAY 200
 
 /*
-	Zeichne den Splash-Screen.
+	Zeige den Splash-Screen.
 
 	const int &logoPos: Die Position des 3DElf's Logo.
 	const int &fadeAlpha: Der Fade Alpha wert.
@@ -61,15 +61,12 @@ static void Draw(const int &logoPos, const int &fadeAlpha, const uint32_t &year)
 	C3D_FrameEnd(0);
 }
 
-/*
-	Zeige den Splash-Screen.
-*/
 void Overlays::SplashOverlay() {
 	/* Initiale Werte. */
 	int delay = _SPLASH_WAIT_DELAY, logoPos = 402, swipeDelay = _SPLASH_LOGO_INIT_DELAY, fadeAlpha = 255;
 	bool doOut = false, swipedIn = false, doSwipe = false, fadeInSplash = true;
 
-	time_t currentTime = time(NULL);
+	time_t currentTime = time(nullptr);
 	struct tm *currentTimeStruct = localtime(&currentTime);
 	const uint32_t year = 1900 + currentTimeStruct->tm_year;
 
@@ -78,6 +75,7 @@ void Overlays::SplashOverlay() {
 		if (fadeInSplash) {
 			if (fadeAlpha > 0) {
 				fadeAlpha -= 2;
+
 				if (fadeAlpha <= 0) {
 					fadeAlpha = 0;
 					fadeInSplash = 0;
@@ -96,9 +94,7 @@ void Overlays::SplashOverlay() {
 			if (swipeDelay > 0) {
 				swipeDelay--;
 
-				if (swipeDelay == 0) {
-					doSwipe = true;
-				}
+				if (swipeDelay == 0) doSwipe = true;
 			}
 		}
 
@@ -107,9 +103,7 @@ void Overlays::SplashOverlay() {
 			if (logoPos > _SPLASH_X_LOGO_POS) {
 				logoPos--;
 
-				if (logoPos == _SPLASH_X_LOGO_POS) {
-					swipedIn = true;
-				}
+				if (logoPos == _SPLASH_X_LOGO_POS) swipedIn = true;
 			}
 		}
 

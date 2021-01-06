@@ -27,9 +27,7 @@
 #include "deck.hpp"
 #include <algorithm>
 
-/*
-	Das Standard Karten-Deck, mit 80 Karten.
-*/
+/* Das Standard Karten-Deck, mit 80 Karten. */
 const std::vector<CardStruct> DefaultDeck = {
 				/* Rote Karten. */
 	{ CardType::NUMBER_1, CardColor::COLOR_1 },
