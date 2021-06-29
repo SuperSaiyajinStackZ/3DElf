@@ -41,7 +41,7 @@ Hier findest du ein paar Screenshots zum aktuellen Fortschritt.
 ## Kompilieren
 ### Die Umgebung aufsetzen
 
-Um 3DElf vom quellcode zu kompilieren, musst du deine Umgebung mit devkitARM, Libctru, Citro2D und Citro3D aufsetzen. Folge devkitPro's [Getting Started](https://devkitpro.org/wiki/Getting_Started) Seite um pacman zu installieren, dann führe `(sudo dkp-)pacman -S devkitARM libctru citro2d citro3d` aus. Du wirst ebenfalls [bannertool](https://github.com/Steveice10/bannertool/releases/latest) und [makerom](https://github.com/profi200/Project_CTR/releases/latest) im `3ds` Ordner benötigen.
+Um 3DElf vom quellcode zu kompilieren, musst du deine Umgebung mit devkitARM, Libctru, Citro2D und Citro3D aufsetzen. Folge devkitPro's [Getting Started](https://devkitpro.org/wiki/Getting_Started) Seite um pacman zu installieren, dann führe `(sudo dkp-)pacman -S devkitARM libctru citro2d citro3d` aus. Du wirst ebenfalls [bannertool](https://github.com/Steveice10/bannertool/releases/latest) und [makerom](https://github.com/profi200/Project_CTR/releases/latest) im Pfad benötigen.
 
 ### Klonen der Repository
 

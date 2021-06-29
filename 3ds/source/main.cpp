@@ -86,7 +86,7 @@ int main() {
 
 		if (exiting) {
 			if (fadeAlpha < 255) {
-				fadeAlpha += 2;
+				fadeAlpha += 5;
 
 				if (fadeAlpha >= 255) fullExit = true;
 			}
